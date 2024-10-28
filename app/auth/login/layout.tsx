@@ -8,7 +8,8 @@ export default function LoginLayout({ children }: { children: React.ReactNode })
             </div>
             <div className="w-1/2 relative h-full">
                 <Image
-                    src="/assets/auth.svg"
+                    priority={true}
+                    src="/assets/library.jpg"
                     alt="Görsel"
                     layout="fill"
                     objectFit="cover"
