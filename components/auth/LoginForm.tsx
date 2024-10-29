@@ -1,7 +1,6 @@
 "use client";
 import { useFormik } from "formik";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Input, Button } from "@nextui-org/react";
-import * as Yup from "yup";
 import { useState } from "react";
 import { EyeSlashFilledIcon } from "../ui/svg/EyeSlashFilledIcon";
 import { EyeFilledIcon } from "../ui/svg/EyeFilledIcon";

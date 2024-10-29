@@ -2,10 +2,11 @@ import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 import React from "react";
-import { Providers } from "./providers";
+import { Providers } from "../providers";
 import { Toaster } from "react-hot-toast";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
+import Navbar from "@/components/ui/navbar";
 
 export const metadata: Metadata = {
   title: {
@@ -42,6 +43,7 @@ export default function RootLayout({
         <Toaster position="top-center" />
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           <div className="relative flex flex-col h-screen">
+            <Navbar />
             <main>
               {children}
             </main>

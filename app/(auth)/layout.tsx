@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-export default function LoginLayout({ children }: { children: React.ReactNode }) {
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex h-screen">
             <div className="w-1/2 flex items-center justify-center bg-white">
