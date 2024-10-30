@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Input, Button } from "@nextui-org/react";
 import { EyeFilledIcon } from "../ui/svg/EyeFilledIcon";
 import { EyeSlashFilledIcon } from "../ui/svg/EyeSlashFilledIcon";
-import * as Yup from "yup";
 import { useRegisterMutation } from "@/store/AuthStore";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
@@ -110,7 +109,7 @@ export default function RegisterForm() {
             </CardBody>
             <Divider />
             <CardFooter>
-                <Link href="/auth/login">Do you have an account? Login</Link>
+                <Link href="/login">Do you have an account? Login</Link>
             </CardFooter>
         </Card>
     );

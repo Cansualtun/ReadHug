@@ -80,7 +80,7 @@ const LoginForm = () => {
             </CardBody>
             <Divider />
             <CardFooter>
-                <Link href="/auth/register">Create Account</Link>
+                <Link href="/register">Create Account</Link>
             </CardFooter>
         </Card>
     );
