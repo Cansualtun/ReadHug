@@ -8,7 +8,6 @@ import { useLoginMutation } from "@/store/AuthStore";
 import { useRouter } from "next/navigation";
 import { loginValidationSchema } from "@/validations/loginValidations";
 
-
 const LoginForm = () => {
     const [login, { isLoading }] = useLoginMutation();
     const [isVisible, setIsVisible] = useState(false);
