@@ -63,7 +63,7 @@ export default function Header() {
                         <DropdownItem key="system">System</DropdownItem>
                         <DropdownItem key="configurations">Configurations</DropdownItem>
                         <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-                        <DropdownItem key="logout" color="danger">
+                        <DropdownItem key="logout" color="danger" href="/login">
                             Log Out
                         </DropdownItem>
                     </DropdownMenu>

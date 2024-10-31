@@ -4,6 +4,7 @@ import React from "react";
 import { Providers } from "../providers";
 import clsx from "clsx";
 import { fontSans } from "@/config/fonts";
+import { Toaster } from "react-hot-toast";
 
 export default function AuthLayout({
     children,
@@ -17,6 +18,7 @@ export default function AuthLayout({
                 "min-h-screen bg-background font-sans antialiased",
                 fontSans.variable,
             )}>
+                <Toaster position="top-center" />
                 <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
                     <div className="flex h-screen">
                         <div className="w-1/2 flex items-center justify-center bg-white">
