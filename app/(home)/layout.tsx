@@ -45,7 +45,7 @@ export default function HomeLayout({
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           <div className="relative flex flex-col h-screen">
             <Header />
-            <main className="container mx-auto flex-grow">
+            <main className="container mx-auto flex-grow mt-10">
               {children}
             </main>
           </div>

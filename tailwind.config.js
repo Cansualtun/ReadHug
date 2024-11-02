@@ -21,10 +21,10 @@ export default {
         '2xl': '1280px',
       },
       maxWidth: {
-        'custom-sm': '640px', // Custom small size
-        'custom-md': '768px', // Custom medium size
-        'custom-lg': '1024px', // Custom large size
-        'custom-xl': '1280px', // Custom extra-large size
+        'custom-sm': '640px',
+        'custom-md': '768px',
+        'custom-lg': '1024px',
+        'custom-xl': '1280px',
       },
     },
   },
