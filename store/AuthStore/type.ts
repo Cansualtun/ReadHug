@@ -21,3 +21,11 @@ export interface IRegisterResult {
   token: string;
   userId: string;
 }
+export interface IChangePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
+}
+export interface IChangePasswordResult {
+  status: boolean;
+  message: string;
+}

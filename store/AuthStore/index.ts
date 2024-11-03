@@ -1,6 +1,8 @@
 import { baseApi } from '@/services/baseApi';
 import { toast } from 'react-hot-toast';
 import {
+  IChangePasswordRequest,
+  IChangePasswordResult,
   ILoginRequest,
   ILoginResponse,
   IRegisterRequest,
@@ -77,9 +79,39 @@ export const authApi = baseApi.injectEndpoints({
         }
       },
     }),
+    changePassword: builder.mutation<
+      IChangePasswordResult,
+      IChangePasswordRequest
+    >({
+      query: (credentials) => {
+        const token = getFromTokenCookies();
+        return {
+          url: '/changePassword',
+          method: 'POST',
+          body: credentials,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          toast.success('Change password success!');
+          dispatch(setAuthStore({ changePassword: data }));
+        } catch (error) {
+          toast.error('Change Password failed');
+          console.error('Change Password error:', error);
+        }
+      },
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+  useChangePasswordMutation,
+} = authApi;
