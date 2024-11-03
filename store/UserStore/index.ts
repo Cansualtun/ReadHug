@@ -2,16 +2,13 @@ import { baseApi } from '@/services/baseApi';
 import { toast } from 'react-hot-toast';
 import { IMeResponse } from './type';
 import { setUserStore } from './slice';
+import { getFromTokenCookies } from '@/utils/getFromTokenCookie';
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     me: builder.mutation<IMeResponse, void>({
       query: () => {
-        const token = document.cookie
-          .split('; ')
-          .find((row) => row.startsWith('token='))
-          ?.split('=')[1];
-
+        const token = getFromTokenCookies();
         return {
           url: '/user/me',
           method: 'GET',

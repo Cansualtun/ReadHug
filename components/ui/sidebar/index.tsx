@@ -1,12 +1,12 @@
-"use client"
+"use client";
 import React from "react";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-
+import ProfileUpdate from "@/components/profile/ProfileUpdate";
 
 const SidebarItems = [
     {
         sidebarTitle: "Profile",
-        sideBarContent: "test",
+        sideBarContent: <ProfileUpdate />,
         icon: "profile-icon",
     },
     {
@@ -21,25 +21,22 @@ const SidebarItems = [
     }
 ];
 
-
 export default function Sidebar() {
     const [isVertical, setIsVertical] = React.useState(true);
-    return (
-        <div className="flex flex-col px-4">
-            <div className="flex w-full flex-col">
-                <Tabs aria-label="Options" isVertical={isVertical}>
-                    {SidebarItems.map((item, index) => (
-                        <Tab key={index} title={item.sidebarTitle}>
-                            <Card>
-                                <CardBody>
-                                    {item.sideBarContent}
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                    ))}
-                </Tabs>
 
-            </div>
-        </div>
+    return (
+
+        <Tabs aria-label="Options" isVertical={isVertical}>
+            {SidebarItems.map((item, index) => (
+                <Tab key={index} title={item.sidebarTitle} className="w-full h-12">
+                    <Card className="ml-10">
+                        <CardBody className="bg-gray-59">
+                            {item.sideBarContent}
+                        </CardBody>
+                    </Card>
+                </Tab>
+            ))}
+        </Tabs>
+
     );
 }
