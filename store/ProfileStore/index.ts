@@ -12,6 +12,7 @@ export const profileApi = baseApi.injectEndpoints({
     >({
       query: (credentials) => {
         const token = getFromTokenCookies();
+        console.log(token, 'cans');
         return {
           url: '/user/updateProfile',
           method: 'PATCH',
@@ -23,7 +24,6 @@ export const profileApi = baseApi.injectEndpoints({
       },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
           dispatch(
             setProfileStore({
               profile_update: {},

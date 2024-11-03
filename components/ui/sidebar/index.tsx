@@ -2,6 +2,7 @@
 import React from "react";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 import ProfileUpdate from "@/components/profile/ProfileUpdate";
+import ChangePassword from "@/components/profile/ChangePassword";
 
 const SidebarItems = [
     {
@@ -11,14 +12,9 @@ const SidebarItems = [
     },
     {
         sidebarTitle: "Change Password",
-        sideBarContent: "test2",
+        sideBarContent: <ChangePassword />,
         icon: "change-password-icon",
     },
-    {
-        sidebarTitle: "Log Out",
-        sideBarContent: "test3",
-        icon: "logout-icon",
-    }
 ];
 
 export default function Sidebar() {

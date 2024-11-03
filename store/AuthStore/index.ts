@@ -7,6 +7,7 @@ import {
   IRegisterResult,
 } from './type';
 import { setAuthStore } from './slice';
+import { getFromTokenCookies } from '@/utils/getFromTokenCookie';
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -28,8 +29,6 @@ export const authApi = baseApi.injectEndpoints({
             }),
           );
           document.cookie = `token=${data.access_token}; path=/; Secure;`;
-          localStorage.setItem('token', data.access_token);
-          localStorage.setItem('userId', data.userId);
           toast.success('Welcome to Books Addict');
         } catch (error) {
           toast.error('Login failed');
@@ -54,8 +53,33 @@ export const authApi = baseApi.injectEndpoints({
         }
       },
     }),
+    logout: builder.mutation<void, void>({
+      query: () => {
+        const token = getFromTokenCookies();
+        return {
+          url: '/logout',
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          toast.success('Logout success!');
+          dispatch(setAuthStore({ logout: true }));
+          document.cookie =
+            'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        } catch (error) {
+          toast.error('Logout failed');
+          console.error('Logout error:', error);
+        }
+      },
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation } =
+  authApi;

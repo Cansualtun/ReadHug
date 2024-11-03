@@ -3,7 +3,7 @@ export interface IUpdateProfileRequest {
   lastName: string;
   userName: string;
   birthDate: string;
-  gender: string;
+  gender: number;
 }
 export interface IUpdateProfileResponse {
   status: boolean;

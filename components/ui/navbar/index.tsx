@@ -1,8 +1,19 @@
 "use client"
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar } from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar } from "@nextui-org/react";
 import { AcmeLogo } from "../svg/AcmeLogo";
 import { SearchIcon } from "../svg/SearchIcon.jsx"
+import { useLogoutMutation } from "@/store/AuthStore";
+import { useRouter } from "next/navigation";
+
 export default function Header() {
+    const [logout] = useLogoutMutation();
+    const router = useRouter();
+
+    const logouts = async () => {
+        await logout()
+        router.push("/login")
+    }
+
     return (
         <Navbar isBordered maxWidth="xl" >
             <NavbarContent>
@@ -63,7 +74,7 @@ export default function Header() {
                         <DropdownItem key="system">System</DropdownItem>
                         <DropdownItem key="configurations">Configurations</DropdownItem>
                         <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-                        <DropdownItem key="logout" color="danger" href="/login">
+                        <DropdownItem key="logout" color="danger" href="/login" onClick={() => logouts()}>
                             Log Out
                         </DropdownItem>
                     </DropdownMenu>
