@@ -1,5 +1,5 @@
 import { baseApi } from '@/services/baseApi';
-import { toast } from 'react-hot-toast';
+import { toast } from 'sonner';
 import { IMeResponse } from './type';
 import { setUserStore } from './slice';
 import { getFromTokenCookies } from '@/utils/getFromTokenCookie';

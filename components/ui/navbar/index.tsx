@@ -10,18 +10,24 @@ import { useMeMutation } from "@/store/UserStore";
 export default function Header() {
     const [logout] = useLogoutMutation();
     const [me] = useMeMutation();
-    const [userName, setUserName] = useState(null);
+    const [userData, setUserData] = useState({ userName: null, email: null });
     const router = useRouter();
 
     useEffect(() => {
         const fetchMe = async () => {
-            const { data } = await me();
-            setUserName(data?.data.userName as any);
+            try {
+                const { data } = await me();
+                setUserData({
+                    userName: data?.data?.userName as any,
+                    email: data?.data?.email as any
+                });
+            } catch (error) {
+                console.error("Kullanıcı bilgileri alınamadı:", error);
+            }
         };
 
         fetchMe();
     }, [me]);
-
 
     const logouts = async () => {
         await logout();
@@ -29,8 +35,8 @@ export default function Header() {
     };
 
     const goToProfile = () => {
-        if (userName) {
-            router.push(`/profile/${userName}`);
+        if (userData.userName) {
+            router.push(`/profile/${userData.userName}`);
         }
     };
 
@@ -87,13 +93,11 @@ export default function Header() {
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="profile" className="h-14 gap-2">
                             <p className="font-semibold">Signed in as</p>
-                            <p className="font-semibold">zoey@example.com</p>
+                            <p className="font-semibold">{userData.email}</p>
                         </DropdownItem>
                         <DropdownItem key="profile" onClick={goToProfile}>Profile</DropdownItem>
                         <DropdownItem key="/settings" href="/settings">Settings</DropdownItem>
                         <DropdownItem key="system">System</DropdownItem>
-                        <DropdownItem key="configurations">Configurations</DropdownItem>
-                        <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
                         <DropdownItem key="logout" color="danger" href="/login" onClick={() => logouts()}>
                             Log Out
                         </DropdownItem>
