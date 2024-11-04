@@ -9,6 +9,7 @@ export const userApi = baseApi.injectEndpoints({
     me: builder.mutation<IMeResponse, void>({
       query: () => {
         const token = getFromTokenCookies();
+        console.log(token, 'anaana');
         return {
           url: '/user/me',
           method: 'GET',

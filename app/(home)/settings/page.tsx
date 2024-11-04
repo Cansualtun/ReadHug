@@ -1,7 +1,9 @@
+import Sidebar from "@/components/ui/sidebar";
+
 export default function Settings() {
     return (
         <div>
-            Settings
+            <Sidebar />
         </div>
     )
 }

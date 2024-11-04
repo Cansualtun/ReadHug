@@ -1,18 +1,38 @@
 "use client"
+import { useEffect, useState } from 'react';
 import { Navbar, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar } from "@nextui-org/react";
 import { AcmeLogo } from "../svg/AcmeLogo";
-import { SearchIcon } from "../svg/SearchIcon.jsx"
+import { SearchIcon } from "../svg/SearchIcon.jsx";
 import { useLogoutMutation } from "@/store/AuthStore";
 import { useRouter } from "next/navigation";
+import { useMeMutation } from "@/store/UserStore";
 
 export default function Header() {
     const [logout] = useLogoutMutation();
+    const [me] = useMeMutation();
+    const [userName, setUserName] = useState(null);
     const router = useRouter();
 
+    useEffect(() => {
+        const fetchMe = async () => {
+            const { data } = await me();
+            setUserName(data?.data.userName as any);
+        };
+
+        fetchMe();
+    }, [me]);
+
+
     const logouts = async () => {
-        await logout()
-        router.push("/login")
-    }
+        await logout();
+        router.push("/login");
+    };
+
+    const goToProfile = () => {
+        if (userName) {
+            router.push(`/profile/${userName}`);
+        }
+    };
 
     return (
         <Navbar isBordered maxWidth="xl" >
@@ -69,8 +89,8 @@ export default function Header() {
                             <p className="font-semibold">Signed in as</p>
                             <p className="font-semibold">zoey@example.com</p>
                         </DropdownItem>
-                        <DropdownItem key="settings" href="/profile">Profile</DropdownItem>
-                        <DropdownItem key="/settings">Settings</DropdownItem>
+                        <DropdownItem key="profile" onClick={goToProfile}>Profile</DropdownItem>
+                        <DropdownItem key="/settings" href="/settings">Settings</DropdownItem>
                         <DropdownItem key="system">System</DropdownItem>
                         <DropdownItem key="configurations">Configurations</DropdownItem>
                         <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
@@ -80,7 +100,6 @@ export default function Header() {
                     </DropdownMenu>
                 </Dropdown>
             </NavbarContent>
-
         </Navbar>
     );
 }
