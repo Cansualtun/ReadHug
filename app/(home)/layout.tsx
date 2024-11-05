@@ -43,7 +43,7 @@ export default function HomeLayout({
       >
         <Toaster position="top-center" />
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-          <div className="relative flex flex-col h-screen">
+          <div className="relative flex flex-col h-screen bg-[#FAFAFA]">
             <Header />
             <main className="container mx-auto flex-grow mt-10">
               {children}

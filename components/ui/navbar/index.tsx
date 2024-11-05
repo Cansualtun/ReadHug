@@ -6,11 +6,12 @@ import { SearchIcon } from "../svg/SearchIcon.jsx";
 import { useLogoutMutation } from "@/store/AuthStore";
 import { useRouter } from "next/navigation";
 import { useMeMutation } from "@/store/UserStore";
+import { User, Settings, Monitor, LogOut } from "lucide-react";
 
 export default function Header() {
     const [logout] = useLogoutMutation();
     const [me] = useMeMutation();
-    const [userData, setUserData] = useState({ userName: null, email: null });
+    const [userData, setUserData] = useState({ userName: null, email: null, image: null });
     const router = useRouter();
 
     useEffect(() => {
@@ -19,7 +20,8 @@ export default function Header() {
                 const { data } = await me();
                 setUserData({
                     userName: data?.data?.userName as any,
-                    email: data?.data?.email as any
+                    email: data?.data?.email as any,
+                    image: data?.data?.image as any,
                 });
             } catch (error) {
                 console.error("Kullanıcı bilgileri alınamadı:", error);
@@ -49,8 +51,8 @@ export default function Header() {
                 </div>
                 <NavbarContent className="hidden sm:flex gap-3">
                     <NavbarItem>
-                        <Link color="foreground" href="/mybook">
-                            My Book
+                        <Link color="foreground" href="/authors">
+                            Authors
                         </Link>
                     </NavbarItem>
                     <NavbarItem>
@@ -87,18 +89,41 @@ export default function Header() {
                             color="secondary"
                             name="Jason Hughes"
                             size="sm"
-                            src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                            src={userData?.image ?? "/assets/avatar.jpg"}
                         />
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="profile" className="h-14 gap-2">
-                            <p className="font-semibold">Signed in as</p>
-                            <p className="font-semibold">{userData.email}</p>
+                            <p className="font-semibold">Signed in</p>
+                            <p className="font-semibold">{userData.userName}</p>
                         </DropdownItem>
-                        <DropdownItem key="profile" onClick={goToProfile}>Profile</DropdownItem>
-                        <DropdownItem key="/settings" href="/settings">Settings</DropdownItem>
-                        <DropdownItem key="system">System</DropdownItem>
-                        <DropdownItem key="logout" color="danger" href="/login" onClick={() => logouts()}>
+                        <DropdownItem
+                            key="profile"
+                            onClick={goToProfile}
+                            startContent={<User className="w-4 h-4" />}
+                        >
+                            Profile
+                        </DropdownItem>
+                        <DropdownItem
+                            key="/settings"
+                            href="/settings"
+                            startContent={<Settings className="w-4 h-4" />}
+                        >
+                            Settings
+                        </DropdownItem>
+                        <DropdownItem
+                            key="system"
+                            startContent={<Monitor className="w-4 h-4" />}
+                        >
+                            System
+                        </DropdownItem>
+                        <DropdownItem
+                            key="logout"
+                            color="danger"
+                            href="/login"
+                            onClick={() => logouts()}
+                            startContent={<LogOut className="w-4 h-4" />}
+                        >
                             Log Out
                         </DropdownItem>
                     </DropdownMenu>

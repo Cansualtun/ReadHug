@@ -41,28 +41,31 @@ const ProfileCard = ({ profileData }: any) => {
                     </div>
                 </div>
 
-                {/* Kitap İstatistikleri */}
                 <div className="bg-default-50 dark:bg-gray-800 rounded-lg p-3">
                     <div className="grid grid-cols-3 gap-2">
                         <div className="text-center p-2 rounded-md bg-white/50 dark:bg-gray-700 hover:bg-white dark:hover:bg-gray-600 transition-colors cursor-pointer">
-                            <BookOpen className="w-4 h-4 mx-auto text-success" />
-                            <span className="font-semibold text-sm block mt-1">{counts.readBooksCount}</span>
+                            <div className="flex items-center justify-center gap-2 mb-1">
+                                <BookOpen className="w-4 h-4 text-success" />
+                                <span className="font-semibold text-sm">{counts.readBooksCount}</span>
+                            </div>
                             <p className="text-xs text-default-500">Okunan</p>
                         </div>
                         <div className="text-center p-2 rounded-md bg-white/50 dark:bg-gray-700 hover:bg-white dark:hover:bg-gray-600 transition-colors cursor-pointer">
-                            <BookMarked className="w-4 h-4 mx-auto text-warning" />
-                            <span className="font-semibold text-sm block mt-1">{counts.readingBooksCount}</span>
+                            <div className="flex items-center justify-center gap-2 mb-1">
+                                <BookMarked className="w-4 h-4 text-warning" />
+                                <span className="font-semibold text-sm">{counts.readingBooksCount}</span>
+                            </div>
                             <p className="text-xs text-default-500">Okunuyor</p>
                         </div>
                         <div className="text-center p-2 rounded-md bg-white/50 dark:bg-gray-700 hover:bg-white dark:hover:bg-gray-600 transition-colors cursor-pointer">
-                            <BookPlus className="w-4 h-4 mx-auto text-secondary" />
-                            <span className="font-semibold text-sm block mt-1">{counts.wishlistBooksCount}</span>
+                            <div className="flex items-center justify-center gap-2 mb-1">
+                                <BookPlus className="w-4 h-4 text-secondary" />
+                                <span className="font-semibold text-sm">{counts.wishlistBooksCount}</span>
+                            </div>
                             <p className="text-xs text-default-500">İstek</p>
                         </div>
                     </div>
                 </div>
-
-                {/* Toplam Kitap */}
                 <div className="mt-3 text-center">
                     <p className="text-xs text-default-500">
                         Toplam <span className="font-semibold text-primary">{counts.totalBookCount}</span> kitap
