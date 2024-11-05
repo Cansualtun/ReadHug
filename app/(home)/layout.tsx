@@ -37,7 +37,7 @@ export default function HomeLayout({
       <head />
       <body
         className={clsx(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-[#FAFAFA] font-sans antialiased",
           fontSans.variable,
         )}
       >

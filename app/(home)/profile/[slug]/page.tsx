@@ -1,12 +1,27 @@
-import { fetchWithToken } from "@/app/server/profile";
+import { getAllBookLists } from "@/app/server/book";
+import { ProfilInfo } from "@/app/server/profile";
+import BookListTabs from "@/components/profile/BookListTab";
+import ProfileCard from "@/components/profile/ProfileCard";
 
-export default async function ProfileSlug({ params }: any) {
-    const response = await fetchWithToken(`http://localhost:4000/user/profile/${params.slug}`);
-    const profil = await response.json();
-    console.log(profil, "dobis")
+export default async function ProfileSlug({ params }: { params: { slug: string } }) {
+    const [profileResponse, booksResponse] = await Promise.all([
+        ProfilInfo(`http://localhost:4000/user/profile/${params.slug}`),
+        getAllBookLists(params.slug)
+    ]);
+
+    const profile = await profileResponse.json();
+    const books = booksResponse;
+
     return (
-        <div>
-            {profil?.user?.userName}
+        <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-1">
+                    <ProfileCard profileData={profile} />
+                </div>
+                <div className="lg:col-span-2">
+                    <BookListTabs bookLists={books} />
+                </div>
+            </div>
         </div>
     );
 }

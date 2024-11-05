@@ -33,6 +33,7 @@
 		"history": "^5.3.0",
 		"intl-messageformat": "^10.5.0",
 		"js-cookie": "^3.0.5",
+		"lucide-react": "^0.454.0",
 		"next": "14.2.4",
 		"next-themes": "^0.2.1",
 		"react": "18.3.1",
