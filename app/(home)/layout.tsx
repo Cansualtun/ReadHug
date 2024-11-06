@@ -37,13 +37,13 @@ export default function HomeLayout({
       <head />
       <body
         className={clsx(
-          "min-h-screen bg-[#FAFAFA] font-sans antialiased",
+          "min-h-screen bg-gray-100 font-sans antialiased",
           fontSans.variable,
         )}
       >
         <Toaster position="top-center" />
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-          <div className="relative flex flex-col h-screen bg-[#FAFAFA]">
+          <div className="relative flex flex-col h-screen bg-gray-100">
             <Header />
             <main className="container mx-auto flex-grow mt-10">
               {children}

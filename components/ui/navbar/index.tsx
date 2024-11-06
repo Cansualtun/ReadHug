@@ -89,7 +89,7 @@ export default function Header() {
                             color="secondary"
                             name="Jason Hughes"
                             size="sm"
-                            src={userData?.image ?? "/assets/avatar.jpg"}
+                            src={userData?.image ?? "/assets/avatar.png"}
                         />
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
