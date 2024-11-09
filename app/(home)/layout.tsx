@@ -7,7 +7,7 @@ import { Toaster } from "sonner";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import Header from "@/components/ui/navbar"
-
+import Footer from "@/components/ui/footer";
 
 export const metadata: Metadata = {
   title: {
@@ -37,17 +37,18 @@ export default function HomeLayout({
       <head />
       <body
         className={clsx(
-          "min-h-screen bg-gray-100 font-sans antialiased",
+          "min-h-screen bg-[#F6F5F2] font-sans antialiased",
           fontSans.variable,
         )}
       >
         <Toaster position="top-center" />
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-          <div className="relative flex flex-col h-screen bg-gray-100">
+          <div className="flex min-h-screen flex-col">
             <Header />
-            <main className="container mx-auto flex-grow mt-10">
+            <main className="flex-1 container mx-auto py-10">
               {children}
             </main>
+            <Footer />
           </div>
         </Providers>
       </body>

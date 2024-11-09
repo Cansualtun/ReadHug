@@ -11,7 +11,7 @@ export default async function ProfileSlug({ params }: { params: { slug: string }
 
     const profile = await profileResponse.json();
     const books = booksResponse;
-    console.log(books.data, "cans")
+
     return (
         <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

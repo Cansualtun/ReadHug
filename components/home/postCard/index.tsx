@@ -18,7 +18,7 @@ export default function Post() {
                     />
                 </Card>
             </div>
-            <Card className="w-full shadow-md rounded-lg bg-gradient-to-r bg-gray-50">
+            <Card className="w-full rounded-lg bg-gradient-to-r bg-gray-50">
                 <CardHeader className="flex justify-between items-center px-8 pt-10 pb-4">
                     <div className="flex flex-col ml-32 space-y-1">
                         <p className="text-lg font-bold">Kitap İsmi</p>

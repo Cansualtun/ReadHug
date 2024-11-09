@@ -1,10 +1,11 @@
 "use client"
 import React, { useState } from 'react';
-import { Tabs, Tab, Card, CardBody, Progress } from "@nextui-org/react";
-import { BookOpen, BookMarked, BookPlus, MessageCircle } from "lucide-react";
+import { Tabs, Tab, Card, CardBody, Progress, Chip } from "@nextui-org/react";
+import { BookOpen, BookMarked, BookPlus, MessageCircle, CheckCircleIcon } from "lucide-react";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { BookType } from '@/enums/bookType';
 import { Selection } from "@nextui-org/react";
+import ProgressBar from '@/components/ui/progressBar';
 
 const BookListTabs = ({ bookLists, slug }: any) => {
     const [serverBooks] = useState(bookLists.data || []);
@@ -90,21 +91,22 @@ const BookListTabs = ({ bookLists, slug }: any) => {
                                 <h3 className="font-semibold text-lg">{book.bookId.name}</h3>
                                 <p className="text-default-500">Yazar İsmi: {book.bookId.author.name}</p>
                                 {type === BookType.Reading && (
-                                    <div className="mt-4 space-y-2">
-                                        <div className="flex justify-between text-sm">
-                                            <span>
-                                                İlerleme: {book.process?.readCount || 0}/{book.process?.pageCount || book.bookId.pages_count || 0}
-                                            </span>
-                                            <span>
-                                                %{book.process?.percent || "0"}
-                                            </span>
-                                        </div>
-                                        <Progress
+                                    <div className="mt-4 space-y-3">
+                                        <ProgressBar
                                             value={parseFloat(book.process?.percent || "0")}
-                                            className="max-w-full"
-                                            size="sm"
-                                            color="primary"
+                                            total={book.process?.pageCount || book.bookId.pages_count || 0}
+                                            currentValue={book.process?.readCount || 0}
+                                            showChip
+                                            showCompletedMessage
+                                            progressColor="success"
+                                            chipColor="success"
                                         />
+                                        {parseFloat(book.process?.percent || "0") >= 100 && (
+                                            <div className="flex items-center gap-1.5 text-tiny text-success">
+                                                <CheckCircleIcon size={14} />
+                                                <span className="font-medium">Kitap tamamlandı!</span>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                                 {type === BookType.Read && (

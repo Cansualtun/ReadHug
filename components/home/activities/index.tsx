@@ -4,6 +4,7 @@ import React from 'react'
 import { Card, CardBody, CardHeader, Button, Progress, Badge } from "@nextui-org/react"
 import { Book, BookOpen, CheckCircle, Library } from "lucide-react"
 import Image from 'next/image'
+import ProgressBar from '@/components/ui/progressBar'
 
 export default function ReadingTracker() {
     const [progress, setProgress] = React.useState(38)
@@ -31,7 +32,7 @@ export default function ReadingTracker() {
                                 alt="Palyatif Toplum book cover"
                                 layout="fill"
                                 objectFit="cover"
-                                className="rounded-lg shadow-md group-hover:shadow-lg transition-all duration-200"
+                                className="rounded-lg transition-all duration-200"
                             />
                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
                                 <Button size="sm" variant="flat" color="default">
@@ -45,19 +46,26 @@ export default function ReadingTracker() {
                                 <p className="text-default-500">by Byung-Chul Han</p>
                             </div>
                             <div className="space-y-2">
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-default-500">30/78 sayfa</span>
-                                    <span className="font-medium">{progress}%</span>
-                                </div>
-                                <Progress
-                                    aria-label="Reading progress"
-                                    size="sm"
+
+                                <ProgressBar
                                     value={progress}
-                                    className="max-w-full"
+                                    total={78}
+                                    currentValue={30}
+                                    showChip
+                                    showCompletedMessage
+                                    progressColor="success"
+                                    labelPosition="top"
+                                    showPage={false}
                                 />
+                                {progress >= 100 && (
+                                    <div className="flex items-center gap-1.5 text-success text-small">
+                                        <CheckCircle size={14} />
+                                        <span className="font-medium">Kitap tamamlandı!</span>
+                                    </div>
+                                )}
                             </div>
                             <Button
-                                color="primary"
+                                color="success"
                                 className="w-full"
                                 onPress={() => setProgress((p) => Math.min(100, p + 10))}
                             >
@@ -86,9 +94,9 @@ export default function ReadingTracker() {
                                     <item.icon className="h-4 w-4 text-default-500" />
                                     <span className="text-sm font-medium">{item.label}</span>
                                 </div>
-                                <Badge variant="flat" color="default" size="sm">
+                                <div>
                                     {item.count}
-                                </Badge>
+                                </div>
                             </div>
                         ))}
                     </div>
