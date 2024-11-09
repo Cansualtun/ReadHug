@@ -17,3 +17,36 @@ export interface Data {
   isActive: boolean;
   __v: number;
 }
+export interface IUserProfileRequest {
+  userName: string;
+}
+export interface IUserProfileResponse {
+  status: boolean;
+  isFollow: boolean;
+  user: User;
+  counts: Counts;
+  isLoggedIn: boolean;
+  isSelf: boolean;
+  isEditable: boolean;
+}
+
+export interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
+  email: string;
+  birthDate: string;
+  gender: number;
+  isActive: boolean;
+  image: string;
+}
+
+export interface Counts {
+  followsCount: number;
+  followersCount: number;
+  readBooksCount: number;
+  readingBooksCount: number;
+  wishlistBooksCount: number;
+  totalBookCount: number;
+}
