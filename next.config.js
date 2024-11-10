@@ -3,6 +3,6 @@ const nextConfig = {};
 
 module.exports = {
   images: {
-    domains: ['i.dr.com.tr'],
+    domains: ['i.dr.com.tr', 'i.idefix.com'],
   },
 };

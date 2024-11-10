@@ -1,15 +1,18 @@
 import { getAllBookLists } from "@/app/server/book";
+import { UserPostInfo } from "@/app/server/post";
 import { ProfilInfo } from "@/app/server/profile";
 import BookListTabs from "@/components/profile/BookListTab";
 import ProfileCard from "@/components/profile/ProfileCard";
 
 export default async function ProfileSlug({ params }: { params: { slug: string } }) {
-    const [profileResponse, booksResponse] = await Promise.all([
-        ProfilInfo(`http://localhost:4000/user/profile/${params.slug}`),
-        getAllBookLists(params.slug)
+    const [profileResponse, booksResponse, postResponse] = await Promise.all([
+        ProfilInfo(params.slug),
+        getAllBookLists(params.slug),
+        UserPostInfo(params.slug)
     ]);
 
     const profile = await profileResponse.json();
+    const post = await postResponse.json();
     const books = booksResponse;
 
     return (
@@ -21,7 +24,7 @@ export default async function ProfileSlug({ params }: { params: { slug: string }
                     </div>
                 </div>
                 <div className="lg:col-span-2">
-                    <BookListTabs bookLists={books} slug={params.slug} />
+                    <BookListTabs bookLists={books} slug={params.slug} post={post} />
                 </div>
             </div>
         </div>

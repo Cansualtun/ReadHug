@@ -1,7 +1,13 @@
 import Activities from "@/components/home/activities";
 import PostCard from "@/components/home/postCard";
+import { GetAllPost } from "../server/post";
 
-export default function Home() {
+export default async function Home() {
+    const [allPost] = await Promise.all([
+        GetAllPost()
+    ])
+
+    const post = await allPost.json();
     return (
         <section>
             <div className="container mx-auto">
@@ -11,8 +17,9 @@ export default function Home() {
                     </div>
                     <div className="col-span-8">
                         <div className="space-y-10">
-                            <PostCard />
-                            <PostCard />
+                            {post?.data?.map((item: any) => (
+                                <PostCard post={item} />
+                            ))}
                         </div>
                     </div>
                 </div>

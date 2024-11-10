@@ -18,21 +18,21 @@ export async function getAllBookLists(userName: string) {
   }
 
   const requests = [
-    fetch(`${BASE_URL}/user/books/${userName}/${BookType.Read}`, {
+    fetch(`${BASE_URL}/book/user/books/${userName}/${BookType.Read}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       next: { revalidate: 0 },
     }),
-    fetch(`${BASE_URL}/user/books/${userName}/${BookType.Reading}`, {
+    fetch(`${BASE_URL}/book/user/books/${userName}/${BookType.Reading}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       next: { revalidate: 0 },
     }),
-    fetch(`${BASE_URL}/user/books/${userName}/${BookType.WishList}`, {
+    fetch(`${BASE_URL}/book/user/books/${userName}/${BookType.WishList}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',

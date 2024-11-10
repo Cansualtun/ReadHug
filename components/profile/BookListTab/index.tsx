@@ -1,14 +1,16 @@
 "use client"
-import React, { useState } from 'react';
-import { Tabs, Tab, Card, CardBody, Progress, Chip } from "@nextui-org/react";
+import React, { useEffect, useState } from 'react';
+import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 import { BookOpen, BookMarked, BookPlus, MessageCircle, CheckCircleIcon } from "lucide-react";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { BookType } from '@/enums/bookType';
 import { Selection } from "@nextui-org/react";
 import ProgressBar from '@/components/ui/progressBar';
+import PostCard from '@/components/home/postCard';
 
-const BookListTabs = ({ bookLists, slug }: any) => {
+const BookListTabs = ({ bookLists, slug, post }: any) => {
     const [serverBooks] = useState(bookLists.data || []);
+    const [userPost, setUserPost] = useState([]);
     const [additionalBooks, setAdditionalBooks] = useState<any[]>([]);
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(2);
@@ -21,6 +23,10 @@ const BookListTabs = ({ bookLists, slug }: any) => {
             <p className="text-default-500 text-lg">{message}</p>
         </div>
     );
+
+    useEffect(() => {
+        setUserPost(post.data)
+    }, [post])
 
     // client api servisine yaz
     const loadMore = async () => {
@@ -62,6 +68,7 @@ const BookListTabs = ({ bookLists, slug }: any) => {
         setPage(2);
         setHasMore(true);
     };
+
 
     const renderBookList = (type: BookType) => {
         const serverFilteredData = serverBooks.filter((book: any) => book.type === type);
@@ -199,7 +206,7 @@ const BookListTabs = ({ bookLists, slug }: any) => {
                 </Tab>
 
                 <Tab
-                    key="post"
+                    key="3"
                     title={
                         <div className="flex items-center space-x-2">
                             <MessageCircle className="w-4 h-4" />
@@ -207,9 +214,11 @@ const BookListTabs = ({ bookLists, slug }: any) => {
                         </div>
                     }
                 >
-                    <Card>
+                    <Card className='bg-transparent shadow-none p-0'>
                         <CardBody>
-                            <EmptyState message="Henüz paylaşım yapılmamış." />
+                            {userPost?.map((item: any) => (
+                                <PostCard post={item} />
+                            ))}
                         </CardBody>
                     </Card>
                 </Tab>
