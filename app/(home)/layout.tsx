@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "@/styles/special.scrollbar.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 import React from "react";
@@ -8,6 +9,7 @@ import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import Header from "@/components/ui/navbar"
 import Footer from "@/components/ui/footer";
+import FloatingMessageWidget from "@/components/ui/widget/FloatingMessageWidget";
 
 export const metadata: Metadata = {
   title: {
@@ -50,6 +52,7 @@ export default function HomeLayout({
             </main>
             <Footer />
           </div>
+          <FloatingMessageWidget />
         </Providers>
       </body>
     </html>
