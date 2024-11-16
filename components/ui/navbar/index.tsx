@@ -46,7 +46,9 @@ export default function Header() {
         <Navbar isBordered maxWidth="xl" >
             <NavbarContent>
                 <div className="flex flex-row items-center mr-4">
-                    <AcmeLogo />
+                    <Link href={"/"}>
+                        <AcmeLogo />
+                    </Link>
                     <p className="hidden sm:block font-bold text-inherit">ACME</p>
                 </div>
                 <NavbarContent className="hidden sm:flex gap-3">
