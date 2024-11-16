@@ -4,12 +4,14 @@ import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, Divider, Input 
 import { Heart, MessageCircle, ChevronDown, ChevronUp, Send } from "lucide-react";
 import Image from "next/image";
 import { useLikeCommentMutation } from '@/store/LikeStore';
+import { usePostCommentMutation } from '@/store/PostStore';
 
 export default function Post({ post }: any) {
     const [showComments, setShowComments] = useState(false);
     const [newComment, setNewComment] = useState('');
     const [isLiked, setIsLiked] = useState(post.isLiked);
     const [likeCount, setLikeCount] = useState(post.likeCount)
+    const [postComment] = usePostCommentMutation();
     const [likeComment] = useLikeCommentMutation();
 
     const toggleComments = () => {
@@ -32,6 +34,13 @@ export default function Post({ post }: any) {
             console.error('Like işlemi başarısız:', error);
         }
     };
+    const handlePostComment = async () => {
+        try {
+            await postComment(post.id)
+        } catch (error) {
+
+        }
+    }
     useEffect(() => {
         setLikeCount(post.likeCount),
             setIsLiked(post.isLiked)
@@ -70,9 +79,7 @@ export default function Post({ post }: any) {
                         />
                     </div>
                 </CardHeader>
-
                 <Divider />
-
                 <CardBody className="px-8 py-6">
                     <p className="font-light text-sm leading-relaxed text-gray-700">
                         {post?.content}

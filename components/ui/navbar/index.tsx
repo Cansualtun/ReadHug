@@ -149,7 +149,6 @@ export default function Header() {
                     {item.type == 'follow' && <UserCheck />}
                     {item.type == 'announcement' && <Megaphone />}
                     {item.type == 'message' && <MessageCircleMore />}
-
                     <p className='ml-2'>{item.content}</p>
                   </div>
                 </DropdownItem>
@@ -209,3 +208,5 @@ export default function Header() {
     </Navbar>
   );
 }
+    
+
