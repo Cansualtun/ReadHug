@@ -3,15 +3,14 @@ import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, Divider, Input } from "@nextui-org/react";
 import { Heart, MessageCircle, ChevronDown, ChevronUp, Send } from "lucide-react";
 import Image from "next/image";
-import { usePostCommentMutation } from '@/store/PostStore';
 import { useLikeCommentMutation } from '@/store/LikeStore';
+import Link from 'next/link';
 
 export default function Post({ post }: any) {
     const [showComments, setShowComments] = useState(false);
     const [newComment, setNewComment] = useState('');
     const [isLiked, setIsLiked] = useState(post.isLiked);
     const [likeCount, setLikeCount] = useState(post.likeCount)
-    const [postComment] = usePostCommentMutation();
     const [likeComment] = useLikeCommentMutation();
 
     const toggleComments = () => {
@@ -34,13 +33,6 @@ export default function Post({ post }: any) {
             console.error('Like işlemi başarısız:', error);
         }
     };
-    const handlePostComment = async () => {
-        try {
-            await postComment(post.id)
-        } catch (error) {
-
-        }
-    }
     useEffect(() => {
         setLikeCount(post.likeCount),
             setIsLiked(post.isLiked)
@@ -48,17 +40,18 @@ export default function Post({ post }: any) {
     return (
         <div className="relative w-full max-w-2xl mt-4 p-2">
             <div className="absolute -top-8 left-10 z-10">
-                <Card isHoverable className="w-28 h-36 border-0">
-                    <Image
-                        src={post?.book?.bookId?.book_img ?? "/assets/authh.jpg"}
-                        alt="Book cover"
-                        width={120}
-                        height={144}
-                        className="object-cover rounded-lg"
-                    />
-                </Card>
+                <Link href={`/personalBooks/${post?.book?.slug}`}>
+                    <Card isHoverable className="w-28 h-36 border-0">
+                        <Image
+                            src={post?.book?.bookId?.book_img ?? "/assets/authh.jpg"}
+                            alt="Book cover"
+                            width={120}
+                            height={144}
+                            className="object-cover rounded-lg"
+                        />
+                    </Card>
+                </Link>
             </div>
-
             <Card className="w-full rounded-lg bg-gradient-to-r bg-gray-50">
                 <CardHeader className="flex justify-between items-center px-8 pt-10 pb-4">
                     <div className="flex flex-col ml-32 space-y-1">

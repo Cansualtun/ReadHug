@@ -9,6 +9,7 @@ export default async function Home() {
     ])
 
     const post = await allPost.json();
+
     return (
         <section>
             <div className="container mx-auto">
