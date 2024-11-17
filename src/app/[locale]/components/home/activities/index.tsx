@@ -17,7 +17,7 @@ export default function ReadingTracker() {
     ]
 
     return (
-        <div className="w-full max-w-2xl mx-auto space-y-4 p-4">
+        <div className="w-full max-w-2xl mx-auto space-y-4 p-4 pb-0 sticky top-[55px]">
             <Card className='bg-gray-50'>
                 <CardHeader className="border-b">
                     <h2 className="text-lg font-semibold flex items-center gap-2">

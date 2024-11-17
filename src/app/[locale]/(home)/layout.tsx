@@ -7,9 +7,11 @@ import { Toaster } from "sonner";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 import Header from "../components/ui/navbar";
 import Footer from "../components/ui/footer";
 import FloatingMessageWidget from "../components/ui/widget/FloatingMessageWidget";
+
 
 
 export const metadata: Metadata = {
@@ -30,13 +32,15 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params: { locale }
 }: {
   children: React.ReactNode;
   params: { locale: string };
 }) {
+  const messages = await getMessages();
+  
   return (
     <html lang={locale}>
       <body
@@ -45,17 +49,19 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <NextIntlClientProvider locale={locale}>
-          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+
+        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+          <NextIntlClientProvider messages={messages}>
             <Toaster position="top-center" />
             <div className="flex min-h-screen flex-col">
               <Header />
-              <main className="flex-1 container mx-auto py-10">{children}</main>
+              <main className="flex-1 container mx-auto py-10 ">{children}</main>
               <Footer />
             </div>
             <FloatingMessageWidget />
-          </Providers>
-        </NextIntlClientProvider>
+          </NextIntlClientProvider>
+        </Providers>
+
       </body>
     </html>
   );
