@@ -1,8 +1,11 @@
 "use client"
 import React from 'react';
 import { Link } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 
 const Footer = () => {
+    const t = useTranslations('footer');
+
     return (
         <footer className="w-full py-6 px-4 border-t border-gray-200 bg-[#F8F7F4]">
             <div className="max-w-7xl mx-auto">
@@ -12,48 +15,48 @@ const Footer = () => {
                             <div className="text-2xl font-bold">▲ ACME</div>
                         </div>
                         <p className="text-gray-500 text-sm">
-                            Your reading journey starts here
+                            {t('slogan')}
                         </p>
                     </div>
                     <div>
-                        <h3 className="font-semibold mb-4">Quick Links</h3>
+                        <h3 className="font-semibold mb-4">{t('sections.quickLinks.title')}</h3>
                         <div className="flex flex-col space-y-2">
                             <Link href="/authors" className="text-gray-500 hover:text-blue-500">
-                                Authors
+                                {t('sections.quickLinks.items.authors')}
                             </Link>
                             <Link href="/community" className="text-gray-500 hover:text-blue-500">
-                                Community
+                                {t('sections.quickLinks.items.community')}
                             </Link>
                             <Link href="/stats" className="text-gray-500 hover:text-blue-500">
-                                Stats
+                                {t('sections.quickLinks.items.stats')}
                             </Link>
                         </div>
                     </div>
                     <div>
-                        <h3 className="font-semibold mb-4">Community</h3>
+                        <h3 className="font-semibold mb-4">{t('sections.community.title')}</h3>
                         <div className="flex flex-col space-y-2">
                             <Link href="/discord" className="text-gray-500 hover:text-blue-500">
-                                Discord
+                                {t('sections.community.items.discord')}
                             </Link>
                             <Link href="/twitter" className="text-gray-500 hover:text-blue-500">
-                                Twitter
+                                {t('sections.community.items.twitter')}
                             </Link>
                             <Link href="/github" className="text-gray-500 hover:text-blue-500">
-                                GitHub
+                                {t('sections.community.items.github')}
                             </Link>
                         </div>
                     </div>
                     <div>
-                        <h3 className="font-semibold mb-4">Legal</h3>
+                        <h3 className="font-semibold mb-4">{t('sections.legal.title')}</h3>
                         <div className="flex flex-col space-y-2">
                             <Link href="/privacy" className="text-gray-500 hover:text-blue-500">
-                                Privacy Policy
+                                {t('sections.legal.items.privacy')}
                             </Link>
                             <Link href="/terms" className="text-gray-500 hover:text-blue-500">
-                                Terms of Service
+                                {t('sections.legal.items.terms')}
                             </Link>
                             <Link href="/cookies" className="text-gray-500 hover:text-blue-500">
-                                Cookie Policy
+                                {t('sections.legal.items.cookies')}
                             </Link>
                         </div>
                     </div>
@@ -61,17 +64,17 @@ const Footer = () => {
                 <div className="mt-8 pt-8 border-t border-gray-200">
                     <div className="flex flex-col md:flex-row justify-between items-center">
                         <p className="text-sm text-gray-500">
-                            © 2024 ACME Reading. All rights reserved.
+                            {t('copyright.text')}
                         </p>
                         <div className="flex space-x-6 mt-4 md:mt-0">
                             <Link href="/privacy" className="text-sm text-gray-500 hover:text-blue-500">
-                                Privacy
+                                {t('bottomLinks.privacy')}
                             </Link>
                             <Link href="/terms" className="text-sm text-gray-500 hover:text-blue-500">
-                                Terms
+                                {t('bottomLinks.terms')}
                             </Link>
                             <Link href="/contact" className="text-sm text-gray-500 hover:text-blue-500">
-                                Contact
+                                {t('bottomLinks.contact')}
                             </Link>
                         </div>
                     </div>

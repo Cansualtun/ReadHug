@@ -5,8 +5,8 @@ import { formatDate } from "@/utils/formatDate";
 import { Button, Card, Input, Select, SelectItem } from "@nextui-org/react";
 import { useFormik } from "formik";
 import { useEffect } from "react";
-import { genderOptions } from "../../../../enums/gender";
 import { useTranslations } from 'next-intl';
+import { genderOptions } from "enums/gender";
 
 export default function ProfileUpdate() {
     const t = useTranslations('ProfileUpdate');

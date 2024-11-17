@@ -148,5 +148,72 @@
         "completed": "Tamamlanan"
       }
     }
+  },
+  "header": {
+    "navigation": {
+      "authors": "Yazarlar",
+      "community": "Topluluk",
+      "stats": "İstatistikler"
+    },
+    "search": {
+      "placeholder": "Kitap Ara"
+    },
+    "notifications": {
+      "types": {
+        "like": "Beğeni",
+        "comment": "Yorum",
+        "follow": "Takip",
+        "announcement": "Duyuru",
+        "message": "Mesaj"
+      }
+    },
+    "profile": {
+      "signedIn": "Giriş yapıldı",
+      "profile": "Profil",
+      "settings": "Ayarlar",
+      "system": "Sistem",
+      "language": "Dil",
+      "logout": "Çıkış Yap"
+    },
+    "errors": {
+      "userDataFetch": "Kullanıcı bilgileri alınamadı"
+    }
+  },
+  "footer": {
+    "slogan": "Okuma yolculuğunuz burada başlar",
+    "sections": {
+      "quickLinks": {
+        "title": "Hızlı Bağlantılar",
+        "items": {
+          "authors": "Yazarlar",
+          "community": "Topluluk",
+          "stats": "İstatistikler"
+        }
+      },
+      "community": {
+        "title": "Topluluk",
+        "items": {
+          "discord": "Discord",
+          "twitter": "Twitter",
+          "github": "GitHub"
+        }
+      },
+      "legal": {
+        "title": "Yasal",
+        "items": {
+          "privacy": "Gizlilik Politikası",
+          "terms": "Kullanım Koşulları",
+          "cookies": "Çerez Politikası"
+        }
+      }
+    },
+    "copyright": {
+      "text": "© 2024 ACME Reading. Tüm hakları saklıdır."
+    },
+    "bottomLinks": {
+      "privacy": "Gizlilik",
+      "terms": "Koşullar",
+      "contact": "İletişim"
+    }
   }
 }

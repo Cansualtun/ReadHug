@@ -13,7 +13,6 @@ import Footer from "../components/ui/footer";
 import FloatingMessageWidget from "../components/ui/widget/FloatingMessageWidget";
 
 
-
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -38,20 +37,19 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
   params: { locale: string };
+
 }) {
   const messages = await getMessages();
-  
   return (
-    <html lang={locale}>
+    <html lang={locale} >
       <body
         className={clsx(
           "min-h-screen bg-[#F6F5F2] font-sans antialiased",
           fontSans.variable
         )}
       >
-
-        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-          <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider messages={messages}>
+          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
             <Toaster position="top-center" />
             <div className="flex min-h-screen flex-col">
               <Header />
@@ -59,9 +57,9 @@ export default async function RootLayout({
               <Footer />
             </div>
             <FloatingMessageWidget />
-          </NextIntlClientProvider>
-        </Providers>
 
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
