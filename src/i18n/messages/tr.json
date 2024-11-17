@@ -1,0 +1,152 @@
+{
+  "LoginForm": {
+    "title": "Giriş Yap",
+    "subtitle": "booksapp.org",
+    "email": {
+      "label": "E-posta",
+      "placeholder": "E-posta adresinizi girin"
+    },
+    "password": {
+      "label": "Şifre",
+      "placeholder": "Şifrenizi girin"
+    },
+    "togglePassword": {
+      "ariaLabel": "şifre görünürlüğünü değiştir"
+    },
+    "submitButton": "Giriş Yap",
+    "createAccount": "Hesap Oluştur"
+  },
+  "RegisterForm": {
+    "title": "Kayıt Ol",
+    "subtitle": "booksapp.org",
+    "email": {
+      "label": "E-posta",
+      "placeholder": "E-posta adresinizi girin"
+    },
+    "firstName": {
+      "label": "Ad",
+      "placeholder": "Adınızı girin"
+    },
+    "lastName": {
+      "label": "Soyad",
+      "placeholder": "Soyadınızı girin"
+    },
+    "userName": {
+      "label": "Kullanıcı Adı",
+      "placeholder": "Kullanıcı adınızı girin"
+    },
+    "password": {
+      "label": "Şifre",
+      "placeholder": "Şifrenizi girin"
+    },
+    "togglePassword": {
+      "ariaLabel": "şifre görünürlüğünü değiştir"
+    },
+    "submitButton": "Kayıt Ol",
+    "loginLink": "Hesabınız var mı? Giriş yapın"
+  },
+  "ProfileCard": {
+    "stats": {
+      "followers": "Takipçi",
+      "following": "Takip",
+      "books": {
+        "read": "Okunan",
+        "reading": "Okunuyor",
+        "wishlist": "İstek",
+        "total": "Toplam {count} kitap"
+      }
+    },
+    "followButton": {
+      "follow": "Takip Et",
+      "following": "Takip Ediliyor"
+    }
+  },
+  "BookListTabs": {
+    "tabs": {
+      "reading": "Okunuyor",
+      "read": "Okunan",
+      "wishlist": "İstek Listesi",
+      "posts": "Gönderiler"
+    },
+    "bookInfo": {
+      "author": "Yazar İsmi: {name}",
+      "pageCount": "Sayfa Sayısı: {count}",
+      "publicationYear": "Yayın Yılı: {year}",
+      "addedDate": "Eklenme: {date}",
+      "bookCompleted": "Kitap tamamlandı!"
+    },
+    "loading": "Yükleniyor...",
+    "allBooksLoaded": "Tüm kitaplar yüklendi.",
+    "emptyStates": {
+      "reading": "Henüz okumakta olduğunuz kitap bulunmamaktadır.",
+      "read": "Henüz okuduğunuz kitap bulunmamaktadır.",
+      "wishlist": "İstek listenizde henüz kitap bulunmamaktadır."
+    }
+  },
+  "ProfileUpdate": {
+    "header": {
+      "title": "Profil Güncelleme",
+      "description": "Bu bölümde profil bilgilerinizi değiştirebilirsiniz"
+    },
+    "form": {
+      "firstName": {
+        "label": "Ad",
+        "placeholder": "Adınızı girin"
+      },
+      "lastName": {
+        "label": "Soyad",
+        "placeholder": "Soyadınızı girin"
+      },
+      "userName": {
+        "label": "Kullanıcı Adı",
+        "placeholder": "Kullanıcı adınızı girin"
+      },
+      "birthDate": {
+        "label": "Doğum Tarihi",
+        "placeholder": "Doğum tarihinizi girin"
+      },
+      "gender": {
+        "label": "Cinsiyet",
+        "placeholder": "Cinsiyet Seçin"
+      },
+      "submit": {
+        "saving": "Kaydediliyor...",
+        "default": "Değişiklikleri Kaydet"
+      }
+    }
+  },
+  "ChangePassword": {
+    "header": {
+      "title": "Şifre Değiştir",
+      "description": "Bu bölümde şifrenizi değiştirebilirsiniz"
+    },
+    "form": {
+      "currentPassword": {
+        "label": "Mevcut Şifre",
+        "placeholder": "Mevcut şifrenizi girin"
+      },
+      "newPassword": {
+        "label": "Yeni Şifre",
+        "placeholder": "Yeni şifrenizi girin"
+      },
+      "submit": "Değişiklikleri Kaydet"
+    }
+  },
+  "ReadingTracker": {
+    "currentlyReading": {
+      "title": "Şuan Okunan",
+      "viewDetails": "Detayları Görüntüle",
+      "by": "yazar:",
+      "bookCompleted": "Kitap tamamlandı!",
+      "updateProgress": "İlerlemeyi Güncelle"
+    },
+    "library": {
+      "title": "Kitaplık",
+      "shelves": {
+        "toRead": "Okumak İstenen",
+        "reading": "Şuan Okunan",
+        "completed": "Tamamlanan"
+      }
+    }
+  }
+}

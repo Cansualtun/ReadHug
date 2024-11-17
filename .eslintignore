@@ -22,3 +22,5 @@ build
 !plopfile.js
 !react-shim.js
 !tsup.config.ts
+i18n
+src

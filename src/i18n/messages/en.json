@@ -1,0 +1,152 @@
+{
+  "LoginForm": {
+    "title": "Login",
+    "subtitle": "booksapp.org",
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password"
+    },
+    "togglePassword": {
+      "ariaLabel": "toggle password visibility"
+    },
+    "submitButton": "Login",
+    "createAccount": "Create Account"
+  },
+  "RegisterForm": {
+    "title": "Register",
+    "subtitle": "booksapp.org",
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email"
+    },
+    "firstName": {
+      "label": "Name",
+      "placeholder": "Enter your name"
+    },
+    "lastName": {
+      "label": "Surname",
+      "placeholder": "Enter your surname"
+    },
+    "userName": {
+      "label": "Username",
+      "placeholder": "Enter your username"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password"
+    },
+    "togglePassword": {
+      "ariaLabel": "toggle password visibility"
+    },
+    "submitButton": "Register",
+    "loginLink": "Do you have an account? Login"
+  },
+  "ProfileCard": {
+    "stats": {
+      "followers": "Followers",
+      "following": "Following",
+      "books": {
+        "read": "Read",
+        "reading": "Reading",
+        "wishlist": "Wishlist",
+        "total": "Total {count} books"
+      }
+    },
+    "followButton": {
+      "follow": "Follow",
+      "following": "Following"
+    }
+  },
+  "BookListTabs": {
+    "tabs": {
+      "reading": "Reading",
+      "read": "Read",
+      "wishlist": "Wishlist",
+      "posts": "Posts"
+    },
+    "bookInfo": {
+      "author": "Author: {name}",
+      "pageCount": "Pages: {count}",
+      "publicationYear": "Publication Year: {year}",
+      "addedDate": "Added: {date}",
+      "bookCompleted": "Book completed!"
+    },
+    "loading": "Loading...",
+    "allBooksLoaded": "All books loaded.",
+    "emptyStates": {
+      "reading": "You don't have any books in reading.",
+      "read": "You haven't read any books yet.",
+      "wishlist": "Your wishlist is empty."
+    }
+  },
+  "ProfileUpdate": {
+    "header": {
+      "title": "Profile Update",
+      "description": "You can change profile information in this section"
+    },
+    "form": {
+      "firstName": {
+        "label": "First Name",
+        "placeholder": "Enter your first name"
+      },
+      "lastName": {
+        "label": "Last Name",
+        "placeholder": "Enter your last name"
+      },
+      "userName": {
+        "label": "Username",
+        "placeholder": "Enter your username"
+      },
+      "birthDate": {
+        "label": "Birth Date",
+        "placeholder": "Enter your birth date"
+      },
+      "gender": {
+        "label": "Gender",
+        "placeholder": "Select Gender"
+      },
+      "submit": {
+        "saving": "Saving...",
+        "default": "Save Changes"
+      }
+    }
+  },
+  "ChangePassword": {
+    "header": {
+      "title": "Change Password",
+      "description": "You can change password in this section"
+    },
+    "form": {
+      "currentPassword": {
+        "label": "Current Password",
+        "placeholder": "Enter current password"
+      },
+      "newPassword": {
+        "label": "New Password",
+        "placeholder": "Enter new password"
+      },
+      "submit": "Save Changes"
+    }
+  },
+  "ReadingTracker": {
+    "currentlyReading": {
+      "title": "Currently Reading",
+      "viewDetails": "View Details",
+      "by": "by",
+      "bookCompleted": "Book completed!",
+      "updateProgress": "Update Progress"
+    },
+    "library": {
+      "title": "Library",
+      "shelves": {
+        "toRead": "Want to Read",
+        "reading": "Currently Reading",
+        "completed": "Completed"
+      }
+    }
+  }
+}
