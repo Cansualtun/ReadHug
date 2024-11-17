@@ -14,7 +14,6 @@ import {
 } from '@nextui-org/react';
 import { AcmeLogo } from '../svg/AcmeLogo';
 import { SearchIcon } from '../svg/SearchIcon.jsx';
-
 import { useRouter } from 'next/navigation';
 
 import {
@@ -32,8 +31,10 @@ import {
 import axios from 'axios';
 import { useMeMutation } from '@/store/UserStore';
 import { useLogoutMutation } from '@/store/AuthStore';
+import { useTranslations } from 'next-intl';
 
 export default function Header() {
+  const t = useTranslations('header');
   const [logout] = useLogoutMutation();
   const [me] = useMeMutation();
   const [userData, setUserData] = useState({
@@ -73,12 +74,12 @@ export default function Header() {
           image: data?.data?.image as any,
         });
       } catch (error) {
-        console.error('Kullanıcı bilgileri alınamadı:', error);
+        console.error(t('errors.userDataFetch'), error);
       }
     };
     getNotificatons();
     fetchMe();
-  }, [me]);
+  }, [me, t]);
 
   const logouts = async () => {
     await logout();
@@ -94,24 +95,26 @@ export default function Header() {
   return (
     <Navbar isBordered maxWidth="xl">
       <NavbarContent>
-        <div className="flex flex-row items-center mr-4">
-          <AcmeLogo />
-          <p className="hidden sm:block font-bold text-inherit">ACME</p>
-        </div>
+        <Link href='/'>
+          <div className="flex flex-row items-center mr-4">
+            <AcmeLogo />
+            <p className="hidden sm:block font-bold text-inherit">ACME</p>
+          </div>
+        </Link>
         <NavbarContent className="hidden sm:flex gap-3">
           <NavbarItem>
             <Link color="foreground" href="/authors">
-              Authors
+              {t('navigation.authors')}
             </Link>
           </NavbarItem>
           <NavbarItem>
             <Link href="/community" aria-current="page" color="foreground">
-              Community
+              {t('navigation.community')}
             </Link>
           </NavbarItem>
           <NavbarItem>
             <Link color="foreground" href="/stats">
-              Stats
+              {t('navigation.stats')}
             </Link>
           </NavbarItem>
         </NavbarContent>
@@ -125,7 +128,7 @@ export default function Header() {
             inputWrapper:
               'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20',
           }}
-          placeholder="Search Book"
+          placeholder={t('search.placeholder')}
           size="sm"
           startContent={<SearchIcon size={12} width={12} height={12} />}
           type="search"
@@ -172,7 +175,7 @@ export default function Header() {
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-semibold">Signed in</p>
+              <p className="font-semibold">{t('header.profile.signedIn')}</p>
               <p className="font-semibold">{userData.userName}</p>
             </DropdownItem>
             <DropdownItem
@@ -180,20 +183,20 @@ export default function Header() {
               onClick={goToProfile}
               startContent={<User className="w-4 h-4" />}
             >
-              Profile
+              {t('profile.profile')}
             </DropdownItem>
             <DropdownItem
               key="/settings"
               href="/settings"
               startContent={<Settings className="w-4 h-4" />}
             >
-              Settings
+              {t('profile.settings')}
             </DropdownItem>
             <DropdownItem
               key="system"
               startContent={<Monitor className="w-4 h-4" />}
             >
-              System
+              {t('profile.system')}
             </DropdownItem>
             <DropdownItem
               key="logout"
@@ -202,7 +205,7 @@ export default function Header() {
               onClick={() => logouts()}
               startContent={<LogOut className="w-4 h-4" />}
             >
-              Log Out
+              {t('profile.logout')}
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
@@ -210,5 +213,3 @@ export default function Header() {
     </Navbar>
   );
 }
-
-

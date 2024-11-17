@@ -148,5 +148,71 @@
         "completed": "Completed"
       }
     }
+  },
+  "header": {
+    "navigation": {
+      "authors": "Authors",
+      "community": "Community",
+      "stats": "Stats"
+    },
+    "search": {
+      "placeholder": "Search Book"
+    },
+    "notifications": {
+      "types": {
+        "like": "Like",
+        "comment": "Comment",
+        "follow": "Follow",
+        "announcement": "Announcement",
+        "message": "Message"
+      }
+    },
+    "profile": {
+      "signedIn": "Signed in",
+      "profile": "Profile",
+      "settings": "Settings",
+      "system": "System",
+      "logout": "Log Out"
+    },
+    "errors": {
+      "userDataFetch": "Could not fetch user data"
+    }
+  },
+  "footer": {
+    "slogan": "Your reading journey starts here",
+    "sections": {
+      "quickLinks": {
+        "title": "Quick Links",
+        "items": {
+          "authors": "Authors",
+          "community": "Community",
+          "stats": "Stats"
+        }
+      },
+      "community": {
+        "title": "Community",
+        "items": {
+          "discord": "Discord",
+          "twitter": "Twitter",
+          "github": "GitHub"
+        }
+      },
+      "legal": {
+        "title": "Legal",
+        "items": {
+          "privacy": "Privacy Policy",
+          "terms": "Terms of Service",
+          "cookies": "Cookie Policy"
+        }
+      }
+    },
+    "copyright": {
+      "text": "© 2024 ACME Reading. All rights reserved."
+    },
+    "bottomLinks": {
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "contact": "Contact"
+    }
   }
 }

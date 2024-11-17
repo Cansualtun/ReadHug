@@ -7,7 +7,8 @@ import { Selection } from "@nextui-org/react";
 import { useTranslations } from 'next-intl';
 import ProgressBar from '../../ui/progressBar';
 import PostCard from '../../home/postCard';
-import { BookType } from '@/app/[locale]/server/book';
+import { BookType } from 'enums/bookType';
+
 
 const BookListTabs = ({ bookLists, slug, post }: any) => {
     const t = useTranslations('BookListTabs');
