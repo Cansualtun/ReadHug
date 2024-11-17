@@ -30,7 +30,7 @@ export const userApi = baseApi.injectEndpoints({
           );
           localStorage.setItem('userId', data.data._id);
         } catch (error) {
-          toast.error('Me Service failed');
+          // toast.error('Me Service failed');
           console.error('Me Service error:', error);
         }
       },

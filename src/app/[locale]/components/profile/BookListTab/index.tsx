@@ -1,17 +1,20 @@
 "use client"
-import React, { useEffect, useState } from 'react';
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-import { BookOpen, BookMarked, BookPlus, MessageCircle, CheckCircleIcon } from "lucide-react";
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { Selection } from "@nextui-org/react";
-import { useTranslations } from 'next-intl';
-import ProgressBar from '../../ui/progressBar';
-import PostCard from '../../home/postCard';
+import { useMeMutation } from '@/store/UserStore';
+import { Card, CardBody, Selection, Tab, Tabs } from "@nextui-org/react";
 import { BookType } from 'enums/bookType';
+import { BookMarked, BookOpen, BookPlus, CheckCircleIcon, MessageCircle } from "lucide-react";
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import PostCard from '../../home/postCard';
+import ProgressBar from '../../ui/progressBar';
+import BookPostComponent from '../../ui/widget/BookPostComponent';
 
 
 const BookListTabs = ({ bookLists, slug, post }: any) => {
     const t = useTranslations('BookListTabs');
+    const [me] = useMeMutation();
+    const [userData, setUserData] = useState<any>(null);
     const [serverBooks] = useState(bookLists.data || []);
     const [userPost, setUserPost] = useState([]);
     const [additionalBooks, setAdditionalBooks] = useState<any[]>([]);
@@ -28,6 +31,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
 
     useEffect(() => {
         setUserPost(post.data)
+        meData()
     }, [post])
 
     const loadMore = async () => {
@@ -61,6 +65,11 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
             setLoading(false);
         }
     };
+
+    const meData = async () => {
+        const data = await me();
+        setUserData(data.data)
+    }
 
     const handleTabChange = (key: Selection) => {
         const selectedKey = Array.from(key)[0] as string;
@@ -146,6 +155,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
 
     return (
         <div className="w-full">
+
             <Tabs
                 aria-label="Book Lists"
                 color="success"
@@ -155,7 +165,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                 classNames={{
                     tabList: "gap-6 bg-white",
                     cursor: "w-full bg-gray-100",
-                    tab: "max-w-fit px-4 h-10",
+                    tab: "max-w-fit px-4 h-10 ",
                     tabContent: "group-data-[selected=true]:text-primary"
                 }}
             >
@@ -168,8 +178,9 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                         </div>
                     }
                 >
+
                     <Card className='bg-gradient-to-b from-white to-neutral-50 dark:from-gray-900 dark:to-gray-800 shadow-lg'>
-                        <CardBody id="scrollableDiv" className="overflow-auto max-h-[800px]">
+                        <CardBody id="scrollableDiv" className="overflow-auto max-h-[800px] scroll-container ">
                             {renderBookList(BookType.Reading)}
                         </CardBody>
                     </Card>
@@ -216,8 +227,14 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                         </div>
                     }
                 >
-                    <Card className='bg-transparent shadow-none p-0'>
-                        <CardBody>
+                    {
+                        userData && userData?.status && <div className="sticky top-[70px] z-50 max-w-2xl my-2 p-0">
+                            <BookPostComponent userData={userData?.data} />
+                        </div>
+                    }
+
+                    <Card shadow='none' className='bg-transparent shadow-none w-full p-0'>
+                        <CardBody className='p-0'>
                             {userPost?.map((item: any) => (
                                 <PostCard key={item.id} post={item} />
                             ))}

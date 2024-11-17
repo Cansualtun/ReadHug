@@ -18,7 +18,7 @@ export default async function Home() {
                         <Activities />
                     </div>
                     <div className="col-span-8">
-                        <div className="sticky top-[70px] z-50 max-w-2xl mt-4 p-2 pt-0">
+                        <div className="sticky top-[70px] z-50 max-w-2xl mt-4 p-2 pt-0 mb-10">
                             <BookPostComponent />
                         </div>
                         <div className="space-y-10">

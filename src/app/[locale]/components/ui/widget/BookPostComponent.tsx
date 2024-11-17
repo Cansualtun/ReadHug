@@ -1,9 +1,13 @@
 "use client"
-import React, { useEffect, useState, useRef } from "react";
-import { Input, Textarea, Button, Card } from "@nextui-org/react";
+import { useUserProfileQuery } from "@/store/UserStore";
+import { Avatar, Button, Card, Input, Textarea } from "@nextui-org/react";
 import axios from "axios";
 import Image from "next/image";
-
+import { useParams } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+interface BookPostComponentProps {
+    userData: any; // Replace 'any' with the actual type of userData
+}
 interface Book {
     id: string;
     name: string;
@@ -11,7 +15,9 @@ interface Book {
     authorData: any
 }
 
-const PostShare: React.FC = () => {
+const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
+    console.log("userData", userData);
+
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [content, setContent] = useState("");
@@ -20,8 +26,6 @@ const PostShare: React.FC = () => {
     const [books, setBooks] = useState<any>([]);
 
     const containerRef = useRef<HTMLDivElement>(null);
-
-
 
     const handleBookSelect = (book: Book) => {
         setSelectedBook(book);
@@ -46,6 +50,7 @@ const PostShare: React.FC = () => {
 
     // Scroll durumunu dinle
     useEffect(() => {
+
         const handleScroll = () => {
             const scrollTop = window.scrollY;
             if (scrollTop > 0) {
@@ -87,7 +92,7 @@ const PostShare: React.FC = () => {
             return
         }
         try {
-            const { data } = await axios(`http://localhost:4000/book/allBooks?limit=10&search=${search}`)
+            const { data } = await axios(`http://localhost:4000/book/user/books/halituzan/:type?page=1&limit=10`)
             setBooks(data.data)
         } catch (error) {
 
@@ -100,26 +105,41 @@ const PostShare: React.FC = () => {
         }
     }, [searchTerm]);
 
-
     return (
         <Card shadow="sm"
-
             ref={containerRef}
-            className={`relative w-full p-2 mb-10 transition-all ${isExpanded ? "h-auto" : "h-[56px] overflow-hidden"
+            className={`relative w-full p-2 transition-all ${isExpanded ? "h-auto" : "h-[56px] overflow-hidden"
                 }`}
         >
             {/* Search Bar */}
-            <Input
-                type="text"
+            <div className="flex justify-between w-full mb-2">
 
-                placeholder="Type to search..."
-                value={searchTerm}
-                onChange={(e) => {
-                    setSearchTerm(e.target.value)
-                }}
-                onFocus={() => setIsExpanded(true)} // Arama çubuğuna tıklanınca genişlet
-                className="mb-4"
-            />
+                <Input
+                    type="text"
+
+                    placeholder="Type to search..."
+                    value={searchTerm}
+                    onChange={(e) => {
+                        setSearchTerm(e.target.value)
+                    }}
+                    onFocus={() => setIsExpanded(true)} // Arama çubuğuna tıklanınca genişlet
+                    className="mb-4 mr-4"
+                />
+                <div className="flex items-start gap-4">
+                    <div className="flex flex-col items-end text-right">
+                        <p className="text-md font-semibold">{userData?.userName}</p>
+                        <p className="text-xs text-gray-500">
+                            {userData?.firstName + " " + userData?.lastName}
+                        </p>
+                    </div>
+                    <Avatar
+                        src={userData?.image ?? "/assets/avatar.png"}
+                        size="md"
+                        className="bg-primary border-2 border-white shadow-md"
+                    />
+                </div>
+            </div>
+
 
             {/* Dropdown for Book Selection */}
             {isExpanded && searchTerm && (
@@ -178,4 +198,4 @@ const PostShare: React.FC = () => {
     );
 };
 
-export default PostShare;
+export default BookPostComponent;
