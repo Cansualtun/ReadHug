@@ -3,35 +3,48 @@ import { useEffect, useState } from 'react';
 import {
   Navbar,
   NavbarContent,
-  NavbarItem,
-  Link,
   Input,
   DropdownItem,
   DropdownTrigger,
   Dropdown,
   DropdownMenu,
   Avatar,
+  NavbarItem,
+  Switch,
 } from '@nextui-org/react';
 import { AcmeLogo } from '../svg/AcmeLogo';
 import { SearchIcon } from '../svg/SearchIcon.jsx';
 import { useRouter } from 'next/navigation';
-
 import {
   User,
   Settings,
-  Monitor,
   LogOut,
   Bell,
   ThumbsUp,
-  MessageCircleMore,
+  MessageSquareText,
   UserCheck,
   Megaphone,
-  MessageSquareText,
+  MessageCircleMore,
+  Monitor,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import axios from 'axios';
 import { useMeMutation } from '@/store/UserStore';
 import { useLogoutMutation } from '@/store/AuthStore';
 import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
+import { createSharedPathnamesNavigation } from 'next-intl/navigation';
+import Link from 'next/link';
+import LanguageDropdown from '../languageDropdown';
+import { useTheme } from 'next-themes';
+
+
+const locales = ['tr', 'en'];
+
+const { useRouter: useRouterIntl, usePathname: usePathnameIntl } = createSharedPathnamesNavigation({
+  locales,
+});
 
 export default function Header() {
   const t = useTranslations('header');
@@ -44,6 +57,15 @@ export default function Header() {
   });
   const [notificatonData, setNotificationData] = useState([]);
   const router = useRouter();
+  const routerIntl = useRouterIntl();
+  const pathname = usePathnameIntl();
+  const locale = useLocale();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  const changeLanguage = (newLocale: string) => {
+    routerIntl.push(pathname, { locale: newLocale });
+  };
 
   const getNotificatons = async () => {
     const token = document.cookie
@@ -95,7 +117,7 @@ export default function Header() {
   return (
     <Navbar isBordered maxWidth="xl">
       <NavbarContent>
-        <Link href='/'>
+        <Link href="/">
           <div className="flex flex-row items-center mr-4">
             <AcmeLogo />
             <p className="hidden sm:block font-bold text-inherit">ACME</p>
@@ -144,21 +166,19 @@ export default function Header() {
               )}
             </div>
           </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
-            {notificatonData?.map((item: any) => {
-              return (
-                <DropdownItem key={item._id} className="h-14 gap-2 ">
-                  <div className="flex items-center">
-                    {item.type == 'like' && <ThumbsUp />}
-                    {item.type == 'comment' && <MessageSquareText />}
-                    {item.type == 'follow' && <UserCheck />}
-                    {item.type == 'announcement' && <Megaphone />}
-                    {item.type == 'message' && <MessageCircleMore />}
-                    <p className='ml-2'>{item.content}</p>
-                  </div>
-                </DropdownItem>
-              );
-            })}
+          <DropdownMenu aria-label="Notifications" variant="flat">
+            {notificatonData?.map((item: any) => (
+              <DropdownItem key={item._id} className="h-14 gap-2">
+                <div className="flex items-center">
+                  {item.type === 'like' && <ThumbsUp />}
+                  {item.type === 'comment' && <MessageSquareText />}
+                  {item.type === 'follow' && <UserCheck />}
+                  {item.type === 'announcement' && <Megaphone />}
+                  {item.type === 'message' && <MessageCircleMore />}
+                  <p className="ml-2">{item.content}</p>
+                </div>
+              </DropdownItem>
+            ))}
           </DropdownMenu>
         </Dropdown>
         <Dropdown placement="bottom-end">
@@ -175,7 +195,7 @@ export default function Header() {
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-semibold">{t('header.profile.signedIn')}</p>
+              <p className="font-semibold">{t('profile.signedIn')}</p>
               <p className="font-semibold">{userData.userName}</p>
             </DropdownItem>
             <DropdownItem
@@ -185,19 +205,7 @@ export default function Header() {
             >
               {t('profile.profile')}
             </DropdownItem>
-            <DropdownItem
-              key="/settings"
-              href="/settings"
-              startContent={<Settings className="w-4 h-4" />}
-            >
-              {t('profile.settings')}
-            </DropdownItem>
-            <DropdownItem
-              key="system"
-              startContent={<Monitor className="w-4 h-4" />}
-            >
-              {t('profile.system')}
-            </DropdownItem>
+
             <DropdownItem
               key="logout"
               color="danger"
@@ -207,8 +215,27 @@ export default function Header() {
             >
               {t('profile.logout')}
             </DropdownItem>
+            <DropdownItem
+              key="/settings"
+              href="/settings"
+              startContent={<Settings className="w-4 h-4" />}
+            >
+              {t('profile.settings')}
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
+        <LanguageDropdown currentLocale={locale} onChangeLanguage={changeLanguage} />
+        <Switch
+          defaultSelected
+          size="sm"
+          color="default"
+          isSelected={theme === 'dark'}
+          onValueChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
+          startContent={<Sun className="w-3.5 h-3.5 text-warning-400" />}
+          endContent={<Moon className="w-3.5 h-3.5 text-default-500" />}
+          className="ml-2"
+          aria-label="Toggle theme"
+        />
       </NavbarContent>
     </Navbar>
   );

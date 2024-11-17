@@ -19,7 +19,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   return (
     <NextUIProvider navigate={router.push}>
       <Provider store={store}>
-        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+        <NextThemesProvider {...themeProps} enableSystem>{children}</NextThemesProvider>
       </Provider>
     </NextUIProvider>
   );

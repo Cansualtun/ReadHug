@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-import ProfileUpdate from "@/components/profile/ProfileUpdate";
-import ChangePassword from "@/components/profile/ChangePassword";
-
+import ProfileUpdate from "../../profile/ProfileUpdate";
+import ChangePassword from "../../profile/ChangePassword";
 
 const SidebarItems = [
     {

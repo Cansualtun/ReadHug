@@ -172,6 +172,7 @@
       "profile": "Profile",
       "settings": "Settings",
       "system": "System",
+      "language": "Language",
       "logout": "Log Out"
     },
     "errors": {

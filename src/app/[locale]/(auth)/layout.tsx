@@ -6,12 +6,14 @@ import clsx from "clsx";
 import { Toaster } from "react-hot-toast";
 import { fontSans } from "@/config/fonts";
 import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 
-export default function AuthLayout({
+export default async function AuthLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const messages = await getMessages();
     return (
         <html lang="en">
             <body className={clsx(
@@ -19,7 +21,7 @@ export default function AuthLayout({
                 fontSans.variable,
             )}>
                 <Toaster position="top-center" />
-                <NextIntlClientProvider>
+                <NextIntlClientProvider messages={messages}>
                     <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
                         <div className="flex h-screen">
                             <div className="w-1/2 flex items-center justify-center bg-white">
