@@ -112,7 +112,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                             <div className="flex-1">
                                 <h3 className="font-semibold text-lg">{book.bookId.name}</h3>
                                 <p className="text-default-500">
-                                    {t('bookInfo.author', { name: book.bookId.author.name })}
+                                    {t('bookInfo.author', { name: book.bookId?.author?.name })}
                                 </p>
                                 {type === BookType.Reading && (
                                     <div className="mt-4 space-y-3">

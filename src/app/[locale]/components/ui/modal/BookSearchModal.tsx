@@ -83,7 +83,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
     };
 
     const handleBookSelect = (book: any) => {
-        if (!selectedBooks.some((b: any) => b.name === book.name)) {
+        if (!selectedBooks.some((b: any) => b?.name === book?.name)) {
             setSelectedBooks([...selectedBooks, { ...book, type: "0" }]);
         }
         setSearchQuery("");
@@ -92,7 +92,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
 
     const handleStatusChange = (bookName: any, status: any) => {
         const updatedBooks: any = selectedBooks.map((book: any) =>
-            book.name === bookName ? { ...book, type: status } : book
+            book?.name === bookName ? { ...book, type: status } : book
         );
         setSelectedBooks(updatedBooks);
     };
@@ -130,6 +130,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
             }
             setLoadingData(false)
             selectedBooks([])
+            onClose()
         } catch (error) {
             setLoadingData(false)
             selectedBooks([])
@@ -175,7 +176,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                                         />
                                         <div className=''>
                                             <p className="font-medium text-default-900">{book.name}</p>
-                                            <p className="text-sm text-default-700">{book._id ? book.author.name : book.author}</p>
+                                            <p className="text-sm text-default-700">{book._id ? book?.author?.name || "" : book.author}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -200,7 +201,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                                                 />
                                                 <div className="flex-grow ml-2">
                                                     <h3 className="font-semibold text-default-900">{book.name}</h3>
-                                                    <p className="text-sm text-default-700">{book._id ? book.author.name : book.author}</p>
+                                                    <p className="text-sm text-default-700">{book._id ? book.author?.name : book.author}</p>
                                                 </div>
                                             </div>
                                             <Select

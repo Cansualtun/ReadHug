@@ -56,7 +56,7 @@ export default function Post({ post }: any) {
                 <CardHeader className="flex justify-between items-center px-8 pt-10 pb-4">
                     <div className="flex flex-col ml-32 space-y-1">
                         <p className="text-lg font-bold">{post?.book?.bookId?.name}</p>
-                        <p className="text-xs text-default-900">{post?.book.bookId.author.name}</p>
+                        <p className="text-xs text-default-900">{post?.book.bookId.author?.name}</p>
                     </div>
                     <div className="flex items-center gap-4">
                         <div className="flex flex-col items-end text-right">
