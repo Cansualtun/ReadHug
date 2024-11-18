@@ -16,7 +16,7 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                         <div className="relative">
                             <Image
                                 src={book.bookId.book_img}
-                                alt={book.bookId.name}
+                                alt={book.bookId?.name}
                                 width={300}
                                 height={450}
                                 className="rounded-xl shadow-lg"
@@ -35,11 +35,11 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
 
                     <div className="md:col-span-2 space-y-6">
                         <div>
-                            <h1 className="text-3xl font-bold mb-2">{book.bookId.name}</h1>
+                            <h1 className="text-3xl font-bold mb-2">{book.bookId?.name}</h1>
                             <div className="flex items-center gap-4 mb-6">
                                 <p className="text-xl text-default-700">{book.bookId.author?.name}</p>
                                 <span className="text-default-700">•</span>
-                                <p className="text-default-700">{book.bookId.publisher.name}</p>
+                                <p className="text-default-700">{book.bookId.publisher?.name}</p>
                             </div>
                         </div>
 
