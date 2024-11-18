@@ -59,7 +59,7 @@ export default function ReadingTracker() {
 
                                 />
                                 {progress >= 100 && (
-                                    <div className="flex items-center gap-1.5 text-orange-500 text-small">
+                                    <div className="flex items-center gap-1.5 text-primary text-small">
                                         <CheckCircle size={14} />
                                         <span className="font-medium">{t('currentlyReading.bookCompleted')}</span>
                                     </div>
@@ -67,7 +67,7 @@ export default function ReadingTracker() {
                             </div>
                             <Button
 
-                                className="w-full bg-orange-500 text-white"
+                                className="w-full bg-primary text-white"
                                 onPress={() => setProgress((p) => Math.min(100, p + 10))}
                             >
                                 {t('currentlyReading.updateProgress')}

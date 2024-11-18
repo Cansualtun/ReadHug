@@ -24,10 +24,10 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                             />
                             <div className="absolute top-3 right-10 flex gap-2">
                                 <Button isIconOnly variant="flat" className="bg-default-50/70 backdrop-blur-md">
-                                    <Heart className={`w-5 h-5 ${book.isFavorite ? 'fill-red-500 text-red-500' : 'text-orange-500'}`} />
+                                    <Heart className={`w-5 h-5 ${book.isFavorite ? 'fill-red-500 text-red-500' : 'text-primary'}`} />
                                 </Button>
                                 <Button isIconOnly variant="flat" className="bg-default-50/70 backdrop-blur-md">
-                                    <Share2 className="w-5 h-5 text-orange-500" />
+                                    <Share2 className="w-5 h-5 text-primary" />
                                 </Button>
                             </div>
                         </div>
@@ -56,7 +56,7 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                                     value={parseFloat(book.process.percent)}
                                     className="mb-3"
                                     classNames={{
-                                        indicator: "bg-gradient-to-r from-orange-500 to-amber-500"
+                                        indicator: "bg-gradient-to-r from-primary to-amber-500"
                                     }}
                                 />
                                 <div className="flex justify-between text-sm text-default-700">

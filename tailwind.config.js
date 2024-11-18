@@ -26,6 +26,9 @@ export default {
         'custom-lg': '1024px',
         'custom-xl': '1280px',
       },
+      colors: {
+        primary: "#f97316"
+      }
     },
   },
   darkMode: 'class',

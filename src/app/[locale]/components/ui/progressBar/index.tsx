@@ -38,7 +38,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
                 <span className="text-sm font-medium flex justify-center items-center flex-1">İlerleme</span>
                 {showChip && (
                     <Chip
-                        className="text-tiny bg-orange-500 text-white dark:text-white"
+                        className="text-tiny bg-primary text-white dark:text-white"
                         color={chipColor}
                         variant="flat"
                         radius="full"
@@ -57,7 +57,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
 
     const renderCompletedMessage = () => (
         isCompleted && showCompletedMessage && (
-            <div className="flex items-center gap-1.5 text-tiny text-orange-500">
+            <div className="flex items-center gap-1.5 text-tiny text-primary">
                 <CheckCircle size={14} />
                 <span className="font-medium">Kitap tamamlandı!</span>
             </div>
@@ -78,7 +78,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
                 classNames={{
                     base: "max-w-full",
                     track: "drop-shadow-sm",
-                    indicator: "bg-gradient-to-r from-orange-500 to-orange-400",
+                    indicator: "bg-gradient-to-r from-primary to-orange-400",
                     value: "text-tiny text-foreground font-medium ",
                 }}
             />

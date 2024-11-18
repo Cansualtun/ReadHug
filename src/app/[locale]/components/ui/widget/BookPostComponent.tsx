@@ -170,7 +170,7 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
       {isExpanded && selectedBook && (
         <Card className="mb-2 pl-4 flex flex-row items-start p-2 relative bg-default-100">
           <div role='button' className='absolute top-2 right-2' onClick={() => setSelectedBook(null)}>
-            <CircleX className='text-orange-500' />
+            <CircleX className='text-primary' />
           </div>
           <div>
             <Image
@@ -219,7 +219,7 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
       {isExpanded && (
         <Button
           color="primary"
-          className="disabled:bg-default-500 bg-orange-500"
+          className="disabled:bg-default-500 bg-primary"
           disabled={!selectedBook || !content}
           onClick={handleSubmit}
         >

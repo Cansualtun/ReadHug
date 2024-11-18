@@ -20,13 +20,13 @@ const Footer = () => {
                     <div>
                         <h3 className="font-semibold mb-4 text-default-900">{t('sections.quickLinks.title')}</h3>
                         <div className="flex flex-col space-y-2">
-                            <Link href="/authors" className="text-default-900 hover:text-orange-500">
+                            <Link href="/authors" className="text-default-900 hover:text-primary">
                                 {t('sections.quickLinks.items.authors')}
                             </Link>
-                            <Link href="/community" className="text-default-900 hover:text-orange-500">
+                            <Link href="/community" className="text-default-900 hover:text-primary">
                                 {t('sections.quickLinks.items.community')}
                             </Link>
-                            <Link href="/stats" className="text-default-900 hover:text-orange-500">
+                            <Link href="/stats" className="text-default-900 hover:text-primary">
                                 {t('sections.quickLinks.items.stats')}
                             </Link>
                         </div>
@@ -34,13 +34,13 @@ const Footer = () => {
                     <div>
                         <h3 className="font-semibold mb-4 text-default-900">{t('sections.community.title')}</h3>
                         <div className="flex flex-col space-y-2">
-                            <Link href="/discord" className="text-default-900 hover:text-orange-500">
+                            <Link href="/discord" className="text-default-900 hover:text-primary">
                                 {t('sections.community.items.discord')}
                             </Link>
-                            <Link href="/twitter" className="text-default-900 hover:text-orange-500">
+                            <Link href="/twitter" className="text-default-900 hover:text-primary">
                                 {t('sections.community.items.twitter')}
                             </Link>
-                            <Link href="/github" className="text-default-900 hover:text-orange-500">
+                            <Link href="/github" className="text-default-900 hover:text-primary">
                                 {t('sections.community.items.github')}
                             </Link>
                         </div>
@@ -48,13 +48,13 @@ const Footer = () => {
                     <div>
                         <h3 className="font-semibold mb-4 text-default-900">{t('sections.legal.title')}</h3>
                         <div className="flex flex-col space-y-2">
-                            <Link href="/privacy" className="text-default-900 hover:text-orange-500">
+                            <Link href="/privacy" className="text-default-900 hover:text-primary">
                                 {t('sections.legal.items.privacy')}
                             </Link>
-                            <Link href="/terms" className="text-default-900 hover:text-orange-500">
+                            <Link href="/terms" className="text-default-900 hover:text-primary">
                                 {t('sections.legal.items.terms')}
                             </Link>
-                            <Link href="/cookies" className="text-default-900 hover:text-orange-500">
+                            <Link href="/cookies" className="text-default-900 hover:text-primary">
                                 {t('sections.legal.items.cookies')}
                             </Link>
                         </div>
@@ -66,13 +66,13 @@ const Footer = () => {
                             {t('copyright.text')}
                         </p>
                         <div className="flex space-x-6 mt-4 md:mt-0">
-                            <Link href="/privacy" className="text-sm text-default-900 hover:text-orange-500">
+                            <Link href="/privacy" className="text-sm text-default-900 hover:text-primary">
                                 {t('bottomLinks.privacy')}
                             </Link>
-                            <Link href="/terms" className="text-sm text-default-900 hover:text-orange-500">
+                            <Link href="/terms" className="text-sm text-default-900 hover:text-primary">
                                 {t('bottomLinks.terms')}
                             </Link>
-                            <Link href="/contact" className="text-sm text-default-900 hover:text-orange-500">
+                            <Link href="/contact" className="text-sm text-default-900 hover:text-primary">
                                 {t('bottomLinks.contact')}
                             </Link>
                         </div>
