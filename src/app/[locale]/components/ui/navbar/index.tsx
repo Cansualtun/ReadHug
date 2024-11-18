@@ -38,6 +38,7 @@ import { createSharedPathnamesNavigation } from 'next-intl/navigation';
 import Link from 'next/link';
 import LanguageDropdown from '../languageDropdown';
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
 
 
 const locales = ['tr', 'en'];
@@ -118,9 +119,9 @@ export default function Header() {
     <Navbar isBordered maxWidth="xl">
       <NavbarContent>
         <Link href="/">
-          <div className="flex flex-row items-center mr-4">
-            <AcmeLogo />
-            <p className="hidden sm:block font-bold text-inherit">ACME</p>
+          <div className="">
+            <Image src={"/assets/logo1.svg"} width={240} height={60} alt='' className='w-[240px] h-[44px]' />
+
           </div>
         </Link>
         <NavbarContent className="hidden sm:flex gap-3">

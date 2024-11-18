@@ -28,3 +28,12 @@ export interface User {
   isActive: boolean;
   image: string;
 }
+
+export interface IPostShareRequest {
+  bookId: string;
+  content: string;
+}
+export interface IPostShareResult {
+  status: boolean;
+  message: string;
+}

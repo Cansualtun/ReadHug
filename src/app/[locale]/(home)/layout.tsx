@@ -51,7 +51,7 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
             <Toaster position="top-center" />
-            <div className="flex min-h-screen flex-col">
+            <div className="flex min-h-screen flex-col bg-default-50">
               <Header />
               <main className="flex-1 container mx-auto py-10 ">{children}</main>
               <Footer />
