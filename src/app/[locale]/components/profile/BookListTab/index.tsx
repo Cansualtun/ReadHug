@@ -9,6 +9,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import PostCard from '../../home/postCard';
 import ProgressBar from '../../ui/progressBar';
 import BookPostComponent from '../../ui/widget/BookPostComponent';
+import BookSearchModal from '../../ui/modal/BookSearchModal';
 
 
 const BookListTabs = ({ bookLists, slug, post }: any) => {
@@ -22,6 +23,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
     const [page, setPage] = useState(2);
     const [selectedTab, setSelectedTab] = useState("1");
     const [loading, setLoading] = useState(false);
+    const [openBookModal, setOpenBookModal] = useState(false);
 
     const EmptyState = ({ message }: { message: string }) => (
         <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
@@ -74,7 +76,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
     const handleTabChange = (key: Selection | string) => {
         const selectedKey = Array.from(key)[0] as string;
         if (key == "post") {
-            console.log("first");
+            setOpenBookModal(true)
             return
         }
         setSelectedTab(key as any);
@@ -170,7 +172,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     base: "bg-default-50 w-full",
                     tabList: "gap-6 bg-default-50 w-full flex justify-evenly",
                     cursor: "w-full bg-default-200",
-                    tab: "max-w-fit px-4 h-10 ",
+                    tab: "max-w-fit px-4 h-10",
                     tabContent: "group-data-[selected=true]:text-primary"
                 }}
             >
@@ -179,7 +181,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     title={
                         <div className="flex items-center space-x-2">
                             <BookMarked className="w-4 h-4" />
-                            <span>{t('tabs.reading')}</span>
+                            <span className='lg:block hidden'>{t('tabs.reading')}</span>
                         </div>
                     }
                 >
@@ -196,7 +198,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     title={
                         <div className="flex items-center space-x-2">
                             <BookOpen className="w-4 h-4" />
-                            <span>{t('tabs.read')}</span>
+                            <span className='lg:block hidden'>{t('tabs.read')}</span>
                         </div>
                     }
                 >
@@ -212,7 +214,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     title={
                         <div className="flex items-center space-x-2">
                             <BookPlus className="w-4 h-4" />
-                            <span>{t('tabs.wishlist')}</span>
+                            <span className='lg:block hidden'>{t('tabs.wishlist')}</span>
                         </div>
                     }
                 >
@@ -229,7 +231,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     title={
                         <div className="flex items-center space-x-2">
                             <MessageCircle className="w-4 h-4" />
-                            <span>{t('tabs.posts')}</span>
+                            <span className='lg:block hidden'>{t('tabs.posts')}</span>
                         </div>
                     }
                 >
@@ -266,6 +268,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     </Card>
                 </Tab>
             </Tabs>
+            <BookSearchModal isOpen={openBookModal} onClose={() => setOpenBookModal(!openBookModal)} />
         </div>
     );
 };
