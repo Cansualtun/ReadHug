@@ -109,13 +109,13 @@ const FloatingMessageWidget = () => {
       {/* Ana konteyner */}
       <div className="flex flex-col items-end">
         {isOpen && (
-          <div className="bg-white rounded-lg shadow-xl mb-4 w-96 flex flex-col">
+          <div className="bg-default-50 rounded-lg shadow-xl mb-4 w-96 flex flex-col">
             {/* Başlık */}
-            <div className="bg-gray-100 p-4 rounded-t-lg flex justify-between items-center border-b">
+            <div className="bg-primary/10 p-4 py-2 rounded-t-lg flex justify-between items-center border-b">
               <h3 className="font-medium">Mesajlaşma</h3>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-default-700 hover:text-default-900"
               >
                 <X size={20} />
               </button>
@@ -138,7 +138,7 @@ const FloatingMessageWidget = () => {
                     />
                     <Search
                       size={16}
-                      className="absolute left-2 top-2 text-gray-400"
+                      className="absolute left-2 top-2 text-default-900"
                     />
                   </div>
                 </div>
@@ -149,7 +149,7 @@ const FloatingMessageWidget = () => {
                     return <div
                       key={user?.messageRowId}
                       onClick={() => setSelectedUser(user)}
-                      className={`p-3 flex gap-3 hover:bg-gray-50 cursor-pointer ${selectedUser?._id === user?._id ? 'bg-gray-100' : ''
+                      className={`p-3 flex gap-3 hover:bg-default-50 cursor-pointer ${selectedUser?._id === user?._id ? 'bg-default-100' : ''
                         }`}
                     >
                       <div className="relative">
@@ -162,7 +162,7 @@ const FloatingMessageWidget = () => {
                                                   <div className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-white" />
                                               )} */}
                         {user?.isRead && (
-                          <div className="absolute bottom-0 right-0 w-2 h-2 bg-blue-500 rounded-full border border-white" />
+                          <div className="absolute bottom-0 right-0 w-2 h-2 bg-primary rounded-full border border-white" />
                         )}
                       </div>
                       {!selectedUser && (
@@ -182,7 +182,7 @@ const FloatingMessageWidget = () => {
                       )}
                     </div>
                   }) :
-                    <div className="flex-1 h-full self-stretch flex items-center justify-center text-gray-500">
+                    <div className="flex-1 h-full self-stretch flex items-center justify-center text-primary">
                       <LoaderIcon />
                     </div>
                   }
@@ -194,7 +194,7 @@ const FloatingMessageWidget = () => {
               >
                 {messages.length > 0 ? (
                   <>
-                    <div className="p-3 border-b bg-gray-50 flex items-center">
+                    <div className="p-3 border-b bg-default-50 flex items-center">
                       <div
                         className="cursor-pointer mr-2"
                         onClick={() => {
@@ -227,8 +227,8 @@ const FloatingMessageWidget = () => {
                           <div className="flex flex-col gap-1">
                             <div
                               className={`p-2 rounded-lg  max-w-[200px] ${message.isMe
-                                ? 'bg-blue-600 text-white rounded-br-none'
-                                : 'bg-gray-100 rounded-bl-none'
+                                ? 'bg-primary text-white rounded-br-none'
+                                : 'bg-default-100 rounded-bl-none'
                                 }`}
                             >
                               <p className="text-sm">{message.message}</p>
@@ -258,7 +258,7 @@ const FloatingMessageWidget = () => {
                         />
                         <button
                           onClick={() => handleSendMessage(selectedUser._id)}
-                          className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                          className="p-2 bg-primary/80 text-white rounded-lg hover:bg-primary"
                         >
                           <Send size={16} />
                         </button>
@@ -266,7 +266,7 @@ const FloatingMessageWidget = () => {
                     </div>
                   </>
                 ) : (
-                  <div className="flex-1 flex items-center justify-center text-gray-500">
+                  <div className="flex-1 flex items-center justify-center text-default-900">
                     <LoaderIcon />
                   </div>
                 )}
@@ -281,7 +281,7 @@ const FloatingMessageWidget = () => {
           onClick={() => setIsOpen(!isOpen)}
           className={`p-3 rounded-full shadow-lg transition-colors ${isOpen
             ? 'bg-gray-200 hover:bg-gray-300'
-            : 'bg-blue-600 hover:bg-blue-700 text-white'
+            : 'bg-primary/80 hover:bg-primary text-white'
             }`}
         >
           <MessageSquare size={24} />

@@ -2,7 +2,7 @@
 import { useMeMutation } from '@/store/UserStore';
 import { Card, CardBody, Selection, Tab, Tabs } from "@nextui-org/react";
 import { BookType } from 'enums/bookType';
-import { BookMarked, BookOpen, BookPlus, CheckCircleIcon, MessageCircle } from "lucide-react";
+import { BookMarked, BookOpen, BookPlus, CheckCircleIcon, MessageCircle, PlusCircle } from "lucide-react";
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -71,8 +71,12 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
         setUserData(data.data)
     }
 
-    const handleTabChange = (key: Selection) => {
+    const handleTabChange = (key: Selection | string) => {
         const selectedKey = Array.from(key)[0] as string;
+        if (key == "post") {
+            console.log("first");
+            return
+        }
         setSelectedTab(key as any);
         setAdditionalBooks([]);
         setPage(2);
@@ -163,8 +167,9 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                 selectedKey={selectedTab}
                 onSelectionChange={handleTabChange as any}
                 classNames={{
-                    tabList: "gap-6 bg-white",
-                    cursor: "w-full bg-gray-100",
+                    base: "bg-default-50 w-full",
+                    tabList: "gap-6 bg-default-50 w-full flex justify-evenly",
+                    cursor: "w-full bg-default-200",
                     tab: "max-w-fit px-4 h-10 ",
                     tabContent: "group-data-[selected=true]:text-primary"
                 }}
@@ -220,6 +225,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
 
                 <Tab
                     key="3"
+                    className='w-full'
                     title={
                         <div className="flex items-center space-x-2">
                             <MessageCircle className="w-4 h-4" />
@@ -228,7 +234,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     }
                 >
                     {
-                        userData && userData?.status && <div className="sticky top-[70px] z-50 max-w-2xl my-2 p-0">
+                        userData && userData?.status && <div className="sticky top-[70px] z-50 w-full my-2 p-0">
                             <BookPostComponent userData={userData?.data} />
                         </div>
                     }
@@ -238,6 +244,24 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                             {userPost?.map((item: any) => (
                                 <PostCard key={item.id} post={item} />
                             ))}
+                        </CardBody>
+                    </Card>
+                </Tab>
+                <Tab
+                    key="post"
+                    className='bg-primary'
+                    title={
+                        <div className="flex items-center space-x-2">
+                            <PlusCircle className="w-4 h-4 text-white" />
+
+                        </div>
+                    }
+                >
+
+
+                    <Card shadow='none' className='bg-transparent shadow-none w-full p-0'>
+                        <CardBody className='p-0'>
+                            asd
                         </CardBody>
                     </Card>
                 </Tab>

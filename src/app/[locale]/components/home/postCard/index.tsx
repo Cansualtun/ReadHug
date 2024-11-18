@@ -38,7 +38,7 @@ export default function Post({ post }: any) {
             setIsLiked(post.isLiked)
     }, [])
     return (
-        <div className="relative w-full max-w-2xl mt-4 p-2">
+        <div className="relative w-full mt-10 p-2">
             <div className="absolute -top-8 left-10 z-10">
                 <Link href={`/personalBooks/${post?.book?.slug}`}>
                     <Card isHoverable className="w-28 h-36 border-0">
@@ -52,7 +52,7 @@ export default function Post({ post }: any) {
                     </Card>
                 </Link>
             </div>
-            <Card className="w-full rounded-lg bg-gradient-to-r bg-default-100">
+            <Card shadow='sm' className="w-full rounded-lg bg-gradient-to-r bg-default-100">
                 <CardHeader className="flex justify-between items-center px-8 pt-10 pb-4">
                     <div className="flex flex-col ml-32 space-y-1">
                         <p className="text-lg font-bold">{post?.book?.bookId?.name}</p>

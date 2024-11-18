@@ -16,14 +16,14 @@ export default async function Home() {
 
     return (
         <section>
-            <div className="container mx-auto ">
+            <div className="">
                 <div className="grid grid-cols-12 gap-4 relative">
                     <div className="col-span-4 ">
                         <Activities />
                     </div>
                     <div className="col-span-8">
                         {
-                            userData.data && <div className="sticky top-[70px] z-50 max-w-2xl mt-4 p-2 pt-0 mb-10">
+                            userData.data && <div className="sticky top-[70px] z-50 mt-4 p-2 pt-0 mb-10">
                                 <BookPostComponent userData={userData.data} />
                             </div>
                         }

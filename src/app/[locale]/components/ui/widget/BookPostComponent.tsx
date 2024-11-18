@@ -113,7 +113,7 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
     <Card
       shadow="sm"
       ref={containerRef}
-      className={`relative w-full p-2 bg-default-50 dark:bg-default-200 transition-all ${isExpanded ? 'h-auto' : 'h-[56px] overflow-hidden'}`}
+      className={`relative w-full p-2 bg-default-50 dark:bg-default-200 transition-all backdrop-saturate-150 backdrop-blur-md bg-background/90 ${isExpanded ? 'h-auto' : 'h-[56px] overflow-hidden'}`}
     >
       <div className="flex justify-between w-full mb-0">
         <Input

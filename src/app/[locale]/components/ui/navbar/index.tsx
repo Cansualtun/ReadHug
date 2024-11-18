@@ -117,127 +117,132 @@ export default function Header() {
 
   return (
     <Navbar isBordered maxWidth="xl">
-      <NavbarContent>
-        <Link href="/">
-          <div className="">
-            <Image src={"/assets/logo1.svg"} width={240} height={60} alt='' className='w-[240px] h-[44px]' />
+      <div className='container mx-auto flex justify-between items-center'>
+        <NavbarContent>
+          <Link href="/">
+            <div className="flex justify-center items-center">
+              <Image src={"/assets/logo1.svg"} width={300} height={80} alt='' className='w-[180px] h-[48px]' />
 
-          </div>
-        </Link>
-        <NavbarContent className="hidden sm:flex gap-3">
-          <NavbarItem>
-            <Link color="foreground" href="/authors">
-              {t('navigation.authors')}
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link href="/community" aria-current="page" color="foreground">
-              {t('navigation.community')}
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" href="/stats">
-              {t('navigation.stats')}
-            </Link>
-          </NavbarItem>
-        </NavbarContent>
-      </NavbarContent>
-      <NavbarContent as="div" className="items-center" justify="end">
-        <Input
-          classNames={{
-            base: 'max-w-full sm:max-w-[18rem] h-10',
-            mainWrapper: 'h-full',
-            input: 'text-small',
-            inputWrapper:
-              'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20',
-          }}
-          placeholder={t('search.placeholder')}
-          size="sm"
-          startContent={<SearchIcon size={12} width={12} height={12} />}
-          type="search"
-        />
-        <Dropdown placement="bottom-end">
-          <DropdownTrigger>
-            <div className="relative">
-              <Bell />
-              {notificatonData.filter((i: any) => !i.isRead).length > 0 && (
-                <span className="absolute top-0 right-0 min-w-3 min-h-3 rounded-full bg-red-500 text-[10px] text-white flex justify-center items-center p-0 m-0">
-                  {notificatonData.filter((i: any) => !i.isRead).length ?? 0}
-                </span>
-              )}
             </div>
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Notifications" variant="flat">
-            {notificatonData?.map((item: any) => (
-              <DropdownItem key={item._id} className="h-14 gap-2">
-                <div className="flex items-center">
-                  {item.type === 'like' && <ThumbsUp />}
-                  {item.type === 'comment' && <MessageSquareText />}
-                  {item.type === 'follow' && <UserCheck />}
-                  {item.type === 'announcement' && <Megaphone />}
-                  {item.type === 'message' && <MessageCircleMore />}
-                  <p className="ml-2">{item.content}</p>
-                </div>
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </Dropdown>
-        <Dropdown placement="bottom-end">
-          <DropdownTrigger>
-            <Avatar
-              isBordered
-              as="button"
-              className="transition-transform"
-              color="secondary"
-              name="Jason Hughes"
-              size="sm"
-              src={userData?.image ?? '/assets/avatar.png'}
-            />
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-semibold">{t('profile.signedIn')}</p>
-              <p className="font-semibold">{userData.userName}</p>
-            </DropdownItem>
-            <DropdownItem
-              key="profile"
-              onClick={goToProfile}
-              startContent={<User className="w-4 h-4" />}
-            >
-              {t('profile.profile')}
-            </DropdownItem>
+          </Link>
+          <NavbarContent className="hidden md:flex gap-3">
+            <NavbarItem>
+              <Link color="foreground" href="/authors">
+                {t('navigation.authors')}
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link href="/community" aria-current="page" color="foreground">
+                {t('navigation.community')}
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link color="foreground" href="/stats">
+                {t('navigation.stats')}
+              </Link>
+            </NavbarItem>
+          </NavbarContent>
+        </NavbarContent>
+        <NavbarContent as="div" className="items-center" justify="end">
+          <Input
+            classNames={{
+              base: 'max-w-full sm:max-w-[18rem] h-10',
+              mainWrapper: 'h-full',
+              input: 'text-small',
+              inputWrapper:
+                'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20',
+            }}
+            placeholder={t('search.placeholder')}
+            size="sm"
+            startContent={<SearchIcon size={12} width={12} height={12} />}
+            type="search"
+            className='hidden lg:block'
+          />
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <div className="relative">
+                <Bell />
+                {notificatonData.filter((i: any) => !i.isRead).length > 0 && (
+                  <span className="absolute border-1 border-default-50 -top-1 -right-1 min-w-[16px] min-h-[16px] rounded-full bg-primary text-[8px] text-white flex justify-center items-center p-0 m-0">
+                    {notificatonData.filter((i: any) => !i.isRead).length > 9 ? "9+" : notificatonData.filter((i: any) => !i.isRead).length}
+                  </span>
+                )}
+              </div>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Notifications" variant="flat">
+              {notificatonData?.map((item: any) => (
+                <DropdownItem key={item._id} className="h-14 gap-2">
+                  <div className="flex items-center">
+                    {item.type === 'like' && <ThumbsUp />}
+                    {item.type === 'comment' && <MessageSquareText />}
+                    {item.type === 'follow' && <UserCheck />}
+                    {item.type === 'announcement' && <Megaphone />}
+                    {item.type === 'message' && <MessageCircleMore />}
+                    <p className="ml-2">{item.content}</p>
+                  </div>
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
 
-            <DropdownItem
-              key="logout"
-              color="danger"
-              href="/login"
-              onClick={() => logouts()}
-              startContent={<LogOut className="w-4 h-4" />}
-            >
-              {t('profile.logout')}
-            </DropdownItem>
-            <DropdownItem
-              key="/settings"
-              href="/settings"
-              startContent={<Settings className="w-4 h-4" />}
-            >
-              {t('profile.settings')}
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-        <LanguageDropdown currentLocale={locale} onChangeLanguage={changeLanguage} />
-        <Switch
-          defaultSelected
-          size="sm"
-          color="default"
-          isSelected={theme === 'dark'}
-          onValueChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
-          startContent={<Sun className="w-3.5 h-3.5 text-warning-400" />}
-          endContent={<Moon className="w-3.5 h-3.5 text-default-500" />}
-          className="ml-2"
-          aria-label="Toggle theme"
-        />
-      </NavbarContent>
+          <LanguageDropdown currentLocale={locale} onChangeLanguage={changeLanguage} />
+          <Switch
+            defaultSelected
+            size="sm"
+            color="default"
+            isSelected={theme === 'dark'}
+            onValueChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
+            startContent={<Sun className="w-3.5 h-3.5 text-warning-400" />}
+            endContent={<Moon className="w-3.5 h-3.5 text-default-500" />}
+            className="ml-2"
+            aria-label="Toggle theme"
+          />
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform ring-primary/80 min-h-8 min-w-8"
+                color="secondary"
+                name="Jason Hughes"
+                size="sm"
+                src={userData?.image ?? '/assets/avatar.png'}
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownItem key="profile" className="h-14 gap-2">
+                <p className="font-semibold">{t('profile.signedIn')}</p>
+                <p className="font-semibold">{userData.userName}</p>
+              </DropdownItem>
+              <DropdownItem
+                key="profile"
+                onClick={goToProfile}
+                startContent={<User className="w-4 h-4" />}
+              >
+                {t('profile.profile')}
+              </DropdownItem>
+
+              <DropdownItem
+                key="logout"
+                color="danger"
+                href="/login"
+                onClick={() => logouts()}
+                startContent={<LogOut className="w-4 h-4" />}
+              >
+                {t('profile.logout')}
+              </DropdownItem>
+              <DropdownItem
+                key="/settings"
+                href="/settings"
+                startContent={<Settings className="w-4 h-4" />}
+              >
+                {t('profile.settings')}
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarContent>
+      </div>
+
     </Navbar>
   );
 }
