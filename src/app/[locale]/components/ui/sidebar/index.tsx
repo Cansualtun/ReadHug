@@ -24,13 +24,14 @@ const SidebarItems = [
 
 export default function Sidebar() {
     return (
-        <div className="w-full max-w-4xl mx-auto">
+        <div className="w-full mx-auto">
             <Tabs
                 aria-label="Options"
                 color="primary"
                 variant="solid"
                 classNames={{
-                    tabList: "gap-4 p-2 bg-default-100 rounded-lg",
+
+                    tabList: "gap-4 p-2 bg-default-100 rounded-lg shadow-sm",
                     cursor: "bg-white dark:bg-default-100",
                     tab: "h-14 px-8 data-[selected=true]:text-primary",
                     tabContent: "group-data-[selected=true]:text-primary"
