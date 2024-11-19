@@ -121,7 +121,7 @@ export default function Header() {
         <NavbarContent>
           <Link href="/">
             <div className="flex justify-center items-center">
-              <Image src={"/assets/logo1.svg"} width={300} height={80} alt='' className='w-[180px] h-[48px]' />
+              <Image src={"/assets/logo1.svg"} width={240} height={60} alt='' className='w-[180px] h-[32px]' />
             </div>
           </Link>
           <NavbarContent className="hidden md:flex gap-3">
