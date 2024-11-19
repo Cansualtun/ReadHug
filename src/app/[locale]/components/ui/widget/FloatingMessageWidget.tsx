@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MessageSquare, X, Search, Send, ChevronLeft } from 'lucide-react';
 import axios from 'axios';
 import { LoaderIcon } from 'react-hot-toast';
+import Loading from '../loading';
 
 const FloatingMessageWidget = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -183,7 +184,7 @@ const FloatingMessageWidget = () => {
                     </div>
                   }) :
                     <div className="flex-1 h-full self-stretch flex items-center justify-center text-primary">
-                      <LoaderIcon />
+                      <Loading width={150} height={40} />
                     </div>
                   }
                 </div>
@@ -267,7 +268,7 @@ const FloatingMessageWidget = () => {
                   </>
                 ) : (
                   <div className="flex-1 flex items-center justify-center text-default-900">
-                    <LoaderIcon />
+                    <Loading width={150} height={40} />
                   </div>
                 )}
               </div>

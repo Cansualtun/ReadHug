@@ -16,11 +16,14 @@ import { debounce } from 'lodash';
 import axios from 'axios';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import { LoaderIcon } from 'react-hot-toast';
+import Loading from '../loading';
 
 const BookSearchModal = ({ isOpen, onClose }: any) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<any>([]);
     const [selectedBooks, setSelectedBooks] = useState<any>([]);
+    console.log("searchResults", searchResults);
 
 
     const [loading, setLoading] = useState(false);
@@ -150,8 +153,15 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} size="4xl" className='h-[calc(100vh-200px)]'>
-            <ModalContent className='flex flex-col justify-between flex-1'>
+        <Modal isOpen={isOpen} onClose={onClose} size="4xl" className='h-[calc(100vh-200px)] '>
+
+
+            <ModalContent className='flex flex-col justify-between flex-1 relative'>
+                {
+                    loadingData && <div className='absolute w-full h-full bg-default-900/20 flex justify-center items-center text-primary text-4xl' style={{ zIndex: 999999999 }}>
+                        <Loading />
+                    </div>
+                }
                 <ModalHeader className='border-b'>Kitap Ara</ModalHeader>
                 <ModalBody className=''>
                     <div className="relative" ref={dropdownRef}>
