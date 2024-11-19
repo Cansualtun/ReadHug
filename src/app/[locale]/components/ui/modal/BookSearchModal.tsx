@@ -22,6 +22,7 @@ import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import Loading from '../loading';
+import Link from 'next/link';
 
 const BookSearchModal = ({ isOpen, onClose }: any) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -191,13 +192,13 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
         <ModalHeader className="border-b flex justify-between">
           <h3> Kitap Ara</h3>
           <div className="flex items-center pr-10">
-            <Button
+            <Link
+              href={"/tr/bookRequest"}
               color="primary"
-              size="sm"
-              className="p-0 min-w-8 min-h-6 mr-2"
+              className="p-0 rounded-lg min-w-6 min-h-6 mr-2 flex justify-center items-center bg-primary"
             >
-              <BookmarkPlus size={16} />
-            </Button>
+              <BookmarkPlus size={16} className='text-white' />
+            </Link>
             <p className="text-sm">Kitap Ekleme Talebi Oluştur.</p>
             <div className="ml-2">
               <Popover

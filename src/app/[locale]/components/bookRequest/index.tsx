@@ -84,7 +84,7 @@ const BookRequests: React.FC = () => {
                 onClick={() => addDynamicInput(setter)}
                 className="flex items-center text-primary hover:text-primary/80"
             >
-                <Plus size={16} className="mr-2" /> Add {label}
+                <Plus size={16} className="mr-2" /> {label} Ekle
             </button>
         </div>
     );
