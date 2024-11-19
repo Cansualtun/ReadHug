@@ -1,12 +1,14 @@
 "use client";
+
 import { useProfileUpdateMutation } from "@/store/ProfileStore";
 import { useMeMutation } from "@/store/UserStore";
 import { formatDate } from "@/utils/formatDate";
-import { Button, Card, Input, Select, SelectItem } from "@nextui-org/react";
+import { Button, Card, CardHeader, Input, Select, SelectItem } from "@nextui-org/react";
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { useTranslations } from 'next-intl';
 import { genderOptions } from "enums/gender";
+import { User, Calendar, AtSign, UserCircle2 } from "lucide-react";
 
 export default function ProfileUpdate() {
     const t = useTranslations('ProfileUpdate');
@@ -14,15 +16,19 @@ export default function ProfileUpdate() {
     const [updateProfile] = useProfileUpdateMutation();
 
     const formik = useFormik({
-        initialValues: { firstName: "", lastName: "", userName: "", birthDate: "", gender: 0 },
+        initialValues: {
+            firstName: "",
+            lastName: "",
+            userName: "",
+            birthDate: "",
+            gender: 0
+        },
         onSubmit: async (values) => {
             try {
-                const formattedValues = {
+                await updateProfile({
                     ...values,
                     birthDate: formatDate(values.birthDate)
-                };
-
-                await updateProfile(formattedValues);
+                });
             } catch (error) {
                 console.error("Failed to update profile:", error);
             }
@@ -46,82 +52,84 @@ export default function ProfileUpdate() {
     }, [me]);
 
     return (
-        <>
-            <div className="flex flex-col gap-2 text-start ml-10 mt-4">
-                <p>{t('header.title')}</p>
-                <p className="font-light">{t('header.description')}</p>
-            </div>
-            <Card className="p-10 m-6">
-                <form onSubmit={formik.handleSubmit} className="w-full flex flex-col gap-4">
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <Input
-                            type="text"
-                            variant="underlined"
-                            label={t('form.firstName.label')}
-                            name="firstName"
-                            value={formik.values.firstName}
-                            placeholder={t('form.firstName.placeholder')}
-                            className="w-full"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                    </div>
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <Input
-                            type="text"
-                            variant="underlined"
-                            label={t('form.lastName.label')}
-                            name="lastName"
-                            value={formik.values.lastName}
-                            placeholder={t('form.lastName.placeholder')}
-                            className="w-full"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                    </div>
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <Input
-                            type="text"
-                            variant="underlined"
-                            label={t('form.userName.label')}
-                            name="userName"
-                            value={formik.values.userName}
-                            placeholder={t('form.userName.placeholder')}
-                            className="w-full"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                    </div>
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <Input
-                            type="date"
-                            variant="underlined"
-                            label={t('form.birthDate.label')}
-                            name="birthDate"
-                            value={formatDate(formik.values.birthDate)}
-                            placeholder={t('form.birthDate.placeholder')}
-                            className="w-full"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                    </div>
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <Select
-                            label={t('form.gender.label')}
-                            placeholder={t('form.gender.placeholder')}
-                        >
-                            {genderOptions.map((item) => (
-                                <SelectItem key={item.value.toString()} value={item.value.toString()}>
-                                    {item.label}
-                                </SelectItem>
-                            ))}
-                        </Select>
-                    </div>
-                    <Button type="submit" disabled={isLoading} className="mt-4 w-32" color="default">
-                        {isLoading ? t('form.submit.saving') : t('form.submit.default')}
+        <Card className="p-6 bg-default-100">
+            <CardHeader>Profile Update</CardHeader>
+            <form onSubmit={formik.handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Input
+                        type="text"
+                        variant="bordered"
+                        label={t('form.firstName.label')}
+                        name="firstName"
+                        value={formik.values.firstName}
+                        placeholder={t('form.firstName.placeholder')}
+                        startContent={<User className="w-4 h-4 text-default-400" />}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    <Input
+                        type="text"
+                        variant="bordered"
+                        label={t('form.lastName.label')}
+                        name="lastName"
+                        value={formik.values.lastName}
+                        placeholder={t('form.lastName.placeholder')}
+                        startContent={<User className="w-4 h-4 text-default-400" />}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                </div>
+                <Input
+                    type="text"
+                    variant="bordered"
+                    label={t('form.userName.label')}
+                    name="userName"
+                    value={formik.values.userName}
+                    placeholder={t('form.userName.placeholder')}
+                    startContent={<AtSign className="w-4 h-4 text-default-400" />}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Input
+                        type="date"
+                        variant="bordered"
+                        label={t('form.birthDate.label')}
+                        name="birthDate"
+                        value={formatDate(formik.values.birthDate)}
+                        placeholder={t('form.birthDate.placeholder')}
+                        startContent={<Calendar className="w-4 h-4 text-default-400" />}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    <Select
+                        variant="bordered"
+                        label={t('form.gender.label')}
+                        placeholder={t('form.gender.placeholder')}
+                        startContent={<UserCircle2 className="w-4 h-4 text-default-400" />}
+                        selectedKeys={[formik.values.gender.toString()]}
+                        onChange={(e) => formik.setFieldValue('gender', parseInt(e.target.value))}
+                    >
+                        {genderOptions.map((item) => (
+                            <SelectItem key={item.value.toString()} value={item.value}>
+                                {item.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
+                </div>
+                <div className="flex justify-end">
+                    <Button
+                        type="submit"
+                        disabled={isLoading}
+                        color="primary"
+                        className="px-8"
+                        size="md"
+                    >
+                        {t('form.submit.default')}
                     </Button>
-                </form>
-            </Card>
-        </>
+                </div>
+            </form>
+        </Card>
+
     );
 }

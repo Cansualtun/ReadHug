@@ -122,22 +122,21 @@ export default function Header() {
           <Link href="/">
             <div className="flex justify-center items-center">
               <Image src={"/assets/logo1.svg"} width={300} height={80} alt='' className='w-[180px] h-[48px]' />
-
             </div>
           </Link>
           <NavbarContent className="hidden md:flex gap-3">
             <NavbarItem>
-              <Link color="foreground" href="/authors">
+              <Link color="foreground" href="/authors" className='text-default-500'>
                 {t('navigation.authors')}
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Link href="/community" aria-current="page" color="foreground">
+              <Link href="/community" aria-current="page" color="foreground" className='text-default-500'>
                 {t('navigation.community')}
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Link color="foreground" href="/stats">
+              <Link color="foreground" href="/stats" className='text-default-500'>
                 {t('navigation.stats')}
               </Link>
             </NavbarItem>
@@ -210,10 +209,6 @@ export default function Header() {
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">{t('profile.signedIn')}</p>
-                <p className="font-semibold">{userData.userName}</p>
-              </DropdownItem>
               <DropdownItem
                 key="profile"
                 onClick={goToProfile}
@@ -221,7 +216,13 @@ export default function Header() {
               >
                 {t('profile.profile')}
               </DropdownItem>
-
+              <DropdownItem
+                key="/settings"
+                href="/settings"
+                startContent={<Settings className="w-4 h-4" />}
+              >
+                {t('profile.settings')}
+              </DropdownItem>
               <DropdownItem
                 key="logout"
                 color="danger"
@@ -230,13 +231,6 @@ export default function Header() {
                 startContent={<LogOut className="w-4 h-4" />}
               >
                 {t('profile.logout')}
-              </DropdownItem>
-              <DropdownItem
-                key="/settings"
-                href="/settings"
-                startContent={<Settings className="w-4 h-4" />}
-              >
-                {t('profile.settings')}
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>

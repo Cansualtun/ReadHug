@@ -1,7 +1,7 @@
 {
   "LoginForm": {
     "title": "Giriş Yap",
-    "subtitle": "booksapp.org",
+    "subtitle": "readhug.com",
     "email": {
       "label": "E-posta",
       "placeholder": "E-posta adresinizi girin"
@@ -18,7 +18,7 @@
   },
   "RegisterForm": {
     "title": "Kayıt Ol",
-    "subtitle": "booksapp.org",
+    "subtitle": "readhug.com",
     "email": {
       "label": "E-posta",
       "placeholder": "E-posta adresinizi girin"

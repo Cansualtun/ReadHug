@@ -1,6 +1,6 @@
 "use client";
 import { useFormik } from "formik";
-import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Input, Button } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Input, Button, Image } from "@nextui-org/react";
 import { useState } from "react";
 import { EyeSlashFilledIcon } from "../ui/svg/EyeSlashFilledIcon";
 import { EyeFilledIcon } from "../ui/svg/EyeFilledIcon";
@@ -29,9 +29,18 @@ const LoginForm = () => {
 
     return (
         <Card className="w-[400px] p-4">
-            <CardHeader className="flex flex-col items-center">
-                <p className="text-md">{t('title')}</p>
-                <p className="text-small text-default-500">{t('subtitle')}</p>
+            <CardHeader>
+                <div className="flex flex-row w-full justify-center space-x-4">
+                    <Image
+                        alt="nextui logo"
+                        src="/"
+                        className='w-[70px] h-[48px]'
+                    />
+                    <div className="flex flex-col">
+                        <p className="text-md">{t('title')}</p>
+                        <p className="text-small text-default-500">{t('subtitle')}</p>
+                    </div>
+                </div>
             </CardHeader>
             <Divider />
             <CardBody className="flex flex-col items-center space-y-4">
@@ -86,7 +95,7 @@ const LoginForm = () => {
             </CardBody>
             <Divider />
             <CardFooter>
-                <Link href="/register">{t('createAccount')}</Link>
+                <Link href="/register" className="text-sm">{t('createAccount')}</Link>
             </CardFooter>
         </Card>
     );

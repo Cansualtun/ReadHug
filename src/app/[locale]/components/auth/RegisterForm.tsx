@@ -32,10 +32,9 @@ export default function RegisterForm() {
                 <div className="flex flex-row w-full justify-center space-x-4">
                     <Image
                         alt="nextui logo"
-                        height={40}
                         radius="sm"
-                        src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-                        width={40}
+                        src="/"
+                        className='w-[70px] h-[48px]'
                     />
                     <div className="flex flex-col">
                         <p className="text-md">{t('title')}</p>
@@ -118,7 +117,7 @@ export default function RegisterForm() {
             </CardBody>
             <Divider />
             <CardFooter>
-                <Link href="/login">{t('loginLink')}</Link>
+                <Link href="/login" className="text-sm">{t('loginLink')}</Link>
             </CardFooter>
         </Card>
     );

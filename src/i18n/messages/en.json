@@ -1,7 +1,7 @@
 {
   "LoginForm": {
     "title": "Login",
-    "subtitle": "booksapp.org",
+    "subtitle": "readhug.com",
     "email": {
       "label": "Email",
       "placeholder": "Enter your email"
@@ -18,7 +18,7 @@
   },
   "RegisterForm": {
     "title": "Register",
-    "subtitle": "booksapp.org",
+    "subtitle": "readhug.com",
     "email": {
       "label": "Email",
       "placeholder": "Enter your email"

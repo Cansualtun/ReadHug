@@ -3,7 +3,7 @@ import { useGetUserBookSearchMutation } from '@/store/BookStore';
 import { usePostShareMutation } from '@/store/PostStore';
 import { Avatar, Button, Card, Input, Textarea } from '@nextui-org/react';
 import axios from 'axios';
-import { CircleX } from 'lucide-react';
+import { BookOpen, CircleX, User2 } from 'lucide-react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
@@ -113,119 +113,158 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
     <Card
       shadow="sm"
       ref={containerRef}
-      className={`relative w-full p-2 bg-default-50 dark:bg-default-200 transition-all backdrop-saturate-150 backdrop-blur-md bg-background/90 ${isExpanded ? 'h-auto' : 'h-[56px] overflow-hidden'}`}
+      className={`w-full transition-all duration-300 ${isExpanded
+        ? 'p-4'
+        : 'p-2 transform hover:scale-[1.01] cursor-pointer'
+        }`}
+      onClick={() => !isExpanded && setIsExpanded(true)}
     >
-      <div className="flex justify-between w-full mb-0">
-        <Input
-          type="text"
-          placeholder="Kitaplarınızda arayın..."
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-          }}
-          onFocus={() => setIsExpanded(true)}
-          className="mb-2 mr-4"
-        />
-        <div className="flex items-start gap-4">
-          <div className="flex flex-col items-end text-right">
-            <p className="text-md font-semibold">{userData?.userName}</p>
-            <p className="text-xs text-default-800">
-              {userData?.firstName + ' ' + userData?.lastName}
-            </p>
-          </div>
-          <Avatar
-            src={userData?.image ?? '/assets/avatar.png'}
-            size="md"
-            className="bg-primary border-2 border-white shadow-md"
-          />
-        </div>
-      </div>
-
-      {isExpanded && searchTerm && books.length > 0 && (
-        <div className="bg-default-100  border border-default-200 text-default-900 rounded-lg shadow-md max-h-40 overflow-y-auto mb-4 transition-all absolute top-[52px] z-50 w-full max-w-lg divide-y-1 divide-default-200">
-          {books.map((book: any) => (
-            <div
-              key={book?._id}
-              className="p-2 hover:bg-default-200  cursor-pointer flex"
-              onClick={() => handleBookSelect(book)}
-            >
-              <div>
-                <Image
-                  className="rounded-lg border-2 shadow-sm"
-                  src={book?.book?.book_img ?? '/assets/avatar.png'}
-                  alt={book?.book?.name}
-                  width={32}
-                  height={64}
+      <div className={`flex flex-col gap-4 ${!isExpanded && 'opacity-90 hover:opacity-100'}`}>
+        {/* Header Section */}
+        <div className={`flex items-center justify-between transition-all duration-300 ${!isExpanded ? 'transform scale-95' : ''
+          }`}>
+          <div className={`flex-1 max-w-md transition-all duration-300 ${!isExpanded ? 'max-w-[200px]' : ''
+            }`}>
+            <Input
+              type="text"
+              placeholder={isExpanded ? "Search in your books..." : "Click to share a book..."}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={() => setIsExpanded(true)}
+              startContent={
+                <BookOpen
+                  className={`transition-all duration-300 ${isExpanded ? 'text-default-400 w-4 h-4' : 'text-primary w-5 h-5'
+                    }`}
                 />
-              </div>
-              <div className="ml-4">
-                <p>{book?.book?.name}</p>
-                <p>{book?.author?.name}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {isExpanded && selectedBook && (
-        <Card className="mb-2 pl-4 flex flex-row items-start p-2 relative bg-default-100">
-          <div role='button' className='absolute top-2 right-2' onClick={() => setSelectedBook(null)}>
-            <CircleX className='text-primary' />
-          </div>
-          <div>
-            <Image
-              className="rounded-lg border-2 shadow-sm"
-              src={selectedBook?.book?.book_img ?? '/assets/avatar.png'}
-              alt={selectedBook?.bookName}
-              width={64}
-              height={128}
+              }
+              classNames={{
+                input: `text-sm transition-all duration-300 ${!isExpanded ? 'pl-2' : ''}`,
+                inputWrapper: `transition-all duration-300 ${!isExpanded
+                  ? 'h-8 min-h-8 py-0 bg-transparent hover:bg-default-100'
+                  : 'h-10'
+                  }`
+              }}
+              isReadOnly={!isExpanded}
             />
           </div>
-          <div className="ml-4 text-small flex flex-col items-start justify-start">
-            <div className='flex items-start mr-2'>
-              <p className='font-semibold min-w-[90px]'>Kitap Adı</p>
-              <p className=''> : {selectedBook?.bookName}</p>
+          <div className={`flex items-center gap-3 ml-4 transition-all duration-300 ${!isExpanded ? 'scale-90' : ''
+            }`}>
+            <div className="flex flex-col items-end">
+              <span className="text-sm font-semibold">@{userData?.userName}</span>
+              <span className={`text-xs text-default-500 transition-all duration-300 ${!isExpanded ? 'hidden' : 'block'
+                }`}>
+                {userData?.firstName} {userData?.lastName}
+              </span>
             </div>
-
-            <div className='flex items-start mr-2'>
-              <p className='font-semibold min-w-[90px]'>Yazar</p>
-              <p className=''> : {selectedBook?.author?.name}</p>
-            </div>
-            {
-              selectedBook?.book?.pages_count && <div className='flex items-start mr-2'>
-                <p className='font-semibold  min-w-[90px]'>Sayfa Sayısı</p>
-                <p className=''> : {selectedBook?.book?.pages_count}</p>
-              </div>
-            }
-
-            {/* <div className='flex items-start mr-2'>
-              <p className='font-semibold  min-w-[90px]'>Yayın Evi</p>
-              <p className=''> : {selectedBook?.book?.pages_count}</p>
-            </div> */}
-
+            <Avatar
+              src={userData?.image ?? '/assets/avatar.png'}
+              size={isExpanded ? "sm" : "xs"}
+              className={`transition-all duration-300 ${isExpanded
+                ? 'border-2 border-primary/20'
+                : 'border border-primary/10'
+                }`}
+            />
           </div>
-        </Card>
-      )}
+        </div>
 
-      {isExpanded && (
-        <Textarea
-          label="Kitap hakkında bir şeyler yazın..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className="mb-4"
-        />
-      )}
+        {/* Search Results - Only show when expanded */}
+        {isExpanded && searchTerm && books.length > 0 && (
+          <div className="absolute top-16 left-0 w-full max-w-md z-50">
+            <Card className="w-full p-1 shadow-lg">
+              <div className="max-h-48 overflow-y-auto divide-y divide-default-200">
+                {books.map((book: any) => (
+                  <div
+                    key={book?._id}
+                    className="flex items-center gap-3 p-2 hover:bg-default-100 cursor-pointer transition-colors"
+                    onClick={() => handleBookSelect(book)}
+                  >
+                    <div className="relative w-10 h-14 flex-shrink-0">
+                      <Image
+                        src={book?.book?.book_img ?? '/assets/book-placeholder.png'}
+                        alt={book?.book?.name}
+                        fill
+                        className="rounded-sm object-cover"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">{book?.book?.name}</p>
+                      <p className="text-xs text-default-500 truncate">{book?.author?.name}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+        )}
 
-      {isExpanded && (
-        <Button
-          color="primary"
-          className="disabled:bg-default-500 bg-primary"
-          disabled={!selectedBook || !content}
-          onClick={handleSubmit}
-        >
-          Share Post
-        </Button>
-      )}
+        {/* Selected Book Card - Only show when expanded */}
+        {isExpanded && selectedBook && (
+          <Card className="p-3 bg-default-50">
+            <div className="flex gap-4 relative">
+              <button
+                onClick={() => setSelectedBook(null)}
+                className="absolute right-2 top-2 text-default-400 hover:text-danger transition-colors"
+              >
+                <CircleX size={20} />
+              </button>
+
+              <div className="relative w-20 h-28 flex-shrink-0">
+                <Image
+                  src={selectedBook?.book?.book_img ?? '/assets/book-placeholder.png'}
+                  alt={selectedBook?.bookName}
+                  fill
+                  className="rounded-md shadow-sm object-cover"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2 min-w-0">
+                <div className="flex items-center gap-2">
+                  <BookOpen size={16} className="text-primary flex-shrink-0" />
+                  <span className="text-sm font-medium truncate">
+                    {selectedBook?.book?.name}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <User2 size={16} className="text-primary flex-shrink-0" />
+                  <span className="text-sm text-default-600 truncate">
+                    {selectedBook?.author?.name}
+                  </span>
+                </div>
+                {selectedBook?.book?.pages_count && (
+                  <span className="text-xs text-default-500">
+                    {selectedBook.book.pages_count} pages
+                  </span>
+                )}
+              </div>
+            </div>
+          </Card>
+        )}
+        {isExpanded && (
+          <div className="space-y-4">
+            <Textarea
+              placeholder="Share your thoughts about this book..."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              minRows={3}
+              classNames={{
+                input: "text-sm"
+              }}
+            />
+
+            <div className="flex justify-end">
+              <Button
+                color="primary"
+                className="px-8 text-sm font-medium"
+                disabled={!selectedBook || !content}
+                onClick={handleSubmit}
+                size="sm"
+              >
+                Share
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
     </Card>
   );
 };

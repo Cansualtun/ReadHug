@@ -54,7 +54,7 @@ export default async function RootLayout({
             <Toaster position="top-center" />
             <div className="flex min-h-screen flex-col bg-default-50">
               <Header />
-              <main className="flex-1 container mx-auto py-10 ">{children}</main>
+              <main className="flex-1 container mx-auto py-10">{children}</main>
               <Footer />
             </div>
             <FloatingMessageWidget />
