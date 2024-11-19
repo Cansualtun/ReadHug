@@ -15,7 +15,7 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                     <div className="flex flex-col gap-4">
                         <div className="relative">
                             <Image
-                                src={book.bookId.book_img}
+                                src={book?.bookId?.book_img}
                                 alt={book.bookId?.name}
                                 width={300}
                                 height={450}
@@ -37,9 +37,9 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                         <div>
                             <h1 className="text-3xl font-bold mb-2">{book.bookId?.name}</h1>
                             <div className="flex items-center gap-4 mb-6">
-                                <p className="text-xl text-default-700">{book.bookId.author?.name}</p>
+                                <p className="text-xl text-default-700">{book?.bookId?.author?.name}</p>
                                 <span className="text-default-700">•</span>
-                                <p className="text-default-700">{book.bookId.publisher?.name}</p>
+                                <p className="text-default-700">{book?.bookId?.publisher?.name}</p>
                             </div>
                         </div>
 
@@ -69,15 +69,15 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                         <div className="grid grid-cols-2 gap-4 mb-6">
                             <div className="space-y-2">
                                 <p className="text-default-700">
-                                    <span className="font-semibold">Yayın Yılı:</span> {book.bookId.publication_year}
+                                    <span className="font-semibold">Yayın Yılı:</span> {book?.bookId?.publication_year}
                                 </p>
                                 <p className="text-default-700">
-                                    <span className="font-semibold">ISBN:</span> {book.bookId.ISBN}
+                                    <span className="font-semibold">ISBN:</span> {book?.bookId?.ISBN}
                                 </p>
                             </div>
                             <div className="space-y-2">
                                 <p className="text-default-700">
-                                    <span className="font-semibold">Sayfa Sayısı:</span> {book.bookId.pages_count}
+                                    <span className="font-semibold">Sayfa Sayısı:</span> {book?.bookId?.pages_count}
                                 </p>
                                 <p className="text-default-700">
                                     <span className="font-semibold">Ekleme Tarihi:</span> {new Date(book.createdAt).toLocaleDateString('tr-TR')}
@@ -88,7 +88,7 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                         <div>
                             <h3 className="text-xl font-semibold mb-3">Kitap Hakkında</h3>
                             <p className="text-default-900 leading-relaxed">
-                                {book.bookId.explanation}
+                                {book?.bookId?.explanation}
                             </p>
                         </div>
                     </div>

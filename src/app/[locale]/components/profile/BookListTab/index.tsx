@@ -105,12 +105,12 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     {allData.map((book: any) => (
                         <div key={book._id} className="flex items-start space-x-4 p-4 hover:bg-default-100 rounded-lg transition-colors">
                             <img
-                                src={book.bookId.book_img || "https://picsum.photos/100/150"}
-                                alt={book.bookId.name}
+                                src={book?.bookId?.book_img || "https://picsum.photos/100/150"}
+                                alt={book?.bookId?.name}
                                 className="w-20 h-28 object-cover rounded-md shadow-md"
                             />
                             <div className="flex-1">
-                                <h3 className="font-semibold text-lg">{book.bookId.name}</h3>
+                                <h3 className="font-semibold text-lg">{book?.bookId?.name}</h3>
                                 <p className="text-default-500">
                                     {t('bookInfo.author', { name: book.bookId?.author?.name })}
                                 </p>
@@ -118,7 +118,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                                     <div className="mt-4 space-y-3">
                                         <ProgressBar
                                             value={parseFloat(book.process?.percent || "0")}
-                                            total={book.process?.pageCount || book.bookId.pages_count || 0}
+                                            total={book.process?.pageCount || book?.bookId?.pages_count || 0}
                                             currentValue={book.process?.readCount || 0}
                                             showChip
                                             showCompletedMessage
@@ -135,9 +135,9 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                                 )}
                                 {type === BookType.Read && (
                                     <div className="mt-2 text-sm text-default-400">
-                                        <span>{t('bookInfo.pageCount', { count: book.bookId.pages_count })}</span>
+                                        <span>{t('bookInfo.pageCount', { count: book?.bookId?.pages_count })}</span>
                                         <span className="mx-2">•</span>
-                                        <span>{t('bookInfo.publicationYear', { year: book.bookId.publication_year })}</span>
+                                        <span>{t('bookInfo.publicationYear', { year: book?.bookId?.publication_year })}</span>
                                     </div>
                                 )}
                                 {type === BookType.WishList && (

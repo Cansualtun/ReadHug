@@ -15,11 +15,14 @@ import { Search } from "lucide-react";
 import { debounce } from 'lodash';
 import axios from 'axios';
 import Image from 'next/image';
+import { toast } from 'sonner';
 
 const BookSearchModal = ({ isOpen, onClose }: any) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<any>([]);
     const [selectedBooks, setSelectedBooks] = useState<any>([]);
+
+
     const [loading, setLoading] = useState(false);
     const [loadingData, setLoadingData] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -129,15 +132,15 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                 }
             }
             setLoadingData(false)
-            selectedBooks([])
+            setSelectedBooks([])
             onClose()
-        } catch (error) {
+        } catch (error: any) {
             setLoadingData(false)
-            selectedBooks([])
+            toast.error(error?.response?.data?.message)
             console.log("error", error);
 
         }
-        onClose();
+
     };
 
     return (
@@ -168,7 +171,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                                         onClick={() => handleBookSelect(book)}
                                     >
                                         <Image
-                                            src={book.book_img ?? "/assets/book-placeholder.png"}
+                                            src={book?.images?.thumbnail ?? "/assets/book-placeholder.png"}
                                             alt={book.name}
                                             className="h-12 w-8 object-fill border border-primary/20 rounded-md"
                                             width={32}
@@ -176,7 +179,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                                         />
                                         <div className=''>
                                             <p className="font-medium text-default-900">{book.name}</p>
-                                            <p className="text-sm text-default-700">{book._id ? book?.author?.name || "" : book.author}</p>
+                                            <p className="text-sm text-default-700">{book._id ? book?.author?.name || "" : book.authors}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -193,7 +196,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                                         <div className="flex flex-col md:flex-row md:justify-between items-center gap-4">
                                             <div className='flex justify-start items-center flex-1 w-full'>
                                                 <Image
-                                                    src={book.book_img ?? "/assets/book-placeholder.png"}
+                                                    src={book?.images?.thumbnail ?? "/assets/book-placeholder.png"}
                                                     alt={book.name}
                                                     className="h-20 w-16 object-fill border border-primary/20 rounded-md"
                                                     width={60}
@@ -201,7 +204,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                                                 />
                                                 <div className="flex-grow ml-2">
                                                     <h3 className="font-semibold text-default-900">{book.name}</h3>
-                                                    <p className="text-sm text-default-700">{book._id ? book.author?.name : book.author}</p>
+                                                    <p className="text-sm text-default-700">{book._id ? book.author?.name || " " : book.authors}</p>
                                                 </div>
                                             </div>
                                             <Select
