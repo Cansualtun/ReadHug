@@ -17,8 +17,8 @@ export default function ReadingTracker() {
     ]
 
     return (
-        <div className="w-full max-w-2xl mx-auto space-y-4 p-4">
-            <Card className='bg-gray-50'>
+        <div className="w-full max-w-2xl mx-auto space-y-4 p-4 pb-0 sticky top-[55px]">
+            <Card className='bg-default-100'>
                 <CardHeader className="border-b">
                     <h2 className="text-lg font-semibold flex items-center gap-2">
                         <BookOpen className="h-5 w-5" />
@@ -35,7 +35,7 @@ export default function ReadingTracker() {
                                 objectFit="cover"
                                 className="rounded-lg transition-all duration-200"
                             />
-                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
+                            <div className="absolute inset-0 bg-default-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
                                 <Button size="sm" variant="flat" color="default">
                                     {t('currentlyReading.viewDetails')}
                                 </Button>
@@ -53,20 +53,21 @@ export default function ReadingTracker() {
                                     currentValue={30}
                                     showChip
                                     showCompletedMessage
-                                    progressColor="success"
+                                    progressColor="warning"
                                     labelPosition="top"
                                     showPage={false}
+
                                 />
                                 {progress >= 100 && (
-                                    <div className="flex items-center gap-1.5 text-success text-small">
+                                    <div className="flex items-center gap-1.5 text-primary text-small">
                                         <CheckCircle size={14} />
                                         <span className="font-medium">{t('currentlyReading.bookCompleted')}</span>
                                     </div>
                                 )}
                             </div>
                             <Button
-                                color="success"
-                                className="w-full"
+
+                                className="w-full bg-primary text-white"
                                 onPress={() => setProgress((p) => Math.min(100, p + 10))}
                             >
                                 {t('currentlyReading.updateProgress')}
@@ -76,7 +77,7 @@ export default function ReadingTracker() {
                 </CardBody>
             </Card>
 
-            <Card className='bg-gray-50'>
+            <Card className='bg-default-100'>
                 <CardHeader className="border-b">
                     <h2 className="text-lg font-semibold flex items-center gap-2">
                         <Library className="h-5 w-5" />

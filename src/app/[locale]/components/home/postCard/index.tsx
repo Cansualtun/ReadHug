@@ -38,7 +38,7 @@ export default function Post({ post }: any) {
             setIsLiked(post.isLiked)
     }, [])
     return (
-        <div className="relative w-full max-w-2xl mt-4 p-2">
+        <div className="relative w-full mt-10 p-2">
             <div className="absolute -top-8 left-10 z-10">
                 <Link href={`/personalBooks/${post?.book?.slug}`}>
                     <Card isHoverable className="w-28 h-36 border-0">
@@ -52,34 +52,34 @@ export default function Post({ post }: any) {
                     </Card>
                 </Link>
             </div>
-            <Card className="w-full rounded-lg bg-gradient-to-r bg-gray-50">
+            <Card shadow='sm' className="w-full rounded-lg bg-gradient-to-r bg-default-100">
                 <CardHeader className="flex justify-between items-center px-8 pt-10 pb-4">
                     <div className="flex flex-col ml-32 space-y-1">
                         <p className="text-lg font-bold">{post?.book?.bookId?.name}</p>
-                        <p className="text-xs text-gray-600">{post?.book.bookId.author.name}</p>
+                        <p className="text-xs text-default-900">{post?.book?.bookId?.author?.name}</p>
                     </div>
                     <div className="flex items-center gap-4">
                         <div className="flex flex-col items-end text-right">
                             <p className="text-md font-semibold">{post?.user?.userName}</p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-default-900">
                                 {post?.user?.firstName + " " + post?.user?.lastName}
                             </p>
                         </div>
                         <Avatar
                             src={post?.user?.image ?? "/assets/avatar.png"}
                             size="lg"
-                            className="bg-primary border-2 border-white shadow-md"
+                            className="bg-primary border-2 border-default-100 shadow-md"
                         />
                     </div>
                 </CardHeader>
                 <Divider />
                 <CardBody className="px-8 py-6">
-                    <p className="font-light text-sm leading-relaxed text-gray-700">
+                    <p className="font-light text-sm leading-relaxed text-default-900">
                         {post?.content}
                     </p>
                 </CardBody>
                 <Divider />
-                <CardFooter className="flex justify-between items-center px-8 py-4 bg-gray-50">
+                <CardFooter className="flex justify-between items-center px-8 py-4 bg-default-100">
                     <div className="flex gap-5">
                         <Button
                             variant="flat"
@@ -102,7 +102,7 @@ export default function Post({ post }: any) {
                             Comment: {post?.commentCount}
                         </Button>
                     </div>
-                    <p className="text-xs text-gray-400">24.11.2024 12:25</p>
+                    <p className="text-xs text-default-900">24.11.2024 12:25</p>
                 </CardFooter>
 
                 {showComments && (
@@ -149,11 +149,11 @@ export default function Post({ post }: any) {
                                                     <p className="font-semibold text-sm">
                                                         {comment.user.userName}
                                                     </p>
-                                                    <p className="text-xs text-default-400">
+                                                    <p className="text-xs text-default-900">
                                                         {comment.timestamp}
                                                     </p>
                                                 </div>
-                                                <p className="text-sm text-default-700">
+                                                <p className="text-sm text-default-800">
                                                     {comment.content}
                                                 </p>
                                             </div>

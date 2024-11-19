@@ -15,7 +15,7 @@ const LanguageDropdown: React.FC<LanguageDropdownProps> = ({ currentLocale, onCh
         <Dropdown placement="bottom-end">
             <DropdownTrigger>
                 <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-default-100 hover:bg-default-200 cursor-pointer">
-                    <Languages className="w-4 h-4" />
+                    <Languages className="w-4 h-4 text-primary/80" />
                     <span className="text-sm font-medium">{currentLocale.toUpperCase()}</span>
                 </div>
             </DropdownTrigger>

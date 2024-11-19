@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface PostState {
   postComment: {} | null;
+  postShare: {} | null;
 }
 
 const initialState: PostState = {
   postComment: null,
+  postShare: null,
 };
 
 const postSlice = createSlice({
@@ -25,9 +27,27 @@ const postSlice = createSlice({
     clearPostStore(state) {
       state.postComment = null;
     },
+    setPostShareStore(
+      state,
+      action: PayloadAction<{
+        postShare?: PostState['postShare'];
+      }>,
+    ) {
+      if (action.payload.postShare) {
+        state.postShare = action.payload.postShare;
+      }
+    },
+    clearPostShareStore(state) {
+      state.postShare = null;
+    },
   },
 });
 
-export const { setPostStore, clearPostStore } = postSlice.actions;
+export const {
+  setPostStore,
+  clearPostStore,
+  setPostShareStore,
+  clearPostShareStore,
+} = postSlice.actions;
 
 export default postSlice.reducer;

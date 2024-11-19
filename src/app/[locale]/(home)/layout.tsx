@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "@/styles/special.scrollbar.css"
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 import React from "react";
@@ -7,10 +8,10 @@ import { Toaster } from "sonner";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 import Header from "../components/ui/navbar";
 import Footer from "../components/ui/footer";
 import FloatingMessageWidget from "../components/ui/widget/FloatingMessageWidget";
-import { getMessages } from "next-intl/server";
 
 
 export const metadata: Metadata = {
@@ -51,12 +52,13 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
             <Toaster position="top-center" />
-            <div className="flex min-h-screen flex-col">
+            <div className="flex min-h-screen flex-col bg-default-50">
               <Header />
-              <main className="flex-1 container mx-auto py-10">{children}</main>
+              <main className="flex-1 container mx-auto py-10 ">{children}</main>
               <Footer />
             </div>
             <FloatingMessageWidget />
+
           </Providers>
         </NextIntlClientProvider>
       </body>

@@ -1,7 +1,8 @@
+
 /* Scroll bar genel yapı */
 .scroll-container {
     scrollbar-width: thin; /* Firefox için */
-    scrollbar-color: #4a90e2 #f0f0f0; /* Thumb ve Track renkleri (Firefox) */
+    scrollbar-color: theme(colors.primary/80) transparent; /* Thumb ve Track renkleri (Firefox) */
   }
   
   /* Chrome, Edge ve Safari */
@@ -10,17 +11,17 @@
   }
   
   .scroll-container::-webkit-scrollbar-track {
-    background: #f0f0f0; /* Arka plan rengi */
+    background: transparent; /* Arka plan rengi */
     border-radius: 10px;
   }
   
   .scroll-container::-webkit-scrollbar-thumb {
-    background: #4a90e2; /* Scroll bar'ın kendisi */
+    background: theme(colors.primary/80); /* Scroll bar'ın kendisi */
     border-radius: 10px;
-    border: 2px solid #f0f0f0; /* Track ile thumb arasında boşluk */
+    border: 2px solid transparent; /* Track ile thumb arasında boşluk */
   }
   
   .scroll-container::-webkit-scrollbar-thumb:hover {
-    background: #357ab7; /* Hover rengi */
+    background: theme(colors.primary); /* Hover rengi */
   }
   

@@ -40,7 +40,7 @@ const ProfileCard = ({ profileData }: any) => {
                     className="w-24 h-24 text-large ring-white dark:ring-gray-800"
                 />
                 <div className="mt-3 text-center">
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-amber-500 bg-clip-text text-transparent">
                         {userProfileData?.user?.firstName} {userProfileData?.user?.lastName}
                     </h2>
                     <p className="text-default-500 text-sm">@{userProfileData?.user?.userName}</p>

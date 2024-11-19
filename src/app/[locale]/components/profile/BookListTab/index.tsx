@@ -1,17 +1,21 @@
 "use client"
-import React, { useEffect, useState } from 'react';
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-import { BookOpen, BookMarked, BookPlus, MessageCircle, CheckCircleIcon } from "lucide-react";
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { Selection } from "@nextui-org/react";
-import { useTranslations } from 'next-intl';
-import ProgressBar from '../../ui/progressBar';
-import PostCard from '../../home/postCard';
+import { useMeMutation } from '@/store/UserStore';
+import { Card, CardBody, Selection, Tab, Tabs } from "@nextui-org/react";
 import { BookType } from 'enums/bookType';
+import { BookMarked, BookOpen, BookPlus, CheckCircleIcon, MessageCircle, PlusCircle } from "lucide-react";
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import PostCard from '../../home/postCard';
+import ProgressBar from '../../ui/progressBar';
+import BookPostComponent from '../../ui/widget/BookPostComponent';
+import BookSearchModal from '../../ui/modal/BookSearchModal';
 
 
 const BookListTabs = ({ bookLists, slug, post }: any) => {
     const t = useTranslations('BookListTabs');
+    const [me] = useMeMutation();
+    const [userData, setUserData] = useState<any>(null);
     const [serverBooks] = useState(bookLists.data || []);
     const [userPost, setUserPost] = useState([]);
     const [additionalBooks, setAdditionalBooks] = useState<any[]>([]);
@@ -19,6 +23,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
     const [page, setPage] = useState(2);
     const [selectedTab, setSelectedTab] = useState("1");
     const [loading, setLoading] = useState(false);
+    const [openBookModal, setOpenBookModal] = useState(false);
 
     const EmptyState = ({ message }: { message: string }) => (
         <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
@@ -28,6 +33,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
 
     useEffect(() => {
         setUserPost(post.data)
+        meData()
     }, [post])
 
     const loadMore = async () => {
@@ -62,8 +68,17 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
         }
     };
 
-    const handleTabChange = (key: Selection) => {
+    const meData = async () => {
+        const data = await me();
+        setUserData(data.data)
+    }
+
+    const handleTabChange = (key: Selection | string) => {
         const selectedKey = Array.from(key)[0] as string;
+        if (key == "post") {
+            setOpenBookModal(true)
+            return
+        }
         setSelectedTab(key as any);
         setAdditionalBooks([]);
         setPage(2);
@@ -90,20 +105,20 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     {allData.map((book: any) => (
                         <div key={book._id} className="flex items-start space-x-4 p-4 hover:bg-default-100 rounded-lg transition-colors">
                             <img
-                                src={book.bookId.book_img || "https://picsum.photos/100/150"}
-                                alt={book.bookId.name}
+                                src={book?.bookId?.book_img || "https://picsum.photos/100/150"}
+                                alt={book?.bookId?.name}
                                 className="w-20 h-28 object-cover rounded-md shadow-md"
                             />
                             <div className="flex-1">
-                                <h3 className="font-semibold text-lg">{book.bookId.name}</h3>
+                                <h3 className="font-semibold text-lg">{book?.bookId?.name}</h3>
                                 <p className="text-default-500">
-                                    {t('bookInfo.author', { name: book.bookId.author.name })}
+                                    {t('bookInfo.author', { name: book.bookId?.author?.name })}
                                 </p>
                                 {type === BookType.Reading && (
                                     <div className="mt-4 space-y-3">
                                         <ProgressBar
                                             value={parseFloat(book.process?.percent || "0")}
-                                            total={book.process?.pageCount || book.bookId.pages_count || 0}
+                                            total={book.process?.pageCount || book?.bookId?.pages_count || 0}
                                             currentValue={book.process?.readCount || 0}
                                             showChip
                                             showCompletedMessage
@@ -120,9 +135,9 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                                 )}
                                 {type === BookType.Read && (
                                     <div className="mt-2 text-sm text-default-400">
-                                        <span>{t('bookInfo.pageCount', { count: book.bookId.pages_count })}</span>
+                                        <span>{t('bookInfo.pageCount', { count: book?.bookId?.pages_count })}</span>
                                         <span className="mx-2">•</span>
-                                        <span>{t('bookInfo.publicationYear', { year: book.bookId.publication_year })}</span>
+                                        <span>{t('bookInfo.publicationYear', { year: book?.bookId?.publication_year })}</span>
                                     </div>
                                 )}
                                 {type === BookType.WishList && (
@@ -146,6 +161,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
 
     return (
         <div className="w-full">
+
             <Tabs
                 aria-label="Book Lists"
                 color="success"
@@ -153,8 +169,9 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                 selectedKey={selectedTab}
                 onSelectionChange={handleTabChange as any}
                 classNames={{
-                    tabList: "gap-6 bg-white",
-                    cursor: "w-full bg-gray-100",
+                    base: "bg-default-50 w-full",
+                    tabList: "gap-6 bg-default-50 w-full flex justify-evenly",
+                    cursor: "w-full bg-default-200",
                     tab: "max-w-fit px-4 h-10",
                     tabContent: "group-data-[selected=true]:text-primary"
                 }}
@@ -164,12 +181,13 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     title={
                         <div className="flex items-center space-x-2">
                             <BookMarked className="w-4 h-4" />
-                            <span>{t('tabs.reading')}</span>
+                            <span className='lg:block hidden'>{t('tabs.reading')}</span>
                         </div>
                     }
                 >
+
                     <Card className='bg-gradient-to-b from-white to-neutral-50 dark:from-gray-900 dark:to-gray-800 shadow-lg'>
-                        <CardBody id="scrollableDiv" className="overflow-auto max-h-[800px]">
+                        <CardBody id="scrollableDiv" className="overflow-auto max-h-[800px] scroll-container ">
                             {renderBookList(BookType.Reading)}
                         </CardBody>
                     </Card>
@@ -180,7 +198,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     title={
                         <div className="flex items-center space-x-2">
                             <BookOpen className="w-4 h-4" />
-                            <span>{t('tabs.read')}</span>
+                            <span className='lg:block hidden'>{t('tabs.read')}</span>
                         </div>
                     }
                 >
@@ -196,7 +214,7 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
                     title={
                         <div className="flex items-center space-x-2">
                             <BookPlus className="w-4 h-4" />
-                            <span>{t('tabs.wishlist')}</span>
+                            <span className='lg:block hidden'>{t('tabs.wishlist')}</span>
                         </div>
                     }
                 >
@@ -209,22 +227,48 @@ const BookListTabs = ({ bookLists, slug, post }: any) => {
 
                 <Tab
                     key="3"
+                    className='w-full'
                     title={
                         <div className="flex items-center space-x-2">
                             <MessageCircle className="w-4 h-4" />
-                            <span>{t('tabs.posts')}</span>
+                            <span className='lg:block hidden'>{t('tabs.posts')}</span>
                         </div>
                     }
                 >
-                    <Card className='bg-transparent shadow-none p-0'>
-                        <CardBody>
+                    {
+                        userData && userData?.status && <div className="sticky top-[70px] z-50 w-full my-2 p-0">
+                            <BookPostComponent userData={userData?.data} />
+                        </div>
+                    }
+
+                    <Card shadow='none' className='bg-transparent shadow-none w-full p-0'>
+                        <CardBody className='p-0'>
                             {userPost?.map((item: any) => (
                                 <PostCard key={item.id} post={item} />
                             ))}
                         </CardBody>
                     </Card>
                 </Tab>
+                <Tab
+                    key="post"
+                    className='bg-primary'
+                    title={
+                        <div className="flex items-center space-x-2">
+                            <PlusCircle className="w-4 h-4 text-white" />
+
+                        </div>
+                    }
+                >
+
+
+                    <Card shadow='none' className='bg-transparent shadow-none w-full p-0'>
+                        <CardBody className='p-0'>
+                            asd
+                        </CardBody>
+                    </Card>
+                </Tab>
             </Tabs>
+            <BookSearchModal isOpen={openBookModal} onClose={() => setOpenBookModal(!openBookModal)} />
         </div>
     );
 };
