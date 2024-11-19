@@ -43,7 +43,13 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
 
         setLoading(true);
         try {
-            const { data } = await axios(`http://localhost:4000/third/google/book/search?name=${query}`);
+            const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+            const { data } = await axios(`http://localhost:4000/third/google/book/search?name=${query}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+            });
             setSearchResults(data);
             setShowDropdown(true);
         } catch (error) {
