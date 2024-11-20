@@ -11,10 +11,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
 export default function Post({ post }: any) {
-    console.log("post", post);
-
     const { locale } = useParams()
-
     const [showComments, setShowComments] = useState(false);
     const [newComment, setNewComment] = useState('');
     const [isLiked, setIsLiked] = useState(post.isLiked);

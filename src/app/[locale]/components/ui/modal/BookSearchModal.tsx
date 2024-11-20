@@ -275,7 +275,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                         {book.name}
                       </p>
                       <p className="text-sm text-default-700">
-                        {book._id ? book?.author?.name || '' : book.authors}
+                        {book._id ? book.authors.map((i: any) => i.name).join(" & ") || '' : book.authors.join(" & ")}
                       </p>
                     </div>
                   </div>
@@ -316,8 +316,8 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                             </h3>
                             <p className="text-sm text-default-700">
                               {book._id
-                                ? book.author?.name || ' '
-                                : book.authors}
+                                ? book.authors.map((i: any) => i.name).join(" & ") || ' '
+                                : book.authors.join(" & ")}
                             </p>
                           </div>
                         </div>
