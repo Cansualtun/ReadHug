@@ -72,8 +72,8 @@ export default function Post({ post }: any) {
             <Card shadow='sm' className="w-full rounded-lg bg-gradient-to-r bg-default-100">
                 <CardHeader className="flex justify-between items-center px-8 pt-10 pb-4">
                     <div className="flex flex-col ml-32 space-y-1">
-                        <p className="text-lg font-bold">{post?.book?.bookId?.name}</p>
-                        <p className="text-xs text-default-900">{post?.book?.bookId?.author?.name}</p>
+                        <Link href={`/personalBooks/${post?.book?.slug}`} className="text-lg font-bold hover:text-primary">{post?.book?.bookId?.name}</Link>
+                        <p className="text-xs text-default-900">{post?.book?.bookId?.authors[0]?.name}</p>
                     </div>
                     <div className="flex items-center gap-4">
                         <div className="flex flex-col items-end text-right">
