@@ -101,23 +101,25 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                 scrollableTarget="scrollableDiv"
             >
                 <div className="grid gap-4">
-                    {allData.map((book: any) => (
-                        <div key={book._id} className="flex items-start space-x-4 p-4 hover:bg-default-100 rounded-lg transition-colors">
+                    {allData.map((book: any) => {
+                        console.log("book", book);
+
+                        return <div key={book._id} className="flex items-start space-x-4 p-4 hover:bg-default-100 rounded-lg transition-colors">
                             <img
-                                src={book?.bookId?.book_img || "https://picsum.photos/100/150"}
+                                src={book?.bookId?.images?.thumbnail || "/assets/book-placeholder.jpg"}
                                 alt={book?.bookId?.name}
                                 className="w-20 h-28 object-cover rounded-md shadow-md"
                             />
                             <div className="flex-1">
                                 <h3 className="font-semibold text-lg">{book?.bookId?.name}</h3>
                                 <p className="text-default-500">
-                                    {t('bookInfo.author', { name: book.bookId?.author?.name })}
+                                    {t('bookInfo.author', { name: book.bookId?.authors.map((i: any) => i.name).join(" & ") })}
                                 </p>
                                 {type === BookType.Reading && (
                                     <div className="mt-4 space-y-3">
                                         <ProgressBar
-                                            value={parseFloat(book.process?.percent || "0")}
-                                            total={book.process?.pageCount || book?.bookId?.pages_count || 0}
+                                            value={parseFloat(book.process?.percent) || 0}
+                                            total={book.process?.pageCount || 0}
                                             currentValue={book.process?.readCount || 0}
                                             showChip
                                             showCompletedMessage
@@ -134,9 +136,9 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                                 )}
                                 {type === BookType.Read && (
                                     <div className="mt-2 text-sm text-default-400">
-                                        <span>{t('bookInfo.pageCount', { count: book?.bookId?.pages_count })}</span>
+                                        <span>{t('bookInfo.pageCount', { count: book?.bookId?.pageCount })}</span>
                                         <span className="mx-2">•</span>
-                                        <span>{t('bookInfo.publicationYear', { year: book?.bookId?.publication_year })}</span>
+                                        <span>{t('bookInfo.publicationYear', { year: book?.bookId?.publishedDate })}</span>
                                     </div>
                                 )}
                                 {type === BookType.WishList && (
@@ -148,7 +150,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                                 )}
                             </div>
                         </div>
-                    ))}
+                    })}
                 </div>
             </InfiniteScroll>
         ) : (
@@ -185,8 +187,8 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                     }
                 >
 
-                    <Card className='bg-gradient-to-b from-white to-neutral-50 dark:from-gray-900 dark:to-gray-800 shadow-lg'>
-                        <CardBody id="scrollableDiv" className="overflow-auto max-h-[800px] scroll-container ">
+                    <Card>
+                        <CardBody id="scrollableDiv" className="overflow-auto max-h-[800px]">
                             {renderBookList(BookType.Reading)}
                         </CardBody>
                     </Card>
