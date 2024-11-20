@@ -1,15 +1,20 @@
 "use client"
-import { useEffect, useState } from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Avatar, Button, Divider, Input } from "@nextui-org/react";
-import { Heart, MessageCircle, ChevronDown, ChevronUp, Send } from "lucide-react";
-import Image from "next/image";
 import { useLikeCommentMutation } from '@/store/LikeStore';
-import Link from 'next/link';
-import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/UserStore/slice';
+import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Input } from "@nextui-org/react";
+import { ChevronDown, ChevronUp, Heart, MessageCircle, Send } from "lucide-react";
+import Image from "next/image";
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
 export default function Post({ post }: any) {
+    console.log("post", post);
+
+    const { locale } = useParams()
+
     const [showComments, setShowComments] = useState(false);
     const [newComment, setNewComment] = useState('');
     const [isLiked, setIsLiked] = useState(post.isLiked);
@@ -49,18 +54,20 @@ export default function Post({ post }: any) {
 
     return (
         <div className="relative w-full mt-10 p-2">
-            <div className="absolute -top-8 left-10 z-10">
-                <Link href={`/personalBooks/${post?.book?.slug}`}>
-                    <Card isHoverable className="w-28 h-36 border-0">
+            <div className="absolute -top-8 left-10 z-20">
+
+                <Card isHoverable className="w-28 h-36 border-0  hover:ring-1 hover:ring-primary/20">
+                    <Link href={`/personalBooks/${post?.book?.slug}`}>
                         <Image
-                            src={post?.book?.bookId?.book_img ?? "/assets/authh.jpg"}
+                            src={post?.book?.bookId?.images?.thumbnail ?? "/assets/book-placeholder.png"}
                             alt="Book cover"
                             width={120}
                             height={144}
                             className="object-cover rounded-lg"
                         />
-                    </Card>
-                </Link>
+                    </Link>
+                </Card>
+
             </div>
             <Card shadow='sm' className="w-full rounded-lg bg-gradient-to-r bg-default-100">
                 <CardHeader className="flex justify-between items-center px-8 pt-10 pb-4">
@@ -70,16 +77,18 @@ export default function Post({ post }: any) {
                     </div>
                     <div className="flex items-center gap-4">
                         <div className="flex flex-col items-end text-right">
-                            <p className="text-md font-semibold">{post?.user?.userName}</p>
+                            <Link href={`/${locale}/profile/${post.user.userName}`} className="text-md font-semibold hover:text-primary cursor-pointer">@{post?.user?.userName}</Link>
                             <p className="text-xs text-default-900">
                                 {post?.user?.firstName + " " + post?.user?.lastName}
                             </p>
                         </div>
-                        <Avatar
-                            src={post?.user?.image ?? "/assets/avatar.png"}
-                            size="lg"
-                            className="bg-primary border-2 border-default-100 shadow-md"
-                        />
+                        <Link href={`/${locale}/profile/${post.user.userName}`}>
+                            <Avatar
+                                src={post?.user?.image ?? "/assets/avatar.png"}
+                                size="lg"
+                                className="bg-primary border-2 border-default-100 shadow-md cursor-pointer hover:ring-1 hover:ring-primary"
+                            />
+                        </Link>
                     </div>
                 </CardHeader>
                 <Divider />
