@@ -28,6 +28,8 @@ import {
   Monitor,
   Sun,
   Moon,
+  LogIn,
+  Milestone,
 } from 'lucide-react';
 import axios from 'axios';
 import { useMeMutation } from '@/store/UserStore';
@@ -39,13 +41,15 @@ import Link from 'next/link';
 import LanguageDropdown from '../languageDropdown';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/store/UserStore/slice';
 
 const locales = ['tr', 'en'];
 
-const { useRouter: useRouterIntl, usePathname: usePathnameIntl } = createSharedPathnamesNavigation({
-  locales,
-});
+const { useRouter: useRouterIntl, usePathname: usePathnameIntl } =
+  createSharedPathnamesNavigation({
+    locales,
+  });
 
 export default function Header() {
   const t = useTranslations('header');
@@ -62,6 +66,7 @@ export default function Header() {
   const pathname = usePathnameIntl();
   const locale = useLocale();
   const { theme, setTheme } = useTheme();
+  const meData = useSelector(selectUser);
   const [mounted, setMounted] = useState(false);
 
   const changeLanguage = (newLocale: string) => {
@@ -84,7 +89,7 @@ export default function Header() {
         },
       );
       setNotificationData(data.data);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -100,9 +105,12 @@ export default function Header() {
         console.error(t('errors.userDataFetch'), error);
       }
     };
-    getNotificatons();
+    if (meData) {
+      getNotificatons();
+    }
+
     fetchMe();
-  }, [me, t]);
+  }, [me, t, meData]);
 
   const logouts = async () => {
     await logout();
@@ -117,26 +125,45 @@ export default function Header() {
 
   return (
     <Navbar isBordered maxWidth="xl">
-      <div className='container mx-auto flex justify-between items-center'>
+      <div className="container mx-auto flex justify-between items-center">
         <NavbarContent>
           <Link href="/">
             <div className="flex justify-center items-center">
-              <Image src={"/assets/logo1.svg"} width={240} height={60} alt='' className='w-[180px] h-[32px]' />
+              <Image
+                src={'/assets/logo1.svg'}
+                width={240}
+                height={60}
+                alt=""
+                className="w-[180px] h-[32px]"
+              />
             </div>
           </Link>
           <NavbarContent className="hidden md:flex gap-3">
             <NavbarItem>
-              <Link color="foreground" href="/authors" className='text-default-500'>
+              <Link
+                color="foreground"
+                href="/authors"
+                className="text-default-500"
+              >
                 {t('navigation.authors')}
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Link href="/community" aria-current="page" color="foreground" className='text-default-500'>
+              <Link
+                href="/community"
+                aria-current="page"
+                color="foreground"
+                className="text-default-500"
+              >
                 {t('navigation.community')}
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Link color="foreground" href="/stats" className='text-default-500'>
+              <Link
+                color="foreground"
+                href="/stats"
+                className="text-default-500"
+              >
                 {t('navigation.stats')}
               </Link>
             </NavbarItem>
@@ -155,42 +182,51 @@ export default function Header() {
             size="sm"
             startContent={<SearchIcon size={12} width={12} height={12} />}
             type="search"
-            className='hidden lg:block'
+            className="hidden lg:block"
           />
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-              <div className="relative">
-                <Bell />
-                {notificatonData.filter((i: any) => !i.isRead).length > 0 && (
-                  <span className="absolute border-1 border-default-50 -top-1 -right-1 min-w-[16px] min-h-[16px] rounded-full bg-primary text-[8px] text-white flex justify-center items-center p-0 m-0">
-                    {notificatonData.filter((i: any) => !i.isRead).length > 9 ? "9+" : notificatonData.filter((i: any) => !i.isRead).length}
-                  </span>
-                )}
-              </div>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Notifications" variant="flat">
-              {notificatonData?.map((item: any) => (
-                <DropdownItem key={item._id} className="h-14 gap-2">
-                  <div className="flex items-center">
-                    {item.type === 'like' && <ThumbsUp />}
-                    {item.type === 'comment' && <MessageSquareText />}
-                    {item.type === 'follow' && <UserCheck />}
-                    {item.type === 'announcement' && <Megaphone />}
-                    {item.type === 'message' && <MessageCircleMore />}
-                    <p className="ml-2">{item.content}</p>
-                  </div>
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
+          {meData && (
+            <Dropdown placement="bottom-end">
+              <DropdownTrigger>
+                <div className="relative">
+                  <Bell />
+                  {notificatonData.filter((i: any) => !i.isRead).length > 0 && (
+                    <span className="absolute border-1 border-default-50 -top-1 -right-1 min-w-[16px] min-h-[16px] rounded-full bg-primary text-[8px] text-white flex justify-center items-center p-0 m-0">
+                      {notificatonData.filter((i: any) => !i.isRead).length > 9
+                        ? '9+'
+                        : notificatonData.filter((i: any) => !i.isRead).length}
+                    </span>
+                  )}
+                </div>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Notifications" variant="flat">
+                {notificatonData?.map((item: any) => (
+                  <DropdownItem key={item._id} className="h-14 gap-2">
+                    <div className="flex items-center">
+                      {item.type === 'like' && <ThumbsUp />}
+                      {item.type === 'comment' && <MessageSquareText />}
+                      {item.type === 'follow' && <UserCheck />}
+                      {item.type === 'announcement' && <Megaphone />}
+                      {item.type === 'message' && <MessageCircleMore />}
+                      <p className="ml-2">{item.content}</p>
+                    </div>
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+          )}
 
-          <LanguageDropdown currentLocale={locale} onChangeLanguage={changeLanguage} />
+          <LanguageDropdown
+            currentLocale={locale}
+            onChangeLanguage={changeLanguage}
+          />
           <Switch
             defaultSelected
             size="sm"
             color="default"
             isSelected={theme === 'dark'}
-            onValueChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
+            onValueChange={(isSelected) =>
+              setTheme(isSelected ? 'dark' : 'light')
+            }
             startContent={<Sun className="w-3.5 h-3.5 text-warning-400" />}
             endContent={<Moon className="w-3.5 h-3.5 text-default-500" />}
             className="ml-2"
@@ -208,35 +244,53 @@ export default function Header() {
                 src={userData?.image ?? '/assets/avatar.png'}
               />
             </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem
-                key="profile"
-                onClick={goToProfile}
-                startContent={<User className="w-4 h-4" />}
-              >
-                {t('profile.profile')}
-              </DropdownItem>
-              <DropdownItem
-                key="/settings"
-                href="/settings"
-                startContent={<Settings className="w-4 h-4" />}
-              >
-                {t('profile.settings')}
-              </DropdownItem>
-              <DropdownItem
-                key="logout"
-                color="danger"
-                href="/login"
-                onClick={() => logouts()}
-                startContent={<LogOut className="w-4 h-4" />}
-              >
-                {t('profile.logout')}
-              </DropdownItem>
-            </DropdownMenu>
+            {meData ? (
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem
+                  key="profile"
+                  onClick={goToProfile}
+                  startContent={<User className="w-4 h-4" />}
+                >
+                  {t('profile.profile')}
+                </DropdownItem>
+                <DropdownItem
+                  key="/settings"
+                  href="/settings"
+                  startContent={<Settings className="w-4 h-4" />}
+                >
+                  {t('profile.settings')}
+                </DropdownItem>
+                <DropdownItem
+                  key="logout"
+                  color="danger"
+                  href="/login"
+                  onClick={() => logouts()}
+                  startContent={<LogOut className="w-4 h-4" />}
+                >
+                  {t('profile.logout')}
+                </DropdownItem>
+              </DropdownMenu>
+            ) : (
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
+                <DropdownItem
+                  key="login"
+                  href="/login"
+                  startContent={<LogIn className="w-4 h-4" />}
+                >
+                  {t('profile.login')}
+                </DropdownItem>
+                <DropdownItem
+                  key="/register"
+                  href="/register"
+                  startContent={<Milestone className="w-4 h-4" />}
+                >
+                  {t('profile.register')}
+                </DropdownItem>
+              </DropdownMenu>
+            )}
           </Dropdown>
         </NavbarContent>
       </div>
-
     </Navbar>
   );
 }

@@ -1,9 +1,8 @@
-import { useMeMutation } from "@/store/UserStore";
 import Activities from "../components/home/activities";
 import PostCard from "../components/home/postCard";
 import BookPostComponent from "../components/ui/widget/BookPostComponent";
-import { GetAllPost } from "../server/post";
 import { Me } from "../server/me";
+import { GetAllPost } from "../server/post";
 
 
 export default async function Home() {

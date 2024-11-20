@@ -173,7 +173,9 @@
       "settings": "Settings",
       "system": "System",
       "language": "Language",
-      "logout": "Log Out"
+      "logout": "Log Out",
+      "login": "Sign In",
+      "register": "Sign Up"
     },
     "errors": {
       "userDataFetch": "Could not fetch user data"

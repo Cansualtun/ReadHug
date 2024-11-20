@@ -173,7 +173,9 @@
       "settings": "Ayarlar",
       "system": "Sistem",
       "language": "Dil",
-      "logout": "Çıkış Yap"
+      "logout": "Çıkış Yap",
+      "login": "Giriş Yap",
+      "register": "Kayıt Ol"
     },
     "errors": {
       "userDataFetch": "Kullanıcı bilgileri alınamadı"

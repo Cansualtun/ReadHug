@@ -4,18 +4,21 @@ import { MessageSquare, X, Search, Send, ChevronLeft } from 'lucide-react';
 import axios from 'axios';
 import { LoaderIcon } from 'react-hot-toast';
 import Loading from '../loading';
+import { useMeMutation } from '@/store/UserStore';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/store/UserStore/slice';
 
 const FloatingMessageWidget = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
-  console.log("selectedUser", selectedUser);
-
   const [searchQuery, setSearchQuery] = useState<any>('');
   const [newMessage, setNewMessage] = useState<any>('');
   const [messageList, setMessageList] = useState<any>([]);
   const [messages, setMessages] = useState<any>([]);
+  const me = useSelector(selectUser)
+
   const getMessageList = async () => {
     const token = document.cookie
       .split('; ')
@@ -91,21 +94,19 @@ const FloatingMessageWidget = () => {
       getMessageList()
     }
   }, [isOpen]);
-
   useEffect(() => {
     if (selectedUser) {
       getMessage(selectedUser.messageRowId)
     }
   }, [selectedUser]);
-
   useEffect(() => {
-    // Son mesajın görünürlüğünü sağla ve smooth scroll ekle
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]); // Mesajlar değiştiğinde tetiklenir
+  }, [messages]);
 
   return (
+    me &&
     <div className="fixed bottom-4 right-4 z-50">
       {/* Ana konteyner */}
       <div className="flex flex-col items-end">

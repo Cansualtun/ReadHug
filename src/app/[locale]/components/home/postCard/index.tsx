@@ -5,6 +5,8 @@ import { Heart, MessageCircle, ChevronDown, ChevronUp, Send } from "lucide-react
 import Image from "next/image";
 import { useLikeCommentMutation } from '@/store/LikeStore';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/store/UserStore/slice';
 
 export default function Post({ post }: any) {
     const [showComments, setShowComments] = useState(false);
@@ -12,6 +14,7 @@ export default function Post({ post }: any) {
     const [isLiked, setIsLiked] = useState(post.isLiked);
     const [likeCount, setLikeCount] = useState(post.likeCount)
     const [likeComment] = useLikeCommentMutation();
+    const userData = useSelector(selectUser);
 
     const toggleComments = () => {
         setShowComments(!showComments);
@@ -37,6 +40,9 @@ export default function Post({ post }: any) {
         setLikeCount(post.likeCount),
             setIsLiked(post.isLiked)
     }, [])
+
+    console.log("userData", userData);
+
     return (
         <div className="relative w-full mt-10 p-2">
             <div className="absolute -top-8 left-10 z-10">
@@ -108,11 +114,13 @@ export default function Post({ post }: any) {
                 {showComments && (
                     <div className="px-8 py-4 bg-default-100 rounded-b-lg">
                         <div className="flex gap-4 mb-6">
-                            <Avatar
-                                src="/assets/avatar.png"
-                                size="sm"
-                                className="bg-primary"
-                            />
+                            <div className='flex justify-center items-center'>
+                                <Avatar
+                                    src={userData.image ?? "/assets/avatar.png"}
+                                    size="sm"
+                                    className="bg-primary"
+                                />
+                            </div>
                             <div className="flex-1 flex gap-2">
                                 <Input
                                     type="text"

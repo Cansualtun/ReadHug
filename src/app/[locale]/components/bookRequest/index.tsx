@@ -1,12 +1,13 @@
 'use client';
-import React, { useState, FormEvent, useEffect } from 'react';
+import { selectUser } from '@/store/UserStore/slice';
+import { Button } from '@nextui-org/button';
 import { CheckCircle, Plus, Trash2 } from 'lucide-react';
-import { Card, CardBody } from '@nextui-org/card';
-import RequestSidebar from './RequestSidebar';
-import { useMeMutation } from '@/store/UserStore';
+import Link from 'next/link';
+import React, { FormEvent, useState } from 'react';
+import { useSelector } from 'react-redux';
 import LoginForm from '../auth/LoginForm';
 import Loading from '../ui/loading';
-import Link from 'next/link';
+import RequestSidebar from './RequestSidebar';
 
 interface BookData {
   title: string;
@@ -25,16 +26,26 @@ const BookRequests: React.FC = () => {
   const [authors, setAuthors] = useState<string[]>(['']);
   const [publishers, setPublishers] = useState<string[]>(['']);
   const [categories, setCategories] = useState<string[]>(['']);
+  const [isbns, setIsbns] = useState<string[]>(['']);
   const [imageUrl, setImageUrl] = useState<string>('');
   const [publishedDate, setPublishedDate] = useState<string>('');
   const [pageCount, setPageCount] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [isbns, setIsbns] = useState<string[]>(['']);
-  const [isMe, setIsMe] = useState<boolean | null>(null);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const me = useSelector(selectUser);
 
-  const [me] = useMeMutation();
+  const clearStates = () => {
+    setTitle('');
+    setAuthors([""]);
+    setPublishers([""]);
+    setCategories([""]);
+    setIsbns([""]);
+    setImageUrl('');
+    setPublishedDate('');
+    setPageCount('');
+    setDescription('');
+  };
 
   const handleDynamicInputChange = (
     setter: React.Dispatch<React.SetStateAction<string[]>>,
@@ -126,31 +137,9 @@ const BookRequests: React.FC = () => {
     setLoading(false);
   };
 
-  const meDetail = async () => {
-    try {
-      const data = await me();
-      console.log(data);
-      if (data.error) {
-        setIsMe(false);
-      } else {
-        setIsMe(true);
-      }
-    } catch (error) {
-      setIsMe(false);
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    meDetail();
-  }, []);
-
   return (
     <div className="grid grid-cols-12 gap-6 p-2">
-      {isMe == null ? (
-        <div className="col-span-12 md:col-span-8 bg-default-100 shadow-md rounded-lg flex justify-center items-center">
-          <Loading />
-        </div>
-      ) : isMe ? (
+      {me ? (
         <div className="col-span-12 md:col-span-8 bg-default-100 shadow-md rounded-lg relative">
           {loading && (
             <div className="absolute w-full h-full bg-primary/20 flex justify-center items-center">
@@ -181,12 +170,23 @@ const BookRequests: React.FC = () => {
                     </div>
 
                     {/* Action Button */}
-                    <Link
-                      href={'/'}
-                      className="mt-6 px-8 py-3 bg-primary rounded-lg hover:bg-primary/80 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 text-white"
-                    >
-                      Ana Sayfa
-                    </Link>
+                    <div>
+                      <Button
+                        onClick={() => {
+                          setIsSuccess(false);
+                          clearStates()
+                        }}
+                        className="mt-6 px-8 py-3 bg-primary rounded-lg hover:bg-primary/80 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 text-white"
+                      >
+                        Yeni Talep Oluştur
+                      </Button>
+                      <Link
+                        href={'/'}
+                        className="mt-6 px-8 py-3 transition-colors duration-200 focus:outline-none text-primary hover:text-primary/80"
+                      >
+                        Ana Sayfa
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
