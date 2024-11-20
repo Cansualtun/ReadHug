@@ -1,48 +1,43 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useLogoutMutation } from '@/store/AuthStore';
+import { useMeMutation } from '@/store/UserStore';
 import {
+  Avatar,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
   Navbar,
   NavbarContent,
-  Input,
-  DropdownItem,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  Avatar,
   NavbarItem,
   Switch,
 } from '@nextui-org/react';
-import { AcmeLogo } from '../svg/AcmeLogo';
-import { SearchIcon } from '../svg/SearchIcon.jsx';
-import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import {
-  User,
-  Settings,
-  LogOut,
   Bell,
-  ThumbsUp,
-  MessageSquareText,
-  UserCheck,
+  LogIn,
+  LogOut,
   Megaphone,
   MessageCircleMore,
-  Monitor,
-  Sun,
-  Moon,
-  LogIn,
+  MessageSquareText,
   Milestone,
+  Moon,
+  Settings,
+  Sun,
+  ThumbsUp,
+  User,
+  UserCheck,
 } from 'lucide-react';
-import axios from 'axios';
-import { useMeMutation } from '@/store/UserStore';
-import { useLogoutMutation } from '@/store/AuthStore';
-import { useTranslations } from 'next-intl';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { createSharedPathnamesNavigation } from 'next-intl/navigation';
-import Link from 'next/link';
-import LanguageDropdown from '../languageDropdown';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
-import { selectUser } from '@/store/UserStore/slice';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import LanguageDropdown from '../languageDropdown';
+import { SearchIcon } from '../svg/SearchIcon.jsx';
 
 const locales = ['tr', 'en'];
 
@@ -66,14 +61,13 @@ export default function Header() {
   const pathname = usePathnameIntl();
   const locale = useLocale();
   const { theme, setTheme } = useTheme();
-  const meData = useSelector(selectUser);
   const [mounted, setMounted] = useState(false);
 
   const changeLanguage = (newLocale: string) => {
     routerIntl.push(pathname, { locale: newLocale });
   };
 
-  const getNotificatons = async () => {
+  const getNotifications = async () => {
     const token = document.cookie
       .split('; ')
       .find((row) => row.startsWith('token='))
@@ -92,25 +86,28 @@ export default function Header() {
     } catch (error) {}
   };
 
-  useEffect(() => {
-    const fetchMe = async () => {
-      try {
-        const { data } = await me();
-        setUserData({
-          userName: data?.data?.userName as any,
-          email: data?.data?.email as any,
-          image: data?.data?.image as any,
-        });
-      } catch (error) {
-        console.error(t('errors.userDataFetch'), error);
-      }
-    };
-    if (meData) {
-      getNotificatons();
-    }
+  const readAllNotifications = async () => {
+    console.log('read notifications');
+  };
 
+  const fetchMe = async () => {
+    try {
+      const { data } = await me();
+      setUserData({
+        userName: data?.data?.userName as any,
+        email: data?.data?.email as any,
+        image: data?.data?.image as any,
+      });
+      if (data && data.status) {
+        getNotifications();
+      }
+    } catch (error) {
+      console.error(t('errors.userDataFetch'), error);
+    }
+  };
+  useEffect(() => {
     fetchMe();
-  }, [me, t, meData]);
+  }, [me, t]);
 
   const logouts = async () => {
     await logout();
@@ -184,9 +181,9 @@ export default function Header() {
             type="search"
             className="hidden lg:block"
           />
-          {meData && (
+          {userData.userName && (
             <Dropdown placement="bottom-end">
-              <DropdownTrigger>
+              <DropdownTrigger onClick={readAllNotifications}>
                 <div className="relative">
                   <Bell />
                   {notificatonData.filter((i: any) => !i.isRead).length > 0 && (
@@ -244,7 +241,7 @@ export default function Header() {
                 src={userData?.image ?? '/assets/avatar.png'}
               />
             </DropdownTrigger>
-            {meData ? (
+            {userData.userName ? (
               <DropdownMenu aria-label="Profile Actions" variant="flat">
                 <DropdownItem
                   key="profile"

@@ -7,6 +7,7 @@ import { useLikeCommentMutation } from '@/store/LikeStore';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/UserStore/slice';
+import { toast } from 'sonner';
 
 export default function Post({ post }: any) {
     const [showComments, setShowComments] = useState(false);
@@ -21,6 +22,10 @@ export default function Post({ post }: any) {
     };
 
     const handleLike = async () => {
+        if (!userData) {
+            toast.error("Beğenebilmeniz için giriş yapmalısınız.")
+            return
+        }
         setIsLiked(!isLiked)
         if (isLiked) {
             setLikeCount((prev: number) => prev - 1)
@@ -41,7 +46,6 @@ export default function Post({ post }: any) {
             setIsLiked(post.isLiked)
     }, [])
 
-    console.log("userData", userData);
 
     return (
         <div className="relative w-full mt-10 p-2">
@@ -113,56 +117,59 @@ export default function Post({ post }: any) {
 
                 {showComments && (
                     <div className="px-8 py-4 bg-default-100 rounded-b-lg">
-                        <div className="flex gap-4 mb-6">
-                            <div className='flex justify-center items-center'>
-                                <Avatar
-                                    src={userData.image ?? "/assets/avatar.png"}
-                                    size="sm"
-                                    className="bg-primary"
-                                />
+                        {
+                            userData && <div className="flex gap-4 mb-6">
+                                <div className='flex justify-center items-center'>
+                                    <Avatar
+                                        src={userData?.image ?? "/assets/avatar.png"}
+                                        size="sm"
+                                        className="bg-primary"
+                                    />
+                                </div>
+                                <div className="flex-1 flex gap-2">
+                                    <Input
+                                        type="text"
+                                        value={newComment}
+                                        onChange={(e) => setNewComment(e.target.value)}
+                                        placeholder="Yorumunuzu yazın..."
+                                        variant="bordered"
+                                        radius="full"
+                                        className="flex-1"
+                                        endContent={
+                                            <Button
+                                                isIconOnly
+                                                variant="light"
+                                                size="sm"
+                                                className="text-default-900"
+                                            >
+                                                <Send className="w-4 h-4" />
+                                            </Button>
+                                        }
+                                    />
+                                </div>
                             </div>
-                            <div className="flex-1 flex gap-2">
-                                <Input
-                                    type="text"
-                                    value={newComment}
-                                    onChange={(e) => setNewComment(e.target.value)}
-                                    placeholder="Yorumunuzu yazın..."
-                                    variant="bordered"
-                                    radius="full"
-                                    className="flex-1"
-                                    endContent={
-                                        <Button
-                                            isIconOnly
-                                            variant="light"
-                                            size="sm"
-                                            className="text-default-900"
-                                        >
-                                            <Send className="w-4 h-4" />
-                                        </Button>
-                                    }
-                                />
-                            </div>
-                        </div>
+                        }
+
                         <div className="space-y-4">
                             {post.comments.map((comment: any) => (
                                 <Card key={comment.id} className="w-full bg-content1">
                                     <CardBody className="p-4">
                                         <div className="flex gap-4">
                                             <Avatar
-                                                src={comment.user.image}
+                                                src={comment?.user?.image ?? "/assets/avatar.png"}
                                                 size="sm"
                                             />
                                             <div className="flex-1">
                                                 <div className="flex justify-between items-center mb-2">
                                                     <p className="font-semibold text-sm">
-                                                        {comment.user.userName}
+                                                        {comment?.user?.userName}
                                                     </p>
                                                     <p className="text-xs text-default-900">
-                                                        {comment.timestamp}
+                                                        {comment?.timestamp}
                                                     </p>
                                                 </div>
                                                 <p className="text-sm text-default-800">
-                                                    {comment.content}
+                                                    {comment?.content}
                                                 </p>
                                             </div>
                                         </div>
