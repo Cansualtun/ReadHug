@@ -6,6 +6,7 @@ import { ChevronLeft, MessageSquare, Search, Send, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../loading';
+import { formatDate } from '@/utils/formatDate';
 
 const FloatingMessageWidget = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -100,10 +101,10 @@ const FloatingMessageWidget = () => {
   }, [messageData]);
 
   useEffect(() => {
-    if (selectedUser && !messageData.messageRow._id) {
+    if (selectedUser) {
       getMessage(selectedUser.messageRowId)
     }
-  }, [selectedUser, messageData]);
+  }, [selectedUser]);
   useEffect(() => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
@@ -168,9 +169,7 @@ const FloatingMessageWidget = () => {
                           alt={user?.userName}
                           className="w-8 h-8 rounded-full"
                         />
-                        {/* {user?.receiver?.isOnline && (
-                                                  <div className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-white" />
-                                              )} */}
+
                         {user?.isRead && (
                           <div className="absolute bottom-0 right-0 w-2 h-2 bg-primary rounded-full border border-white" />
                         )}
@@ -182,7 +181,7 @@ const FloatingMessageWidget = () => {
                               {user?.firstName + " " + user?.lastName}
                             </span>
                             <span className="text-xs text-gray-500">
-                              {user?.createdAt}
+                              {formatDate(user?.createdAt)}
                             </span>
                           </div>
                           <p className="text-sm text-gray-500 truncate">
@@ -243,8 +242,8 @@ const FloatingMessageWidget = () => {
                             >
                               <p className="text-sm">{message.message}</p>
                             </div>
-                            <span className="text-xs text-gray-500">
-                              {message.createdAt}
+                            <span className="text-xs text-gray-500 self-end">
+                              {formatDate(message.createdAt, "dateTime")}
                             </span>
                           </div>
                         </div>
