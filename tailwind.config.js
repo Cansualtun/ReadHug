@@ -29,13 +29,24 @@ export default {
         primary: '#f97316',
       },
       animation: {
-        'scale-pulse': 'ringPulse 2s infinite', // Özel animasyon
+        'scale-pulse': 'ringPulse 2s infinite', // mesaj bildirim animasyonu
+        fadeindown: 'fade-in-down 0.1s ease-out',
       },
       keyframes: {
         ringPulse: {
-          '0%': { boxShadow: '0 0 0 0 rgba(34, 197, 94, 0.5)' }, // Başlangıç
-          '50%': { boxShadow: '0 0 0 6px rgba(34, 197, 94, 0)' }, // Orta nokta
-          //'100%': { boxShadow: '0 0 0 0 rgba(34, 197, 94, 0.5)' }, // Bitiş
+          '0%': { boxShadow: '0 0 0 0 rgba(34, 197, 94, 0.5)' },
+          '50%': { boxShadow: '0 0 0 6px rgba(34, 197, 94, 0)' },
+          //'100%': { boxShadow: '0 0 0 0 rgba(34, 197, 94, 0.5)' }, 
+        },
+        "fade-in-down": {
+          "0%": {
+            opacity: 0,
+            transform: "translate3d(0, 0, 0)",
+          },
+          "100%": {
+            opacity: 1,
+            transform: "translate3d(0, 0, 0)",
+          },
         },
       }
 

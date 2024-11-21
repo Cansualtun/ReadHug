@@ -1,8 +1,11 @@
 'use client';
 import { useLogoutMutation } from '@/store/AuthStore';
+import { useNotificationMutation } from '@/store/NotificationStore';
+import { selectNotification } from '@/store/NotificationStore/slice';
 import { useMeMutation } from '@/store/UserStore';
 import {
   Avatar,
+  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -13,7 +16,6 @@ import {
   NavbarItem,
   Switch,
 } from '@nextui-org/react';
-import axios from 'axios';
 import {
   Bell,
   LogIn,
@@ -35,11 +37,15 @@ import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useDispatch, useSelector } from 'react-redux';
 import LanguageDropdown from '../languageDropdown';
 import { SearchIcon } from '../svg/SearchIcon.jsx';
-import { useDispatch } from 'react-redux';
-import { setNotification } from '@/store/MessageStore';
+import { setNotification } from '@/store/NotificationStore/slice';
+import { NotificationState } from '@/store/MessageStore/type';
+import Loading from '../loading';
+import { getClientCookie } from '@/utils/getClientCookie';
 
 const locales = ['tr', 'en'];
 
@@ -50,7 +56,8 @@ const { useRouter: useRouterIntl, usePathname: usePathnameIntl } =
 
 export default function Header() {
   const t = useTranslations('header');
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [logout] = useLogoutMutation();
   const [me] = useMeMutation();
   const [userData, setUserData] = useState({
@@ -58,26 +65,42 @@ export default function Header() {
     email: null,
     image: null,
   });
-  const [notificatonData, setNotificationData] = useState([]);
   const router = useRouter();
   const routerIntl = useRouterIntl();
   const pathname = usePathnameIntl();
   const locale = useLocale();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-
+  const [openNotification, setOpenNotification] = useState(false);
+  const [notificationData, setNotificationData] = useState<any>({
+    data: [],
+  });
+  const [notification] = useNotificationMutation();
   const changeLanguage = (newLocale: string) => {
     routerIntl.push(pathname, { locale: newLocale });
   };
+  const selectNotifications: NotificationState =
+    useSelector(selectNotification);
+
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(2);
 
   const getNotifications = async () => {
-    const token = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('token='))
-      ?.split('=')[1];
     try {
-      const { data } = await axios(
-        'http://localhost:4000/notification/all?page=1&limit=10',
+      await notification(1 as any);
+    } catch (error) {}
+  };
+  const loadMore = async () => {
+    if (loading) return;
+    try {
+      setLoading(true);
+      const token = getClientCookie();
+      const BASE_URL =
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
+      const response = await fetch(
+        `${BASE_URL}/notification/all?page=${page}&limit=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -85,9 +108,21 @@ export default function Header() {
           },
         },
       );
-      setNotificationData(data.data);
-      dispatch(setNotification({ notifications: data }))
-    } catch (error) { }
+
+      const newData = await response.json();
+      const combineData = {
+        ...notificationData,
+        data: [...notificationData?.data, ...newData.data],
+      };
+      setNotificationData(combineData);
+      setPage((prev) => prev + 1);
+      setHasMore(false);
+    } catch (error) {
+      console.error('Error loading more books:', error);
+      setHasMore(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const readAllNotifications = async () => {
@@ -114,6 +149,10 @@ export default function Header() {
     fetchMe();
   }, [me, t]);
 
+  useEffect(() => {
+    setNotificationData(selectNotifications);
+  }, [selectNotifications]);
+
   const logouts = async () => {
     await logout();
     router.push('/login');
@@ -124,6 +163,18 @@ export default function Header() {
       router.push(`/profile/${userData.userName}`);
     }
   };
+  // console.log('selectNotifications', selectNotifications);
+
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenNotification(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <Navbar isBordered maxWidth="xl">
@@ -187,34 +238,70 @@ export default function Header() {
             className="hidden lg:block"
           />
           {userData.userName && (
-            <Dropdown placement="bottom-end">
-              <DropdownTrigger onClick={readAllNotifications}>
-                <div className="relative">
-                  <Bell />
-                  {notificatonData.filter((i: any) => !i.isRead).length > 0 && (
-                    <span className="absolute border-1 border-default-50 -top-1 -right-1 min-w-[16px] min-h-[16px] rounded-full bg-primary text-[8px] text-white flex justify-center items-center p-0 m-0">
-                      {notificatonData.filter((i: any) => !i.isRead).length > 9
-                        ? '9+'
-                        : notificatonData.filter((i: any) => !i.isRead).length}
-                    </span>
+            <div className="relative" ref={dropdownRef}>
+              <div
+                className="relative cursor-pointer select-none"
+                onClick={() => setOpenNotification(!openNotification)}
+              >
+                <Bell />
+                {selectNotifications?.data?.filter((i: any) => !i.isRead)
+                  .length > 0 && (
+                  <span className="absolute border-1 border-default-50 -top-1 -right-1 min-w-[16px] min-h-[16px] rounded-full bg-primary text-[8px] text-white flex justify-center items-center p-0 m-0">
+                    {selectNotifications?.data?.filter((i: any) => !i.isRead)
+                      .length > 9
+                      ? '9+'
+                      : selectNotifications?.data?.filter((i: any) => !i.isRead)
+                          .length}
+                  </span>
+                )}
+              </div>
+
+              <div
+                className={`absolute top-10 right-0 ${openNotification ? 'block  animate-fadeindown' : 'hidden'}`}
+              >
+                <div className="max-h-[300px] w-[300px] overflow-y-auto scroll-container p-4 bg-default-50 rounded-lg shadow">
+                  {notificationData?.data?.length > 0 && (
+                    <InfiniteScroll
+                      dataLength={notificationData?.data?.length}
+                      next={loadMore}
+                      hasMore={hasMore}
+                      className='mb-10'
+                      loader={
+                        <div className="w-full flex justify-center items-center">
+                          <Loading className="pb-2" width={120} height={40} />
+                        </div>
+                      }
+                      endMessage={
+                        <p className="text-center py-4">
+                          Tüm Bildirimler Yüklendi.
+                        </p>
+                      }
+                    >
+                      {notificationData?.data?.map((item: any) => (
+                        <div
+                          key={item._id}
+                          className="flex items-start space-x-4 p-4 hover:bg-default-100 rounded-lg transition-colors"
+                        >
+                          {item.type === 'like' && <ThumbsUp />}
+                          {item.type === 'comment' && <MessageSquareText />}
+                          {item.type === 'follow' && <UserCheck />}
+                          {item.type === 'announcement' && <Megaphone />}
+                          {item.type === 'message' && <MessageCircleMore />}
+                          <p className="ml-2 text-sm">{item.content}</p>
+                        </div>
+                      ))}
+                    </InfiniteScroll>
                   )}
-                </div>
-              </DropdownTrigger>
-              <DropdownMenu aria-label="Notifications" variant="flat">
-                {notificatonData?.map((item: any) => (
-                  <DropdownItem key={item._id} className="h-14 gap-2">
-                    <div className="flex items-center">
-                      {item.type === 'like' && <ThumbsUp />}
-                      {item.type === 'comment' && <MessageSquareText />}
-                      {item.type === 'follow' && <UserCheck />}
-                      {item.type === 'announcement' && <Megaphone />}
-                      {item.type === 'message' && <MessageCircleMore />}
-                      <p className="ml-2">{item.content}</p>
+                  {/* {hasMore && (
+                    <div className="w-full flex justify-center items-center">
+                      <Button size="sm" onClick={loadMore}>
+                        Daha Fazla
+                      </Button>
                     </div>
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
+                  )} */}
+                </div>
+              </div>
+            </div>
           )}
 
           <LanguageDropdown

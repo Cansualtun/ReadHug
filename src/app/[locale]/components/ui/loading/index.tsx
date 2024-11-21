@@ -3,9 +3,10 @@ import './loader.css';
 type Props = {
   width?: number;
   height?: number;
+  className?: string
 };
 
-const Loading = ({ width = 300, height = 80 }: Props) => {
+const Loading = ({ width = 300, height = 80, className }: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,6 +14,7 @@ const Loading = ({ width = 300, height = 80 }: Props) => {
       width={width}
       height={height}
       viewBox="0 0 300 69.7"
+      className={className}
     >
       <g>
         <g id="katman_1">

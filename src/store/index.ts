@@ -1,14 +1,18 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { baseApi } from '@/services/baseApi';
+//service slices
 import { authApi } from './AuthStore';
 import { userApi } from './UserStore';
 import { likeApi } from './LikeStore';
-import { baseApi } from '@/services/baseApi';
+import { notificationApi } from './NotificationStore';
+// no service slices
 import messageSlice from '@/store/MessageStore';
 
 const rootReducer = combineReducers({
   auth: authApi,
   user: userApi,
   like: likeApi,
+  notification: notificationApi,
   message: messageSlice,
   [baseApi.reducerPath]: baseApi.reducer,
 });
