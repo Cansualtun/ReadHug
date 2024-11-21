@@ -50,8 +50,9 @@ export default function ChangePassword() {
                     <Button
                         type="submit"
                         disabled={isLoading}
-                        className="mt-4 w-32"
                         color="primary"
+                        className="px-8"
+                        size="md"
                     >
                         {t('form.submit')}
                     </Button>
