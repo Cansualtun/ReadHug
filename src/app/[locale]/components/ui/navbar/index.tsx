@@ -38,6 +38,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import LanguageDropdown from '../languageDropdown';
 import { SearchIcon } from '../svg/SearchIcon.jsx';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/store/MessageStore';
 
 const locales = ['tr', 'en'];
 
@@ -48,6 +50,7 @@ const { useRouter: useRouterIntl, usePathname: usePathnameIntl } =
 
 export default function Header() {
   const t = useTranslations('header');
+  const dispatch = useDispatch()
   const [logout] = useLogoutMutation();
   const [me] = useMeMutation();
   const [userData, setUserData] = useState({
@@ -83,6 +86,7 @@ export default function Header() {
         },
       );
       setNotificationData(data.data);
+      dispatch(setNotification({ notifications: data }))
     } catch (error) { }
   };
 
