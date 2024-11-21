@@ -54,13 +54,13 @@ export default function Post({ post }: any) {
         <div className="relative w-full mt-10 p-2">
             <div className="absolute -top-8 left-10 z-20">
                 <Card isHoverable className="w-28 h-36 border-0  hover:ring-1 hover:ring-primary/20">
-                    <Link href={`/personalBooks/${post?.book?.slug}`}>
+                    <Link href={`/personalBooks/${post?.book?.slug}`} className='h-full'>
                         <Image
                             src={post?.book?.bookId?.images?.thumbnail ?? "/assets/book-placeholder.png"}
                             alt="Book cover"
                             width={120}
                             height={144}
-                            className="object-cover rounded-lg"
+                            className="object-cover rounded-lg object-center h-full"
                         />
                     </Link>
                 </Card>
