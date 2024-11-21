@@ -100,7 +100,10 @@ const FloatingMessageWidget = () => {
       setSelectedUser({ ...messageData.user, messageRowId: messageData.messageRow._id })
       getMessage(messageData.messageRow._id)
     } else {
-      getMessageList()
+      if (me) {
+        getMessageList()
+      }
+
     }
   }, [messageData]);
 
