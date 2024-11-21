@@ -10,33 +10,37 @@
     animation: fadeInWave 2s ease-in-out infinite;
     animation-delay: 0.4s;
   }
-  #loader-r {
+  #loader-fourth-book {
     animation: fadeInWave 2s ease-in-out infinite;
     animation-delay: 0.6s;
   }
-  #loader-e {
+  #loader-r {
     animation: fadeInWave 2s ease-in-out infinite;
     animation-delay: 0.8s;
   }
-  #loader-a {
+  #loader-e {
     animation: fadeInWave 2s ease-in-out infinite;
     animation-delay: 1s;
   }
-  #loader-d {
+  #loader-a {
     animation: fadeInWave 2s ease-in-out infinite;
     animation-delay: 1.2s;
   }
-  #loader-h {
+  #loader-d {
     animation: fadeInWave 2s ease-in-out infinite;
     animation-delay: 1.4s;
   }
-  #loader-u {
+  #loader-h {
     animation: fadeInWave 2s ease-in-out infinite;
     animation-delay: 1.6s;
   }
-  #loader-g {
+  #loader-u {
     animation: fadeInWave 2s ease-in-out infinite;
     animation-delay: 1.8s;
+  }
+  #loader-g {
+    animation: fadeInWave 2s ease-in-out infinite;
+    animation-delay: 2s;
   }
   
   @keyframes fadeInWave {

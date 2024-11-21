@@ -28,6 +28,17 @@ export default {
       colors: {
         primary: '#f97316',
       },
+      animation: {
+        'scale-pulse': 'ringPulse 2s infinite', // Özel animasyon
+      },
+      keyframes: {
+        ringPulse: {
+          '0%': { boxShadow: '0 0 0 0 rgba(34, 197, 94, 0.5)' }, // Başlangıç
+          '50%': { boxShadow: '0 0 0 6px rgba(34, 197, 94, 0)' }, // Orta nokta
+          //'100%': { boxShadow: '0 0 0 0 rgba(34, 197, 94, 0.5)' }, // Bitiş
+        },
+      }
+
     },
   },
   darkMode: 'class',

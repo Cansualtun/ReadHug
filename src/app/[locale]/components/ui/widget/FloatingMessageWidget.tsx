@@ -1,5 +1,5 @@
 'use client';
-import { selectMessageOpened, setMessageOpened } from '@/store/MessageStore';
+import { selectMessageCount, selectMessageOpened, setMessageOpened } from '@/store/MessageStore';
 import { selectUser } from '@/store/UserStore/slice';
 import axios from 'axios';
 import { ChevronLeft, MessageSquare, Search, Send, X } from 'lucide-react';
@@ -13,13 +13,13 @@ const FloatingMessageWidget = () => {
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch()
   const messageData = useSelector(selectMessageOpened)
+  const me = useSelector(selectUser)
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState<any>('');
   const [newMessage, setNewMessage] = useState<any>('');
   const [messageList, setMessageList] = useState<any>([]);
-
   const [messages, setMessages] = useState<any>([]);
-  const me = useSelector(selectUser)
+  const totalMessageCount = messageData?.notifications?.totalMessageCount
 
   const getMessageList = async () => {
     const token = document.cookie
@@ -37,6 +37,7 @@ const FloatingMessageWidget = () => {
           },
         },
       );
+
       setMessageList(data.data);
     } catch (error) { }
 
@@ -58,6 +59,7 @@ const FloatingMessageWidget = () => {
           },
         },
       );
+      await axios(`http://localhost:4000/notification/read/${messageRowId}`)
       setMessages(data.data)
     } catch (error) {
 
@@ -111,11 +113,18 @@ const FloatingMessageWidget = () => {
     }
   }, [messages]);
 
+
   return (
     me &&
     <div className="fixed bottom-4 right-4 z-50">
       {/* Ana konteyner */}
-      <div className="flex flex-col items-end">
+      <div className="flex flex-col items-end relative">
+
+        {
+          !messageData.isOpenMessage && totalMessageCount && totalMessageCount > 0 ? <div className='absolute top-0 right-0 bg-green-500 w-4 h-4 rounded-full flex justify-center items-center text-[9px] p-1 text-white leading-0'>
+            {totalMessageCount && totalMessageCount < 10 && totalMessageCount > 0 ? totalMessageCount : "9+"}
+          </div> : ""
+        }
         {messageData.isOpenMessage && (
           <div className="bg-default-50 rounded-lg shadow-xl mb-4 w-96 flex flex-col">
             {/* Başlık */}
@@ -292,9 +301,13 @@ const FloatingMessageWidget = () => {
             dispatch(setMessageOpened({ status: !messageData.isOpenMessage, messageRow: {}, user: {} }))
           }}
           className={`p-3 rounded-full shadow-lg transition-colors ${messageData.isOpenMessage
-            ? 'bg-gray-200 hover:bg-gray-300'
+            ? 'bg-gray-200 hover:bg-gray-300 ring-'
             : 'bg-primary/80 hover:bg-primary text-white'
-            }`}
+            }
+             ${messageData?.notifications?.totalMessageCount > 0 &&
+            "ring-2 ring-transparent ring-offset-1  animate-scale-pulse"
+            }
+            `}
         >
           <MessageSquare size={24} />
         </button>
