@@ -97,6 +97,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                     <p className="text-center py-4">{t('allBooksLoaded')}</p>
                 )}
                 scrollableTarget="scrollableDiv"
+                className='h-[calc(100vh-230px)] scroll-container scroll-smooth'
             >
                 <div className="grid gap-4">
                     {allData.map((book: any) => {
@@ -182,7 +183,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                         </div>
                     }
                 >  <Card>
-                        <CardBody id="scrollableDiv" className="overflow-auto max-h-[800px]">
+                        <CardBody id="scrollableDiv" className="overflow-auto h-[calc(100vh-230px)] scroll-container">
                             {renderBookList(BookType.Reading)}
                         </CardBody>
                     </Card>
@@ -197,7 +198,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                     }
                 >
                     <Card>
-                        <CardBody id="scrollableDiv" className="overflow-auto max-h-[800px]">
+                        <CardBody id="scrollableDiv" className="overflow-auto h-[calc(100vh-230px)] scroll-container">
                             {renderBookList(BookType.Read)}
                         </CardBody>
                     </Card>
@@ -212,7 +213,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                     }
                 >
                     <Card>
-                        <CardBody id="scrollableDiv" className="overflow-auto max-h-[800px]">
+                        <CardBody id="scrollableDiv" className="overflow-auto h-[calc(100vh-230px)] scroll-container">
                             {renderBookList(BookType.WishList)}
                         </CardBody>
                     </Card>
