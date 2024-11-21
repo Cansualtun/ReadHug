@@ -1,6 +1,7 @@
 "use client"
 import { useLikeCommentMutation } from '@/store/LikeStore';
 import { selectUser } from '@/store/UserStore/slice';
+import { formatDate } from '@/utils/formatDate';
 import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Input } from "@nextui-org/react";
 import { ChevronDown, ChevronUp, Heart, MessageCircle, Send } from "lucide-react";
 import Image from "next/image";
@@ -118,7 +119,9 @@ export default function Post({ post }: any) {
                             Comment: {post?.commentCount}
                         </Button>
                     </div>
-                    <p className="text-xs text-default-900">24.11.2024 12:25</p>
+                    <p className="text-xs text-default-900">
+                        {formatDate(post.createdAt, "dateTime")}
+                    </p>
                 </CardFooter>
 
                 {showComments && (

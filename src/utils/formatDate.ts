@@ -1,11 +1,21 @@
 export function formatDate(date: string, type: string = 'date'): string {
   if (!date) return '';
-  let formattedDate = '';
-  const newDate = new Date(date).toLocaleString().split(', ');
+  const newTimeFormat = new Date(date).toLocaleTimeString();
+  const newDateFormat = new Date(date).toLocaleDateString();
   if (type == 'date') {
-    formattedDate = newDate[0];
+    return newDateFormat;
   } else if (type === 'dateTime') {
-    formattedDate = newDate[0] + ' ' + newDate[1].split(' AM')[0];
+    return (
+      newDateFormat +
+      ' ' +
+      newTimeFormat
+        .split(' ')[0]
+        .split(':')
+        .reverse()
+        .splice(1, 3)
+        .reverse()
+        .join(':')
+    );
   }
-  return formattedDate;
+  return '';
 }
