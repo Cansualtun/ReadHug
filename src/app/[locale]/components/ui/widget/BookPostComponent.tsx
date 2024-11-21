@@ -3,7 +3,7 @@ import { useGetUserBookSearchMutation } from '@/store/BookStore';
 import { usePostShareMutation } from '@/store/PostStore';
 import { Avatar, Button, Card, Input, Textarea } from '@nextui-org/react';
 import axios from 'axios';
-import { BookOpen, CircleX, User2 } from 'lucide-react';
+import { BookOpen, CircleX, ScrollText, User2 } from 'lucide-react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
@@ -28,6 +28,7 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
   const [postShare] = usePostShareMutation();
   const [getUserBookSearch] = useGetUserBookSearchMutation();
   const containerRef = useRef<HTMLDivElement>(null);
+  console.log("selectedBook", selectedBook);
 
   const handleBookSelect = (book: Book) => {
     setSelectedBook(book);
@@ -170,9 +171,9 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
 
         {/* Search Results - Only show when expanded */}
         {isExpanded && searchTerm && books.length > 0 && (
-          <div className="absolute top-16 left-0 w-full max-w-md z-50">
+          <div className="absolute top-16 left-0 w-full max-w-md z-50 contents transition-all duration-500 ">
             <Card className="w-full p-1 shadow-lg">
-              <div className="max-h-48 overflow-y-auto divide-y divide-default-200">
+              <div className="max-h-48 overflow-y-auto divide-y divide-default-200 scroll-container">
                 {books.map((book: any) => (
                   <div
                     key={book?._id}
@@ -211,7 +212,7 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
 
               <div className="relative w-20 h-28 flex-shrink-0">
                 <Image
-                  src={selectedBook?.book?.book_img ?? '/assets/book-placeholder.png'}
+                  src={selectedBook?.book?.images?.thumbnail ?? '/assets/book-placeholder.png'}
                   alt={selectedBook?.bookName}
                   fill
                   className="rounded-md shadow-sm object-cover"
@@ -225,16 +226,23 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
                     {selectedBook?.book?.name}
                   </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <User2 size={16} className="text-primary flex-shrink-0" />
-                  <span className="text-sm text-default-600 truncate">
-                    {selectedBook?.author?.name}
-                  </span>
-                </div>
-                {selectedBook?.book?.pages_count && (
-                  <span className="text-xs text-default-500">
-                    {selectedBook.book.pages_count} pages
-                  </span>
+                {
+                  selectedBook?.authorData.length > 0 && <div className="flex items-center gap-2">
+                    <User2 size={16} className="text-primary flex-shrink-0" />
+                    <span className="text-sm text-default-600 truncate">
+
+                      {selectedBook?.authorData?.map((author: any) => author.name).join(', ')}
+                    </span>
+                  </div>
+                }
+
+                {selectedBook?.book?.pageCount && (
+                  <div className="flex items-center gap-2">
+                    <ScrollText size={16} className="text-primary flex-shrink-0" />
+                    <span className="text-sm text-default-600 truncate">
+                      {selectedBook.book.pageCount} pages
+                    </span>
+                  </div>
                 )}
               </div>
             </div>
