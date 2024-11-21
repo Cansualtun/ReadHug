@@ -125,7 +125,10 @@ const FloatingMessageWidget = () => {
             <div className="bg-primary/10 p-4 py-2 rounded-t-lg flex justify-between items-center border-b">
               <h3 className="font-medium">Mesajlaşma</h3>
               <button
-                onClick={() => dispatch(setMessageOpened({ status: false }))}
+                onClick={() => {
+                  setSelectedUser(null)
+                  dispatch(setMessageOpened({ status: false, messageRow: {}, user: {} }))
+                }}
                 className="text-default-700 hover:text-default-900"
               >
                 <X size={20} />
@@ -289,7 +292,10 @@ const FloatingMessageWidget = () => {
 
         {/* Toggle butonu */}
         <button
-          onClick={() => dispatch(setMessageOpened({ status: !messageData.isOpenMessage }))}
+          onClick={() => {
+            setSelectedUser(null)
+            dispatch(setMessageOpened({ status: !messageData.isOpenMessage, messageRow: {}, user: {} }))
+          }}
           className={`p-3 rounded-full shadow-lg transition-colors ${messageData.isOpenMessage
             ? 'bg-gray-200 hover:bg-gray-300'
             : 'bg-primary/80 hover:bg-primary text-white'
