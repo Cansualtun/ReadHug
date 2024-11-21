@@ -107,8 +107,8 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                                 className="w-20 h-28 object-cover rounded-md shadow-md"
                             />
                             <div className="flex-1">
-                                <h3 className="font-semibold text-lg">{book?.bookId?.name}</h3>
-                                <p className="text-default-500">
+                                <h3 className="font-semibold text-md">{book?.bookId?.name}</h3>
+                                <p className="text-default-500 text-sm">
                                     {t('bookInfo.author', { name: book.bookId?.authors.map((i: any) => i.name).join(" & ") })}
                                 </p>
                                 {type === BookType.Reading && (
@@ -177,24 +177,21 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                     key="1"
                     title={
                         <div className="flex items-center space-x-2">
-                            <BookMarked className="w-4 h-4" />
+                            <BookOpen className="w-4 h-4 text-success" />
                             <span className='lg:block hidden'>{t('tabs.reading')}</span>
                         </div>
                     }
-                >
-
-                    <Card>
+                >  <Card>
                         <CardBody id="scrollableDiv" className="overflow-auto max-h-[800px]">
                             {renderBookList(BookType.Reading)}
                         </CardBody>
                     </Card>
                 </Tab>
-
                 <Tab
                     key="0"
                     title={
                         <div className="flex items-center space-x-2">
-                            <BookOpen className="w-4 h-4" />
+                            <BookMarked className="w-4 h-4 text-warning" />
                             <span className='lg:block hidden'>{t('tabs.read')}</span>
                         </div>
                     }
@@ -205,12 +202,11 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                         </CardBody>
                     </Card>
                 </Tab>
-
                 <Tab
                     key="2"
                     title={
                         <div className="flex items-center space-x-2">
-                            <BookPlus className="w-4 h-4" />
+                            <BookPlus className="w-4 h-4 text-secondary" />
                             <span className='lg:block hidden'>{t('tabs.wishlist')}</span>
                         </div>
                     }
@@ -221,13 +217,12 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                         </CardBody>
                     </Card>
                 </Tab>
-
                 <Tab
                     key="3"
                     className='w-full'
                     title={
                         <div className="flex items-center space-x-2">
-                            <MessageCircle className="w-4 h-4" />
+                            <MessageCircle className="w-4 h-4 text-info" />
                             <span className='lg:block hidden'>{t('tabs.posts')}</span>
                         </div>
                     }
@@ -257,8 +252,6 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                             </div>
                         }
                     >
-
-
                         <Card shadow='none' className='bg-transparent shadow-none w-full p-0'>
                             <CardBody className='p-0'>
                                 asd

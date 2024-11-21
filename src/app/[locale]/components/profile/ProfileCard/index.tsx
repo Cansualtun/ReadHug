@@ -127,14 +127,14 @@ const ProfileCard = ({ profileData }: any) => {
                     <div className="grid grid-cols-3 gap-2">
                         <div className="text-center p-2 rounded-md bg-default-50 transition-colors cursor-pointer">
                             <div className="flex items-center justify-center gap-2 mb-1">
-                                <BookMarked className="w-4 h-4 text-warning" />
+                                <BookOpen className="w-4 h-4 text-success" />
                                 <span className="font-semibold text-sm">{userProfileData?.counts?.readingBooksCount}</span>
                             </div>
                             <p className="text-xs text-default-500">{t('stats.books.reading')}</p>
                         </div>
                         <div className="text-center p-2 rounded-md bg-default-50 transition-colors cursor-pointer">
                             <div className="flex items-center justify-center gap-2 mb-1">
-                                <BookOpen className="w-4 h-4 text-success" />
+                                <BookMarked className="w-4 h-4 text-warning" />
                                 <span className="font-semibold text-sm">{userProfileData?.counts?.readBooksCount}</span>
                             </div>
                             <p className="text-xs text-default-500">{t('stats.books.read')}</p>

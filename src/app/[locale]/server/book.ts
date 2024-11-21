@@ -11,12 +11,6 @@ export enum BookType {
 export async function getAllBookLists(userName: string) {
   const cookieStore = cookies();
   const token = cookieStore.get('token')?.value;
-
-  // if (!token) {
-  //   console.log('Token bulunamadı');
-  //   throw new Error('Token not found');
-  // }
-
   const requests = [
     fetch(`${BASE_URL}/book/user/books/${userName}/${BookType.Read}`, {
       headers: {

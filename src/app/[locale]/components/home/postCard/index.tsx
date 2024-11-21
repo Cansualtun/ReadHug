@@ -53,7 +53,6 @@ export default function Post({ post }: any) {
     return (
         <div className="relative w-full mt-10 p-2">
             <div className="absolute -top-8 left-10 z-20">
-
                 <Card isHoverable className="w-28 h-36 border-0  hover:ring-1 hover:ring-primary/20">
                     <Link href={`/personalBooks/${post?.book?.slug}`}>
                         <Image
@@ -65,12 +64,11 @@ export default function Post({ post }: any) {
                         />
                     </Link>
                 </Card>
-
             </div>
             <Card shadow='sm' className="w-full rounded-lg bg-gradient-to-r bg-default-100">
                 <CardHeader className="flex justify-between items-center px-8 pt-10 pb-4">
                     <div className="flex flex-col ml-32 space-y-1">
-                        <Link href={`/personalBooks/${post?.book?.slug}`} className="text-lg font-bold hover:text-primary">{post?.book?.bookId?.name}</Link>
+                        <Link href={`/personalBooks/${post?.book?.slug}`} className="text-md font-bold hover:text-primary">{post?.book?.bookId?.name}</Link>
                         <p className="text-xs text-default-900">{post?.book?.bookId?.authors[0]?.name}</p>
                     </div>
                     <div className="flex items-center gap-4">

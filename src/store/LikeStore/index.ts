@@ -26,7 +26,6 @@ export const likeApi = baseApi.injectEndpoints({
               },
             }),
           );
-          toast.success(data.message);
         } catch (error) {
           toast.error('Like işlemi başarısız oldu');
           console.error('Like error:', error);

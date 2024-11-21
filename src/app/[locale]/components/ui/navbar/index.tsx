@@ -83,7 +83,7 @@ export default function Header() {
         },
       );
       setNotificationData(data.data);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const readAllNotifications = async () => {
@@ -98,6 +98,7 @@ export default function Header() {
         email: data?.data?.email as any,
         image: data?.data?.image as any,
       });
+      document.cookie = `userName=${data?.data.userName}; path=/; max-age=${60 * 60 * 24 * 7}`;
       if (data && data.status) {
         getNotifications();
       }

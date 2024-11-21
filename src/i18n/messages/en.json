@@ -146,8 +146,8 @@
     "library": {
       "title": "Library",
       "shelves": {
-        "toRead": "Want to Read",
-        "reading": "Currently Reading",
+        "toRead": "Wishlist",
+        "reading": "Reading",
         "completed": "Completed"
       }
     }

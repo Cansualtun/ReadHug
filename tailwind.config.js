@@ -10,8 +10,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-sans)'],
-        mono: ['var(--font-mono)'],
+        sans: ['Poppins', 'var(--font-sans)'],
       },
       container: {
         center: true,
@@ -27,8 +26,8 @@ export default {
         'custom-xl': '1280px',
       },
       colors: {
-        primary: "#f97316"
-      }
+        primary: '#f97316',
+      },
     },
   },
   darkMode: 'class',

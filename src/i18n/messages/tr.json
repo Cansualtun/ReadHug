@@ -146,7 +146,7 @@
     "library": {
       "title": "Kitaplık",
       "shelves": {
-        "toRead": "Okumak İstenen",
+        "toRead": "İstek Listesi",
         "reading": "Şuan Okunan",
         "completed": "Tamamlanan"
       }
