@@ -59,6 +59,9 @@
     "followButton": {
       "follow": "Follow",
       "following": "Following"
+    },
+    "messageButton": {
+      "sendMessage": "Message"
     }
   },
   "BookListTabs": {

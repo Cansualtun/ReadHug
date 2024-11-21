@@ -14,8 +14,6 @@ import BookPostComponent from '../../ui/widget/BookPostComponent';
 
 
 const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
-    console.log("profileData", profileData);
-
     const t = useTranslations('BookListTabs');
     const [serverBooks] = useState(bookLists.data || []);
     const [userPost, setUserPost] = useState([]);
@@ -102,8 +100,6 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
             >
                 <div className="grid gap-4">
                     {allData.map((book: any) => {
-                        console.log("book", book);
-
                         return <div key={book._id} className="flex items-start space-x-4 p-4 hover:bg-default-100 rounded-lg transition-colors">
                             <img
                                 src={book?.bookId?.images?.thumbnail || "/assets/book-placeholder.jpg"}

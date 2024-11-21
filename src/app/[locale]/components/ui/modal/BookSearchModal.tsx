@@ -28,8 +28,6 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any>([]);
   const [selectedBooks, setSelectedBooks] = useState<any>([]);
-  console.log('searchResults', searchResults);
-
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -115,6 +113,12 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
   const handleStatusChange = (bookName: any, status: any) => {
     const updatedBooks: any = selectedBooks.map((book: any) =>
       book?.name === bookName ? { ...book, type: status } : book,
+    );
+    setSelectedBooks(updatedBooks);
+  };
+  const handleReadCountChange = (bookName: any, readCount: any) => {
+    const updatedBooks: any = selectedBooks.map((book: any) =>
+      book?.name === bookName ? { ...book, readCount } : book,
     );
     setSelectedBooks(updatedBooks);
   };
@@ -328,6 +332,9 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                               label="Sayfa Sayısı: "
                               size="sm"
                               maxValue={book.pageCount}
+                              onChange={(e: any) => {
+                                handleReadCountChange(book.name, e[0])
+                              }}
                               getValue={(page) =>
                                 ` ${page} of ${book.pageCount} Page`
                               }
@@ -367,7 +374,6 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                         )}
                         {!book.pageCount && (
                           <Chip color="primary" className="mt-2">
-                            {' '}
                             Sayfa sayısı bilinmiyor.
                           </Chip>
                         )}
