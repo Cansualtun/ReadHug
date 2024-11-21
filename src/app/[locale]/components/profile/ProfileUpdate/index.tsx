@@ -52,7 +52,7 @@ export default function ProfileUpdate() {
     }, [me]);
 
     return (
-        <Card className="p-6 bg-default-100">
+        <Card shadow="sm" className="p-6 bg-default-100">
             <CardHeader>Profile Update</CardHeader>
             <form onSubmit={formik.handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

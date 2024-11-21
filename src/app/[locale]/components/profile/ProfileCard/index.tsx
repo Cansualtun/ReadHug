@@ -1,12 +1,16 @@
 "use client"
-import React, { useState } from 'react';
-import { Card, CardBody, CardHeader, Avatar, Divider, Button } from "@nextui-org/react";
-import { BookOpen, BookMarked, BookPlus, Users, UserPlus, UserCheck } from "lucide-react";
 import { useFollowUserMutation, useUnfollowUserMutation } from '@/store/FollowStore';
+import { setMessageOpened } from '@/store/MessageStore';
 import { useUserProfileQuery } from '@/store/UserStore';
+import { Avatar, Button, Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
+import axios from 'axios';
+import { BookMarked, BookOpen, BookPlus, Send, UserCheck, UserPlus, Users } from "lucide-react";
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 const ProfileCard = ({ profileData }: any) => {
+    const dispatch = useDispatch()
     const t = useTranslations('ProfileCard');
     const { user, isSelf, isFollow: initialIsFollow } = profileData;
     const [isFollow, setIsFollow] = useState(initialIsFollow);
@@ -30,8 +34,40 @@ const ProfileCard = ({ profileData }: any) => {
         }
     };
 
+
+
+    const handleMessageAction = async () => {
+        const token = document.cookie
+            .split('; ')
+            .find((row) => row.startsWith('token='))
+            ?.split('=')[1];
+        try {
+            const { data } = await axios.post(
+                `http://localhost:4000/message/create/row`,
+                {
+                    receiver: profileData.user._id,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                },
+            );
+            dispatch(setMessageOpened({
+                status: true,
+                messageRow: data.data,
+                user: data.user
+            }))
+
+        } catch (error) {
+
+        }
+
+    }
+
     return (
-        <Card className="bg-gradient-to-b from-white to-neutral-50 dark:from-gray-900 dark:to-gray-800 shadow-lg">
+        <Card shadow='sm' className="bg-default-50">
             <CardHeader className="flex flex-col items-center pt-6 pb-2">
                 <Avatar
                     src={userProfileData?.user?.image || "https://picsum.photos/200/300"}
@@ -75,26 +111,35 @@ const ProfileCard = ({ profileData }: any) => {
                         >
                             {isFollow ? t('followButton.following') : t('followButton.follow')}
                         </Button>
+                        <Button
+                            color={isFollow ? "default" : "primary"}
+                            variant={isFollow ? "bordered" : "solid"}
+                            onPress={handleMessageAction}
+                            startContent={<Send size={18} />}
+                            className="font-medium ml-1"
+                        >
+                            {t('messageButton.sendMessage')}
+                        </Button>
                     </div>
                 )}
 
-                <div className="bg-default-50 dark:bg-gray-800 rounded-lg p-3">
+                <div className="bg-default-200 rounded-lg p-3">
                     <div className="grid grid-cols-3 gap-2">
-                        <div className="text-center p-2 rounded-md bg-white/50 dark:bg-gray-700 hover:bg-white dark:hover:bg-gray-600 transition-colors cursor-pointer">
-                            <div className="flex items-center justify-center gap-2 mb-1">
-                                <BookOpen className="w-4 h-4 text-success" />
-                                <span className="font-semibold text-sm">{userProfileData?.counts?.readBooksCount}</span>
-                            </div>
-                            <p className="text-xs text-default-500">{t('stats.books.read')}</p>
-                        </div>
-                        <div className="text-center p-2 rounded-md bg-white/50 dark:bg-gray-700 hover:bg-white dark:hover:bg-gray-600 transition-colors cursor-pointer">
+                        <div className="text-center p-2 rounded-md bg-default-50 transition-colors cursor-pointer">
                             <div className="flex items-center justify-center gap-2 mb-1">
                                 <BookMarked className="w-4 h-4 text-warning" />
                                 <span className="font-semibold text-sm">{userProfileData?.counts?.readingBooksCount}</span>
                             </div>
                             <p className="text-xs text-default-500">{t('stats.books.reading')}</p>
                         </div>
-                        <div className="text-center p-2 rounded-md bg-white/50 dark:bg-gray-700 hover:bg-white dark:hover:bg-gray-600 transition-colors cursor-pointer">
+                        <div className="text-center p-2 rounded-md bg-default-50 transition-colors cursor-pointer">
+                            <div className="flex items-center justify-center gap-2 mb-1">
+                                <BookOpen className="w-4 h-4 text-success" />
+                                <span className="font-semibold text-sm">{userProfileData?.counts?.readBooksCount}</span>
+                            </div>
+                            <p className="text-xs text-default-500">{t('stats.books.read')}</p>
+                        </div>
+                        <div className="text-center p-2 rounded-md bg-default-50 transition-colors cursor-pointer">
                             <div className="flex items-center justify-center gap-2 mb-1">
                                 <BookPlus className="w-4 h-4 text-secondary" />
                                 <span className="font-semibold text-sm">{userProfileData?.counts?.wishlistBooksCount}</span>

@@ -1,21 +1,26 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import { MessageSquare, X, Search, Send, ChevronLeft } from 'lucide-react';
+import { selectMessageOpened, setMessageOpened } from '@/store/MessageStore';
+import { selectUser } from '@/store/UserStore/slice';
 import axios from 'axios';
-import { LoaderIcon } from 'react-hot-toast';
+import { ChevronLeft, MessageSquare, Search, Send, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../loading';
+import { formatDate } from '@/utils/formatDate';
 
 const FloatingMessageWidget = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const dispatch = useDispatch()
+  const messageData = useSelector(selectMessageOpened)
   const [selectedUser, setSelectedUser] = useState<any>(null);
-  console.log("selectedUser", selectedUser);
-
   const [searchQuery, setSearchQuery] = useState<any>('');
   const [newMessage, setNewMessage] = useState<any>('');
   const [messageList, setMessageList] = useState<any>([]);
+
   const [messages, setMessages] = useState<any>([]);
+  const me = useSelector(selectUser)
+
   const getMessageList = async () => {
     const token = document.cookie
       .split('; ')
@@ -87,35 +92,40 @@ const FloatingMessageWidget = () => {
   }
 
   useEffect(() => {
-    if (isOpen) {
+    if (messageData.messageRow._id) {
+      setSelectedUser({ ...messageData.user, messageRowId: messageData.messageRow._id })
+      getMessage(messageData.messageRow._id)
+    } else {
       getMessageList()
     }
-  }, [isOpen]);
+  }, [messageData]);
 
   useEffect(() => {
     if (selectedUser) {
       getMessage(selectedUser.messageRowId)
     }
   }, [selectedUser]);
-
   useEffect(() => {
-    // Son mesajın görünürlüğünü sağla ve smooth scroll ekle
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]); // Mesajlar değiştiğinde tetiklenir
+  }, [messages]);
 
   return (
+    me &&
     <div className="fixed bottom-4 right-4 z-50">
       {/* Ana konteyner */}
       <div className="flex flex-col items-end">
-        {isOpen && (
+        {messageData.isOpenMessage && (
           <div className="bg-default-50 rounded-lg shadow-xl mb-4 w-96 flex flex-col">
             {/* Başlık */}
             <div className="bg-primary/10 p-4 py-2 rounded-t-lg flex justify-between items-center border-b">
               <h3 className="font-medium">Mesajlaşma</h3>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setSelectedUser(null)
+                  dispatch(setMessageOpened({ status: false, messageRow: {}, user: {} }))
+                }}
                 className="text-default-700 hover:text-default-900"
               >
                 <X size={20} />
@@ -159,9 +169,7 @@ const FloatingMessageWidget = () => {
                           alt={user?.userName}
                           className="w-8 h-8 rounded-full"
                         />
-                        {/* {user?.receiver?.isOnline && (
-                                                  <div className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-white" />
-                                              )} */}
+
                         {user?.isRead && (
                           <div className="absolute bottom-0 right-0 w-2 h-2 bg-primary rounded-full border border-white" />
                         )}
@@ -173,7 +181,7 @@ const FloatingMessageWidget = () => {
                               {user?.firstName + " " + user?.lastName}
                             </span>
                             <span className="text-xs text-gray-500">
-                              {user?.createdAt}
+                              {formatDate(user?.createdAt)}
                             </span>
                           </div>
                           <p className="text-sm text-gray-500 truncate">
@@ -189,11 +197,11 @@ const FloatingMessageWidget = () => {
                   }
                 </div>
               </div>
-              {/* Sağ panel - Mesajlaşma */}
+              {/* Mesajlaşma */}
               <div
                 className={`w-1/2 flex flex-col ${!selectedUser ? 'hidden ' : 'w-full'}`}
               >
-                {messages.length > 0 ? (
+                {messages ? (
                   <>
                     <div className="p-3 border-b bg-default-50 flex items-center">
                       <div
@@ -207,12 +215,12 @@ const FloatingMessageWidget = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <img
-                          src={selectedUser.image ?? "/assets/avatar.png"}
-                          alt={selectedUser.userName}
+                          src={selectedUser?.image ?? "/assets/avatar.png"}
+                          alt={selectedUser?.userName}
                           className="w-8 h-8 rounded-full"
                         />
                         <span className="font-medium text-sm">
-                          {selectedUser.firstName + " " + selectedUser.lastName}
+                          {selectedUser?.firstName + " " + selectedUser?.lastName}
                         </span>
                       </div>
                     </div>
@@ -234,8 +242,8 @@ const FloatingMessageWidget = () => {
                             >
                               <p className="text-sm">{message.message}</p>
                             </div>
-                            <span className="text-xs text-gray-500">
-                              {message.createdAt}
+                            <span className="text-xs text-gray-500 self-end">
+                              {formatDate(message.createdAt, "dateTime")}
                             </span>
                           </div>
                         </div>
@@ -279,8 +287,11 @@ const FloatingMessageWidget = () => {
 
         {/* Toggle butonu */}
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`p-3 rounded-full shadow-lg transition-colors ${isOpen
+          onClick={() => {
+            setSelectedUser(null)
+            dispatch(setMessageOpened({ status: !messageData.isOpenMessage, messageRow: {}, user: {} }))
+          }}
+          className={`p-3 rounded-full shadow-lg transition-colors ${messageData.isOpenMessage
             ? 'bg-gray-200 hover:bg-gray-300'
             : 'bg-primary/80 hover:bg-primary text-white'
             }`}

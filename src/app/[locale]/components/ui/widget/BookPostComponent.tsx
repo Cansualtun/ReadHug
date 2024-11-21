@@ -108,6 +108,7 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
       getAllBook(searchTerm);
     }
   }, [searchTerm]);
+  console.log("books", books);
 
   return (
     <Card
@@ -158,7 +159,7 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
             </div>
             <Avatar
               src={userData?.image ?? '/assets/avatar.png'}
-              size={isExpanded ? "sm" : "xs"}
+              size={isExpanded ? "md" : "sm"}
               className={`transition-all duration-300 ${isExpanded
                 ? 'border-2 border-primary/20'
                 : 'border border-primary/10'
@@ -180,7 +181,7 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
                   >
                     <div className="relative w-10 h-14 flex-shrink-0">
                       <Image
-                        src={book?.book?.book_img ?? '/assets/book-placeholder.png'}
+                        src={book?.book?.images?.thumbnail ?? '/assets/book-placeholder.png'}
                         alt={book?.book?.name}
                         fill
                         className="rounded-sm object-cover"
@@ -188,7 +189,7 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{book?.book?.name}</p>
-                      <p className="text-xs text-default-500 truncate">{book?.author?.name}</p>
+                      <p className="text-xs text-default-500 truncate">{book?.authorData[0]?.name}</p>
                     </div>
                   </div>
                 ))}

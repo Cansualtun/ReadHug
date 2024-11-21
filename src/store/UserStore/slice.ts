@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '@/src/store';
+import { RootState } from '../index';
 
 interface UserState {
   me_result: {
@@ -40,7 +40,20 @@ const userSlice = createSlice({
 
 export const { setUserStore, clearUserStore } = userSlice.actions;
 
-export const selectUser = (state: RootState) => state.user.login_result;
+export const selectUser = (state: RootState) => {
+  const mutations = state.baseApi.mutations;
+  const latestFulfilled: any = Object.values(mutations)
+    .filter(
+      (mutation: any) =>
+        mutation.endpointName === 'me' && mutation.status === 'fulfilled',
+    )
+    .sort(
+      (a: any, b: any) =>
+        (b.fulfilledTimeStamp || 0) - (a.fulfilledTimeStamp || 0),
+    )[0];
+
+  return latestFulfilled?.data?.data || null;
+};
 export const selectProfile = (state: RootState) => state.user.profile_result;
 
 export default userSlice.reducer;

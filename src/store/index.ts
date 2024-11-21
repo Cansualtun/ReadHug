@@ -3,11 +3,13 @@ import { authApi } from './AuthStore';
 import { userApi } from './UserStore';
 import { likeApi } from './LikeStore';
 import { baseApi } from '@/services/baseApi';
+import messageSlice from '@/store/MessageStore';
 
 const rootReducer = combineReducers({
   auth: authApi,
   user: userApi,
   like: likeApi,
+  message: messageSlice,
   [baseApi.reducerPath]: baseApi.reducer,
 });
 

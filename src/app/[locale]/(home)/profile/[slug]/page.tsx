@@ -25,7 +25,7 @@ export default async function ProfileSlug({ params }: { params: { slug: string }
                     </div>
                 </div>
                 <div className="lg:col-span-2">
-                    <BookListTabs bookLists={books} slug={params.slug} post={post} />
+                    <BookListTabs profileData={profile} bookLists={books} slug={params.slug} post={post} />
                 </div>
             </div>
         </div>

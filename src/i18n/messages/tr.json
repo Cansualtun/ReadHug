@@ -52,13 +52,16 @@
       "books": {
         "read": "Okunan",
         "reading": "Okunuyor",
-        "wishlist": "İstek",
+        "wishlist": "İstek Listesi",
         "total": "Toplam {count} kitap"
       }
     },
     "followButton": {
       "follow": "Takip Et",
       "following": "Takip Ediliyor"
+    },
+    "messageButton": {
+      "sendMessage": "Mesaj"
     }
   },
   "BookListTabs": {
@@ -173,7 +176,9 @@
       "settings": "Ayarlar",
       "system": "Sistem",
       "language": "Dil",
-      "logout": "Çıkış Yap"
+      "logout": "Çıkış Yap",
+      "login": "Giriş Yap",
+      "register": "Kayıt Ol"
     },
     "errors": {
       "userDataFetch": "Kullanıcı bilgileri alınamadı"

@@ -33,7 +33,7 @@ const LoginForm = () => {
                 <div className="flex flex-row w-full justify-center space-x-4">
                     <Image
                         alt="nextui logo"
-                        src="/"
+                        src="/assets/favicon.svg"
                         className='w-[70px] h-[48px]'
                     />
                     <div className="flex flex-col">
