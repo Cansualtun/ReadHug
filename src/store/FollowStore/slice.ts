@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '@/src/store';
+import { RootState } from '..';
 
 interface FollowState {
   followUser: {
@@ -7,10 +7,12 @@ interface FollowState {
     isFollowing: boolean;
     message?: string;
   } | null;
+  follow: { success: boolean } | null;
 }
 
 const initialState: FollowState = {
   followUser: null,
+  follow: null,
 };
 
 const followSlice = createSlice({
@@ -21,10 +23,14 @@ const followSlice = createSlice({
       state,
       action: PayloadAction<{
         followUser?: FollowState['followUser'];
+        follow?: FollowState['follow'];
       }>,
     ) {
       if (action.payload.followUser) {
         state.followUser = action.payload.followUser;
+      }
+      if (action.payload.follow) {
+        state.follow = action.payload.follow;
       }
     },
     clearFollowStore(state) {

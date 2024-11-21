@@ -62,6 +62,10 @@
     },
     "messageButton": {
       "sendMessage": "Message"
+    },
+    "modal": {
+      "following": "Following",
+      "followers": "Followers"
     }
   },
   "BookListTabs": {

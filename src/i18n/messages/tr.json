@@ -62,6 +62,10 @@
     },
     "messageButton": {
       "sendMessage": "Mesaj"
+    },
+    "modal": {
+      "following": "Takip Edilenler",
+      "followers": "Takipçiler"
     }
   },
   "BookListTabs": {

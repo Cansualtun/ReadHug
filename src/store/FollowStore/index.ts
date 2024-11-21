@@ -65,8 +65,38 @@ export const followApi = baseApi.injectEndpoints({
         }
       },
     }),
+    getFollowList: builder.query<IFollowListResponse, string>({
+      query: (userName) => {
+        const token = getFromTokenCookies();
+        return {
+          url: `/follow/${userName}`,
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(
+            setFollowStore({
+              follow: {
+                success: data.status,
+              },
+            }),
+          );
+        } catch (error) {
+          console.error('Follow list error:', error);
+        }
+      },
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useFollowUserMutation, useUnfollowUserMutation } = followApi;
+export const {
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+  useGetFollowListQuery,
+} = followApi;

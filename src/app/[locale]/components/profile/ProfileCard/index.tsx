@@ -1,11 +1,12 @@
 "use client"
-import { useFollowUserMutation, useUnfollowUserMutation } from '@/store/FollowStore';
+import { useFollowUserMutation, useUnfollowUserMutation, useGetFollowListQuery } from '@/store/FollowStore';
 import { setMessageOpened } from '@/store/MessageStore';
 import { useUserProfileQuery } from '@/store/UserStore';
-import { Avatar, Button, Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
+import { Avatar, Button, Card, CardBody, CardHeader, Divider, Modal, ModalHeader, ModalBody, ModalContent, Spinner } from "@nextui-org/react";
 import axios from 'axios';
 import { BookMarked, BookOpen, BookPlus, Send, UserCheck, UserPlus, Users } from "lucide-react";
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -17,6 +18,19 @@ const ProfileCard = ({ profileData }: any) => {
     const [followUser] = useFollowUserMutation();
     const [unfollowUser] = useUnfollowUserMutation();
     const { data: userProfileData, refetch: refetchUserProfile } = useUserProfileQuery(user.userName);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalType, setModalType] = useState<'followers' | 'following'>('followers');
+    const { data: followListData, isLoading: isFollowListLoading } = useGetFollowListQuery(
+        user.userName,
+        {
+            skip: !isModalOpen,
+        }
+    );
+
+    const handleModalOpen = (type: 'followers' | 'following') => {
+        setModalType(type);
+        setIsModalOpen(true);
+    };
 
     const handleFollowAction = async () => {
         try {
@@ -33,8 +47,6 @@ const ProfileCard = ({ profileData }: any) => {
             setIsFollow(!isFollow);
         }
     };
-
-
 
     const handleMessageAction = async () => {
         const token = document.cookie
@@ -61,10 +73,50 @@ const ProfileCard = ({ profileData }: any) => {
             }))
 
         } catch (error) {
+        }
+    }
 
+    const renderFollowList = () => {
+        if (isFollowListLoading) {
+            return (
+                <div className="flex justify-center p-4">
+                    <Spinner />
+                </div>
+            );
         }
 
-    }
+        const list = modalType === 'followers'
+            ? followListData?.followers || []
+            : followListData?.following || [];
+
+        return (
+            <div className="space-y-4">
+                {list.map((item: any) => {
+                    const userData = modalType === 'followers'
+                        ? item.follower
+                        : item.following;
+
+                    return (
+                        <Link href={`/profile/${userData.userName}`}>
+                            <div key={item._id} className="flex items-center justify-between p-2 hover:bg-default-100 rounded-lg">
+                                <div className="flex items-center gap-3">
+                                    <Avatar
+                                        src={userData.image || "https://picsum.photos/200/300"}
+                                        size="sm"
+                                        name={`${userData.firstName} ${userData.lastName}`}
+                                    />
+                                    <div>
+                                        <p className="font-medium">{userData.firstName} {userData.lastName}</p>
+                                        <p className="text-small text-default-500">@{userData.userName}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </Link>
+                    );
+                })}
+            </div>
+        );
+    };
 
     return (
         <Card shadow='sm' className="bg-default-50">
@@ -84,7 +136,10 @@ const ProfileCard = ({ profileData }: any) => {
             </CardHeader>
             <CardBody className="px-4 py-2">
                 <div className="flex justify-center space-x-8 mb-4">
-                    <div className="text-center group cursor-pointer hover:scale-105 transition-transform">
+                    <div
+                        onClick={() => handleModalOpen('followers')}
+                        className="text-center group cursor-pointer hover:scale-105 transition-transform"
+                    >
                         <div className="flex items-center space-x-1">
                             <Users className="w-4 h-4 text-primary" />
                             <span className="font-semibold">{userProfileData?.counts?.followersCount}</span>
@@ -92,7 +147,10 @@ const ProfileCard = ({ profileData }: any) => {
                         <p className="text-xs text-default-500">{t('stats.followers')}</p>
                     </div>
                     <Divider orientation="vertical" className="h-8" />
-                    <div className="text-center group cursor-pointer hover:scale-105 transition-transform">
+                    <div
+                        onClick={() => handleModalOpen('following')}
+                        className="text-center group cursor-pointer hover:scale-105 transition-transform"
+                    >
                         <div className="flex items-center space-x-1">
                             <UserPlus className="w-4 h-4 text-primary" />
                             <span className="font-semibold">{userProfileData?.counts?.followsCount}</span>
@@ -155,6 +213,20 @@ const ProfileCard = ({ profileData }: any) => {
                         })}
                     </p>
                 </div>
+                <Modal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    size="md"
+                >
+                    <ModalContent>
+                        <ModalHeader>
+                            {modalType === 'followers' ? t('modal.followers') : t('modal.following')}
+                        </ModalHeader>
+                        <ModalBody>
+                            {renderFollowList()}
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
             </CardBody>
         </Card>
     );
