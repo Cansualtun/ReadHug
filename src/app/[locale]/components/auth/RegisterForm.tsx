@@ -20,20 +20,30 @@ export default function RegisterForm() {
         initialValues: { email: "", password: "", firstName: "", lastName: "", userName: "" },
         validationSchema: registerValidationSchema,
         onSubmit: async (values) => {
-            const { email, password, firstName, lastName, userName } = values;
-            await register({ email, password, firstName, lastName, userName });
-            router.push("/")
+            try {
+                const { email, password, firstName, lastName, userName } = values;
+                const result = await register({
+                    email,
+                    password,
+                    firstName,
+                    lastName,
+                    userName
+                }).unwrap();
+                if (result.status) {
+                    router.push("/");
+                }
+            } catch (error) {
+            }
         },
     });
 
     return (
         <Card className="w-[400px] p-4">
             <CardHeader>
-                <div className="flex flex-row w-full justify-center space-x-4">
+                <div className="flex flex-row w-full justify-center">
                     <Image
                         alt="nextui logo"
-                        radius="sm"
-                        src="/"
+                        src="/assets/favicon.svg"
                         className='w-[70px] h-[48px]'
                     />
                     <div className="flex flex-col">

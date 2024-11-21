@@ -19,9 +19,14 @@ const LoginForm = () => {
         initialValues: { email: "", password: "" },
         validationSchema: loginValidationSchema,
         onSubmit: async (values) => {
-            const { email, password } = values;
-            await login({ email, password });
-            router.push("/")
+            try {
+                const { email, password } = values;
+                const result = await login({ email, password }).unwrap();
+                if (result.status) {
+                    router.push('/');
+                }
+            } catch (error) {
+            }
         },
     });
 
@@ -30,7 +35,7 @@ const LoginForm = () => {
     return (
         <Card className="w-[400px] p-4">
             <CardHeader>
-                <div className="flex flex-row w-full justify-center space-x-4">
+                <div className="flex flex-row w-full justify-center">
                     <Image
                         alt="nextui logo"
                         src="/assets/favicon.svg"

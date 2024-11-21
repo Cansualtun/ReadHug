@@ -22,18 +22,23 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(
-            setAuthStore({
-              login_result: {
-                userId: data.userId,
-                access_token: data.access_token,
-              },
-            }),
-          );
-          document.cookie = `token=${data.access_token}; path=/; Secure;`;
-          toast.success('Welcome to Books Addict');
-        } catch (error) {
-          toast.error('Login failed');
+          if (data.status) {
+            dispatch(
+              setAuthStore({
+                login_result: {
+                  userId: data.userId,
+                  access_token: data.access_token,
+                },
+              }),
+            );
+            document.cookie = `token=${data.access_token}; path=/; Secure;`;
+            toast.success('Welcome to Books Addict');
+          } else {
+            toast.error(data.message || 'Login failed');
+          }
+        } catch (error: any) {
+          const errorData = error?.error.data.message;
+          toast.error(errorData || 'Login failed');
           console.error('Login error:', error);
         }
       },
@@ -49,8 +54,9 @@ export const authApi = baseApi.injectEndpoints({
           const { data } = await queryFulfilled;
           toast.success('Register success!');
           dispatch(setAuthStore({ register: data }));
-        } catch (error) {
-          toast.error('Registration failed');
+        } catch (error: any) {
+          const errorData = error?.error?.data.message;
+          toast.error(errorData || 'Registration failed');
           console.error('Register error:', error);
         }
       },
@@ -73,8 +79,9 @@ export const authApi = baseApi.injectEndpoints({
           dispatch(setAuthStore({ logout: true }));
           document.cookie =
             'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        } catch (error) {
-          toast.error('Logout failed');
+        } catch (error: any) {
+          const errorData = error?.data;
+          toast.error(errorData?.message || 'Logout failed');
           console.error('Logout error:', error);
         }
       },
@@ -99,8 +106,9 @@ export const authApi = baseApi.injectEndpoints({
           const { data } = await queryFulfilled;
           toast.success('Change password success!');
           dispatch(setAuthStore({ changePassword: data }));
-        } catch (error) {
-          toast.error('Change Password failed');
+        } catch (error: any) {
+          const errorData = error?.data;
+          toast.error(errorData?.message || 'Change Password failed');
           console.error('Change Password error:', error);
         }
       },

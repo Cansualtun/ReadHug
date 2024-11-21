@@ -3,10 +3,10 @@ import Image from "next/image";
 import React from "react";
 import { Providers } from "../providers";
 import clsx from "clsx";
-import { Toaster } from "react-hot-toast";
 import { fontSans } from "@/config/fonts";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { Toaster } from "sonner";
 
 export default async function AuthLayout({
     children,
