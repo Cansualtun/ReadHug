@@ -12,12 +12,10 @@ const FloatingMessageWidget = () => {
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch()
   const messageData = useSelector(selectMessageOpened)
-  console.log("messageData", messageData);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState<any>('');
   const [newMessage, setNewMessage] = useState<any>('');
   const [messageList, setMessageList] = useState<any>([]);
-  console.log("messageList", messageList);
 
   const [messages, setMessages] = useState<any>([]);
   const me = useSelector(selectUser)
@@ -91,7 +89,6 @@ const FloatingMessageWidget = () => {
 
     }
   }
-  console.log("messageData", messageData);
 
   useEffect(() => {
     if (messageData.messageRow._id) {
@@ -112,7 +109,6 @@ const FloatingMessageWidget = () => {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
-  console.log("selectedUser", selectedUser);
 
   return (
     me &&

@@ -10,7 +10,6 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 const ProfileCard = ({ profileData }: any) => {
-    console.log("profileData", profileData);
     const dispatch = useDispatch()
     const t = useTranslations('ProfileCard');
     const { user, isSelf, isFollow: initialIsFollow } = profileData;
