@@ -10,6 +10,8 @@ import { Books } from '@/types/book'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@/store/UserStore/slice'
 import NonLoginSidebar from './NonLoginSidebar'
+import { useParams } from 'next/navigation'
+import Link from 'next/link'
 
 interface BookProps {
     books: Books[];
@@ -18,6 +20,7 @@ interface BookProps {
 export default function ReadingTracker({ books }: BookProps) {
     const t = useTranslations('ReadingTracker');
     const me = useSelector(selectUser)
+    const params = useParams()
     const currentBook = books
         .filter(book => book.type === BookType.Reading.toString())
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
@@ -75,10 +78,10 @@ export default function ReadingTracker({ books }: BookProps) {
                                 objectFit="cover"
                                 className="rounded-lg transition-all duration-200"
                             />
-                            <div className="absolute inset-0 bg-default-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
-                                <Button size="sm" variant="flat" color="default">
+                            <div className="absolute px-2 inset-0 bg-default-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
+                                <Link href={`/${params.locale}/personalBooks/${currentBook.bookId.slug}`} className='text-sm bg-white/80 text-center rounded-lg '>
                                     {t('currentlyReading.viewDetails')}
-                                </Button>
+                                </Link>
                             </div>
                         </div>
                         <div className="flex-1 space-y-4">
