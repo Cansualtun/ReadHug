@@ -6,6 +6,7 @@ export function formatDate(date: string, type: string = 'date'): string {
 
   const diffInMs = now.getTime() - targetDate.getTime();
   const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
 
   const isSameDay =
     now.getFullYear() === targetDate.getFullYear() &&
@@ -23,9 +24,13 @@ export function formatDate(date: string, type: string = 'date'): string {
     if (diffInMinutes < 1) {
       return 'Now';
     } else if (isSameDay) {
-      return timeString;
+      if (diffInHours < 1) {
+        return `${diffInMinutes} minutes ago`; // Eğer 1 saati geçmemişse dakika cinsinden
+      } else {
+        return `${diffInHours} hours ago`; // Eğer gün içinde ve saat farkı varsa
+      }
     } else {
-      return `${dateString} ${timeString}`;
+      return `${dateString} ${timeString}`; // Farklı bir güne aitse tarih ve saat
     }
   } else if (type === 'date') {
     return dateString;
