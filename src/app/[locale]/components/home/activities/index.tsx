@@ -79,7 +79,7 @@ export default function ReadingTracker({ books }: BookProps) {
                                 className="rounded-lg transition-all duration-200"
                             />
                             <div className="absolute px-2 inset-0 bg-default-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
-                                <Link href={`/${params.locale}/personalBooks/${currentBook.bookId.slug}`} className='text-sm bg-white/80 text-center rounded-lg '>
+                                <Link href={`/${params.locale}/personalBooks/${currentBook.bookId.slug}`} className='text-sm bg-default-50/80 text-center rounded-lg px-2 py-1'>
                                     {t('currentlyReading.viewDetails')}
                                 </Link>
                             </div>
