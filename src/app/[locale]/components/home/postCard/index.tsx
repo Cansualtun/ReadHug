@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
-export default function Post({ post }: any) {
+export default function Post({ post, isOpenComment, isProfileCard = true }: any) {
     const { locale } = useParams()
     const [showComments, setShowComments] = useState(false);
     const [newComment, setNewComment] = useState('');
@@ -82,26 +82,29 @@ export default function Post({ post }: any) {
                 </Card>
             </div>
             <Card shadow='sm' className="w-full rounded-lg bg-gradient-to-r bg-default-100">
-                <CardHeader className="flex justify-between items-center px-8 pt-10 pb-4">
+                <CardHeader className="flex justify-between items-center px-8 pt-10 pb-6">
                     <div className="flex flex-col ml-32 space-y-1">
                         <Link href={`/personalBooks/${post?.book?.slug}`} className="text-md font-bold hover:text-primary">{post?.book?.bookId?.name}</Link>
                         <p className="text-xs text-default-900">{post?.book?.bookId?.authors[0]?.name}</p>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <div className="flex flex-col items-end text-right">
-                            <Link href={`/${locale}/profile/${post.user.userName}`} className="text-md font-semibold hover:text-primary cursor-pointer">@{post?.user?.userName}</Link>
-                            <p className="text-xs text-default-900">
-                                {post?.user?.firstName + " " + post?.user?.lastName}
-                            </p>
+                    {
+                        isProfileCard && <div className="flex items-center gap-4">
+                            <div className="flex flex-col items-end text-right">
+                                <Link href={`/${locale}/profile/${post.user.userName}`} className="text-md font-semibold hover:text-primary cursor-pointer">@{post?.user?.userName}</Link>
+                                <p className="text-xs text-default-900">
+                                    {post?.user?.firstName + " " + post?.user?.lastName}
+                                </p>
+                            </div>
+                            <Link href={`/${locale}/profile/${post.user.userName}`}>
+                                <Avatar
+                                    src={post?.user?.image ?? "/assets/avatar.png"}
+                                    size="lg"
+                                    className="bg-primary border-2 border-default-100 shadow-md cursor-pointer hover:ring-1 hover:ring-primary"
+                                />
+                            </Link>
                         </div>
-                        <Link href={`/${locale}/profile/${post.user.userName}`}>
-                            <Avatar
-                                src={post?.user?.image ?? "/assets/avatar.png"}
-                                size="lg"
-                                className="bg-primary border-2 border-default-100 shadow-md cursor-pointer hover:ring-1 hover:ring-primary"
-                            />
-                        </Link>
-                    </div>
+                    }
+
                 </CardHeader>
                 <Divider />
                 <CardBody className="px-8 py-6">
@@ -124,7 +127,7 @@ export default function Post({ post }: any) {
                             variant="flat"
                             size="sm"
                             startContent={<MessageCircle className="w-4 h-4 text-blue-500" />}
-                            endContent={showComments ?
+                            endContent={showComments || isOpenComment ?
                                 <ChevronUp className="w-4 h-4" /> :
                                 <ChevronDown className="w-4 h-4" />
                             }
@@ -133,12 +136,12 @@ export default function Post({ post }: any) {
                             Comment: {post?.commentCount}
                         </Button>
                     </div>
-                    <p className="text-xs text-default-900">
+                    <Link href={`/${locale}/post/${post._id}`} className="text-xs text-default-900 hover:text-primary">
                         {formatDate(post.createdAt, "dateTime")}
-                    </p>
+                    </Link>
                 </CardFooter>
 
-                {showComments && (
+                {showComments || isOpenComment ? (
                     <div className="px-8 py-4 bg-default-100 rounded-b-lg">
                         {
                             userData && <div className="flex gap-4 mb-6">
@@ -189,7 +192,7 @@ export default function Post({ post }: any) {
                                                         {comment?.user?.userName}
                                                     </p>
                                                     <p className="text-xs text-default-900">
-                                                        {comment?.timestamp}
+                                                        {formatDate(comment?.createdAt,"dateTime")}
                                                     </p>
                                                 </div>
                                                 <p className="text-sm text-default-800">
@@ -202,7 +205,7 @@ export default function Post({ post }: any) {
                             ))}
                         </div>
                     </div>
-                )}
+                ) : ""}
             </Card>
         </div>
     );

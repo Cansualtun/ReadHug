@@ -28,7 +28,6 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
   const [postShare] = usePostShareMutation();
   const [getUserBookSearch] = useGetUserBookSearchMutation();
   const containerRef = useRef<HTMLDivElement>(null);
-  console.log("selectedBook", selectedBook);
 
   const handleBookSelect = (book: Book) => {
     setSelectedBook(book);
@@ -109,7 +108,6 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
       getAllBook(searchTerm);
     }
   }, [searchTerm]);
-  console.log("books", books);
 
   return (
     <Card

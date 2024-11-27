@@ -41,6 +41,8 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 const ProfileCard = ({ profileData }: any) => {
+  console.log("profileData", profileData);
+
   const dispatch = useDispatch();
   const t = useTranslations('ProfileCard');
   const params = useParams();
@@ -108,7 +110,7 @@ const ProfileCard = ({ profileData }: any) => {
           user: data.user,
         }),
       );
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const renderFollowList = () => {
@@ -182,7 +184,7 @@ const ProfileCard = ({ profileData }: any) => {
         },
       );
       //   await ProfilInfo(params.slug as string);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {

@@ -83,3 +83,35 @@ export async function getPersonalBooks(slug: string) {
     };
   }
 }
+export async function getSingleBook(slug: string) {
+  const cookieStore = cookies();
+  const token = cookieStore.get('token')?.value;
+
+  if (!token) {
+    console.log('Token bulunamadı');
+    throw new Error('Token not found');
+  }
+  try {
+    const response = await fetch(`${BASE_URL}/posts/single/${slug}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      next: { revalidate: 0 },
+    });
+    if (!response.ok) {
+      throw new Error('Paylaşım Getirilemedi');
+    }
+    const data = await response.json();
+    return {
+      status: true,
+      data: data.data,
+    };
+  } catch (error) {
+    console.error('Paylaşım getirilirken hata oluştu:', error);
+    return {
+      status: false,
+      error: 'Paylaşım getirilirken bir hata oluştu',
+    };
+  }
+}
