@@ -7,11 +7,13 @@ import { likeApi } from './LikeStore';
 import { notificationApi } from './NotificationStore';
 // no service slices
 import messageSlice from '@/store/MessageStore';
+import { commentApi } from './CommentStore';
 
 const rootReducer = combineReducers({
   auth: authApi,
   user: userApi,
   like: likeApi,
+  comment: commentApi,
   notification: notificationApi,
   message: messageSlice,
   [baseApi.reducerPath]: baseApi.reducer,

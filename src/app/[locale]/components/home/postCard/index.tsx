@@ -1,4 +1,5 @@
 "use client"
+import { useCommentPostMutation } from '@/store/CommentStore';
 import { useLikeCommentMutation } from '@/store/LikeStore';
 import { selectUser } from '@/store/UserStore/slice';
 import { formatDate } from '@/utils/formatDate';
@@ -18,6 +19,7 @@ export default function Post({ post }: any) {
     const [isLiked, setIsLiked] = useState(post.isLiked);
     const [likeCount, setLikeCount] = useState(post.likeCount)
     const [likeComment] = useLikeCommentMutation();
+    const [commentPost] = useCommentPostMutation();
     const userData = useSelector(selectUser);
 
     const toggleComments = () => {
@@ -44,6 +46,20 @@ export default function Post({ post }: any) {
             console.error('Like işlemi başarısız:', error);
         }
     };
+    const handleComment = async () => {
+        if (!userData) {
+            toast.error("Beğenebilmeniz için giriş yapmalısınız.")
+            return
+        }
+        try {
+            await commentPost({
+                content: newComment,
+                postId: post._id
+            })
+        } catch (error) {
+
+        }
+    }
     useEffect(() => {
         setLikeCount(post.likeCount),
             setIsLiked(post.isLiked)
@@ -147,6 +163,7 @@ export default function Post({ post }: any) {
                                                 isIconOnly
                                                 variant="light"
                                                 size="sm"
+                                                onClick={handleComment}
                                                 className="text-default-900"
                                             >
                                                 <Send className="w-4 h-4" />
