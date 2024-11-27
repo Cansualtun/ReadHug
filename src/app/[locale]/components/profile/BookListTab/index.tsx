@@ -1,6 +1,6 @@
 "use client"
 import { selectUser } from '@/store/UserStore/slice';
-import { Card, CardBody, Selection, Tab, Tabs } from "@nextui-org/react";
+import { Card, CardBody, Selection, Slider, Tab, Tabs } from "@nextui-org/react";
 import { BookType } from 'enums/bookType';
 import { BookMarked, BookOpen, BookPlus, CheckCircleIcon, MessageCircle, PlusCircle } from "lucide-react";
 import { useTranslations } from 'next-intl';
@@ -107,28 +107,30 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                                 alt={book?.bookId?.name}
                                 className="w-20 h-28 object-cover rounded-md shadow-md"
                             />
-                            <div className="flex-1">
+                            <div className="flex-1 relative">
                                 <h3 className="font-semibold text-md">{book?.bookId?.name}</h3>
                                 <p className="text-default-500 text-sm">
                                     {t('bookInfo.author', { name: book.bookId?.authors.map((i: any) => i.name).join(" & ") })}
                                 </p>
                                 {type === BookType.Reading && (
-                                    <div className="mt-4 space-y-3">
+                                    <div className="mt-4 space-y-3 ">
                                         <ProgressBar
                                             value={parseFloat(book.process?.percent) || 0}
                                             total={book.process?.pageCount || 0}
                                             currentValue={book.process?.readCount || 0}
                                             showChip
+                                            bookId={book._id}
                                             showCompletedMessage
                                             progressColor="success"
                                             chipColor="success"
                                         />
-                                        {parseFloat(book.process?.percent || "0") >= 100 && (
+
+                                        {/* {parseFloat(book.process?.percent || "0") >= 100 && (
                                             <div className="flex items-center gap-1.5 text-tiny text-success">
                                                 <CheckCircleIcon size={14} />
                                                 <span className="font-medium">{t('bookInfo.bookCompleted')}</span>
                                             </div>
-                                        )}
+                                        )} */}
                                     </div>
                                 )}
                                 {type === BookType.Read && (

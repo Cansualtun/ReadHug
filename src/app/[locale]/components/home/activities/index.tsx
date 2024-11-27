@@ -96,22 +96,12 @@ export default function ReadingTracker({ books }: BookProps) {
                                     showChip
                                     showCompletedMessage
                                     progressColor="warning"
-                                    labelPosition="top"
+                                    labelPosition="bottom"
                                     showPage={false}
+                                    bookId={currentBook._id as string}
                                 />
-                                {progress >= 100 && (
-                                    <div className="flex items-center gap-1.5 text-primary text-small">
-                                        <CheckCircle size={14} />
-                                        <span className="font-medium">{t('currentlyReading.bookCompleted')}</span>
-                                    </div>
-                                )}
+                              
                             </div>
-                            <Button
-                                className="w-full bg-primary text-white"
-                                onPress={() => setProgress((p) => Math.min(100, p + 10))}
-                            >
-                                {t('currentlyReading.updateProgress')}
-                            </Button>
                         </div>
                     </div>
                 </CardBody>
