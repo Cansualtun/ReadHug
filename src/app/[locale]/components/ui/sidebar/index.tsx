@@ -37,7 +37,6 @@ export default function Sidebar() {
   const [upgradeImage, setUpgradeImage] = useState<null | FileList>(null);
   const [meData, setMeData] = useState<any>({});
   const [me] = useMeMutation();
-  console.log('meData', meData);
 
   const meHandler = async () => {
     const { data }: any = await me();
@@ -85,7 +84,7 @@ export default function Sidebar() {
           classNames={{
             tabList: 'gap-4 p-2 bg-default-100 rounded-lg shadow-sm',
             cursor: 'bg-white dark:bg-default-100',
-            tab: 'h-14 px-8 data-[selected=true]:text-primary',
+            tab: 'h-14 md:px-8 px-2 data-[selected=true]:text-primary',
             tabContent: 'group-data-[selected=true]:text-primary',
           }}
         >
@@ -100,7 +99,7 @@ export default function Sidebar() {
                     <span className="text-sm font-medium">
                       {item.sidebarTitle}
                     </span>
-                    <span className="text-xs text-default-500">
+                    <span className="md:text-xs text-[10px] text-default-500 w-full text-wrap">
                       {item.description}
                     </span>
                   </div>
@@ -113,7 +112,7 @@ export default function Sidebar() {
         </Tabs>
       </div>
       <div className="col-span-12 md:col-span-4 flex flex-col pb-3">
-        <div className="min-h-[72px] px-2 gap-4 p-2 bg-transparent mb-3 py-4 flex items-center">
+        <div className="min-h-[72px] px-2 gap-4 p-2 bg-transparent mb-3 py-4 hidden md:flex items-center">
           {/* <Info className="w-5 h-5" />{' '}
           {tab == 'profile'
             ? 'Profile Information'

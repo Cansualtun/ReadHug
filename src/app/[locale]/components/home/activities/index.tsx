@@ -88,22 +88,26 @@ export default function ReadingTracker({ books }: BookProps) {
                                     {t('currentlyReading.by')} {currentBook.bookId.authors.map((author: any) => author.name).join(', ')}
                                 </p>
                             </div>
-                            <div className="space-y-2">
-                                <ProgressBar
-                                    value={progress}
-                                    total={currentBook.process.pageCount}
-                                    currentValue={currentBook.process.readCount}
-                                    showChip
-                                    showCompletedMessage
-                                    progressColor="warning"
-                                    labelPosition="bottom"
-                                    showPage={false}
-                                    bookId={currentBook._id as string}
-                                />
-                              
-                            </div>
+
                         </div>
+
+
                     </div>
+                    <div className="space-y-2">
+                        <ProgressBar
+                            value={progress}
+                            total={currentBook.process.pageCount}
+                            currentValue={currentBook.process.readCount}
+                            showChip
+                            showCompletedMessage
+                            progressColor="warning"
+                            labelPosition="bottom"
+                            showPage={false}
+                            bookId={currentBook._id as string}
+                        />
+
+                    </div>
+
                 </CardBody>
             </Card>
 

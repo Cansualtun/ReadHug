@@ -27,7 +27,7 @@ export default function ProfileUpdate() {
             try {
                 await updateProfile({
                     ...values,
-                    birthDate: formatDate(values.birthDate)
+                    birthDate: values.birthDate
                 });
             } catch (error) {
                 console.error("Failed to update profile:", error);
@@ -43,13 +43,14 @@ export default function ProfileUpdate() {
                     firstName: data.data?.data.firstName || "",
                     lastName: data.data?.data.lastName || "",
                     userName: data.data?.data.userName || "",
-                    birthDate: data.data?.data.birthDate || "",
+                    birthDate: data.data?.data.birthDate.split("T")[0] || "",
                     gender: data.data?.data.gender || 0
                 });
             }
         };
         fetchData();
     }, [me]);
+    console.log("formik.values.birthDate", formik.values.birthDate);
 
     return (
         <Card shadow="sm" className="p-6 bg-default-100">
@@ -96,10 +97,15 @@ export default function ProfileUpdate() {
                         variant="bordered"
                         label={t('form.birthDate.label')}
                         name="birthDate"
-                        value={formatDate(formik.values.birthDate)}
+                        value={formik.values.birthDate}
+                        defaultValue={formik.values.birthDate}
                         placeholder={t('form.birthDate.placeholder')}
                         startContent={<Calendar className="w-4 h-4 text-default-400" />}
-                        onChange={formik.handleChange}
+                        onChange={e => {
+                            console.log(e.target.value);
+
+                            formik.handleChange(e)
+                        }}
                         onBlur={formik.handleBlur}
                     />
                     <Select
