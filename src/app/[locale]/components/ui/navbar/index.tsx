@@ -116,7 +116,7 @@ export default function Header() {
       <div className="container mx-auto flex justify-between items-center">
         <NavbarContent>
           <Link href="/">
-            <div className="flex justify-center items-center">
+            <span className="flex justify-center items-center">
               <Image
                 src={'/assets/logo1.svg'}
                 width={240}
@@ -124,7 +124,7 @@ export default function Header() {
                 alt=""
                 className="w-[180px] h-[32px]"
               />
-            </div>
+            </span>
           </Link>
           <NavbarContent className="hidden md:flex gap-3">
             <NavbarItem>
