@@ -257,7 +257,7 @@ export default function Header() {
               </div>
 
               <div
-                className={`absolute top-10 right-0 ${openNotification ? 'block  animate-fadeindown' : 'hidden'}`}
+                className={`absolute z-50 top-10 right-0 ${openNotification ? 'block  animate-fadeindown' : 'hidden'}`}
               >
                 <div className="max-h-[300px] w-[300px] overflow-y-auto scroll-container p-4 bg-default-50 rounded-lg shadow">
                   {notificationData?.data?.length > 0 && (

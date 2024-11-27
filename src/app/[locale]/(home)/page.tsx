@@ -27,7 +27,7 @@ export default async function Home() {
                     </div>
                     <div className="order-2 lg:order-2 lg:col-span-8">
                         {
-                            userData.data && <div className="sticky top-[70px] z-50 mt-4 p-2 pt-0 mb-10">
+                            userData.data && <div className="sticky top-[70px] z-30 mt-4 p-2 pt-0 mb-10">
                                 <BookPostComponent userData={userData.data} />
                             </div>
                         }
