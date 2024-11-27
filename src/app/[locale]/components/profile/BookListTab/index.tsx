@@ -11,6 +11,7 @@ import PostCard from '../../home/postCard';
 import BookSearchModal from '../../ui/modal/BookSearchModal';
 import ProgressBar from '../../ui/progressBar';
 import BookPostComponent from '../../ui/widget/BookPostComponent';
+import axios from 'axios';
 
 
 const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
@@ -41,25 +42,26 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
 
         try {
             setLoading(true);
+
             const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
             const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+            console.log("sadasd", `${BASE_URL}/book/user/books/${slug}/${selectedTab}?page=${page}&limit=10`);
 
-            const response = await fetch(`${BASE_URL}/user/books/${slug}/${selectedTab}?page=${page}&limit=10`, {
+            const response = await axios.get(`${BASE_URL}/book/user/books/${slug}/${selectedTab}?page=${page}&limit=10`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 }
             });
-
-            const newData = await response.json();
+            const newData = response.data
 
             if (!newData.data || newData.data.length === 0) {
                 setHasMore(false);
                 return;
             }
-
-            setAdditionalBooks(prev => [...prev, ...newData.data]);
             setPage(prev => prev + 1);
+            setAdditionalBooks(prev => [...prev, ...newData.data]);
+
         } catch (error) {
             console.error("Error loading more books:", error);
             setHasMore(false);
@@ -67,9 +69,6 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
             setLoading(false);
         }
     };
-
-
-
     const handleTabChange = (key: Selection | string) => {
         const selectedKey = Array.from(key)[0] as string;
         if (key == "post") {
@@ -90,14 +89,14 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
         return allData.length > 0 ? (
             <InfiniteScroll
                 dataLength={allData.length}
-                next={loadMore}
+                next={() => { }}
                 hasMore={hasMore}
                 loader={loading && <h4 className="text-center py-4">{t('loading')}</h4>}
                 endMessage={!hasMore && (
                     <p className="text-center py-4">{t('allBooksLoaded')}</p>
                 )}
                 scrollableTarget="scrollableDiv"
-                className='h-[calc(100vh-230px)] scroll-container scroll-smooth'
+                className=''
             >
                 <div className="grid gap-4">
                     {allData.map((book: any) => {
@@ -150,6 +149,12 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                             </div>
                         </div>
                     })}
+                    {
+                        !loading && hasMore && <button onClick={loadMore}>
+                            Daha fazla
+                        </button>
+                    }
+
                 </div>
             </InfiniteScroll>
         ) : (
@@ -184,8 +189,8 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                             <span className='lg:block hidden'>{t('tabs.reading')}</span>
                         </div>
                     }
-                >  <Card>
-                        <CardBody id="scrollableDiv" className="overflow-auto h-[calc(100vh-230px)] scroll-container">
+                >  <Card shadow='none'>
+                        <CardBody id="scrollableDiv" className="overflow-auto scroll-container">
                             {renderBookList(BookType.Reading)}
                         </CardBody>
                     </Card>
@@ -200,7 +205,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                     }
                 >
                     <Card>
-                        <CardBody id="scrollableDiv" className="overflow-auto h-[calc(100vh-230px)] scroll-container">
+                        <CardBody id="scrollableDiv" className="overflow-auto scroll-container">
                             {renderBookList(BookType.Read)}
                         </CardBody>
                     </Card>
@@ -215,7 +220,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                     }
                 >
                     <Card>
-                        <CardBody id="scrollableDiv" className="overflow-auto h-[calc(100vh-230px)] scroll-container">
+                        <CardBody id="scrollableDiv" className="overflow-auto scroll-container">
                             {renderBookList(BookType.WishList)}
                         </CardBody>
                     </Card>

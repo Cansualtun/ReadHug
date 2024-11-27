@@ -11,19 +11,19 @@ interface ProgressBarProps {
   showCompletedMessage?: boolean;
   className?: string;
   chipColor?:
-    | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'success'
-    | 'warning'
-    | 'danger';
+  | 'default'
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
+  | 'danger';
   progressColor?:
-    | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'success'
-    | 'warning'
-    | 'danger';
+  | 'default'
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
+  | 'danger';
   labelPosition?: 'top' | 'bottom';
   size?: 'sm' | 'md' | 'lg';
   showPage?: boolean;
@@ -98,7 +98,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         method: 'PATCH',
         body: JSON.stringify({
           userBookId,
-          type: '1',
+          type: progressValue === total ? '0' : '1',
           readCount: progressValue,
         }),
         headers: {
