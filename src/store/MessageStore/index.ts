@@ -4,22 +4,12 @@ export const initialState: MessageState = {
   isOpenMessage: false,
   messageRow: {},
   user: {},
-  notifications: {
-    data: [],
-    page: null,
-    totalPages: null,
-    total: null,
-    limit: null,
-    sort: 'asc',
-    totalMessageCount: 0,
-  },
 };
 
 interface PayloadState {
   status?: boolean;
   messageRow?: any;
   user?: any;
-  notifications?: any;
 }
 
 const messageSlice = createSlice({
@@ -37,16 +27,11 @@ const messageSlice = createSlice({
         state.user = action.payload.user;
       }
     },
-    setNotification: (state, action: PayloadAction<PayloadState>) => {
-      state.notifications = action.payload.notifications;
-    },
   },
 });
 
-export const { setMessageOpened, setNotification } = messageSlice.actions;
+export const { setMessageOpened } = messageSlice.actions;
 export const selectMessageOpened = (state: { message: MessageState }) =>
   state.message;
-export const selectMessageCount = (state: { message: MessageState }) =>
-  state.message.notifications;
 
 export default messageSlice.reducer;

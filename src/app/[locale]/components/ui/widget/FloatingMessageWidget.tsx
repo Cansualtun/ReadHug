@@ -1,5 +1,5 @@
 'use client';
-import { selectMessageCount, selectMessageOpened, setMessageOpened } from '@/store/MessageStore';
+import { selectMessageOpened, setMessageOpened } from '@/store/MessageStore';
 import { selectUser } from '@/store/UserStore/slice';
 import axios from 'axios';
 import { ChevronLeft, MessageSquare, Search, Send, X } from 'lucide-react';
@@ -7,19 +7,21 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../loading';
 import { formatDate } from '@/utils/formatDate';
+import { selectNotification } from '@/store/NotificationStore/slice';
 
 const FloatingMessageWidget = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch()
   const messageData = useSelector(selectMessageOpened)
+  const messageCounts = useSelector(selectNotification)
   const me = useSelector(selectUser)
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState<any>('');
   const [newMessage, setNewMessage] = useState<any>('');
   const [messageList, setMessageList] = useState<any>([]);
   const [messages, setMessages] = useState<any>([]);
-  const totalMessageCount = messageData?.notifications?.totalMessageCount
+  const totalMessageCount = messageCounts?.notifications?.totalMessageCount
 
   const getMessageList = async () => {
     const token = document.cookie
@@ -98,7 +100,10 @@ const FloatingMessageWidget = () => {
       setSelectedUser({ ...messageData.user, messageRowId: messageData.messageRow._id })
       getMessage(messageData.messageRow._id)
     } else {
-      getMessageList()
+      if (me) {
+        getMessageList()
+      }
+
     }
   }, [messageData]);
 
@@ -304,7 +309,7 @@ const FloatingMessageWidget = () => {
             ? 'bg-gray-200 hover:bg-gray-300 ring-'
             : 'bg-primary/80 hover:bg-primary text-white'
             }
-             ${messageData?.notifications?.totalMessageCount > 0 &&
+             ${totalMessageCount > 0 &&
             "ring-2 ring-transparent ring-offset-1  animate-scale-pulse"
             }
             `}

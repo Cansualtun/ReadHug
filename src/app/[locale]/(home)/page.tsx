@@ -3,6 +3,8 @@ import ReadingTracker from "../components/home/activities";
 import PostCard from "../components/home/postCard";
 import { getAllBookLists } from "../server/book";
 import { GetAllPost } from "../server/post";
+import { Me } from "../server/me";
+import BookPostComponent from "../components/ui/widget/BookPostComponent";
 
 
 export default async function Home() {
@@ -10,7 +12,9 @@ export default async function Home() {
     const userName = cookieStore.get('userName')?.value || '';
     const [allPost] = await Promise.all([GetAllPost()]);
     const [allBook] = await Promise.all([getAllBookLists(userName)]);
+    const [userGet] = await Promise.all([Me()]);
     const post = await allPost.json();
+    const userData = await userGet.json();
 
     return (
         <section>
@@ -22,6 +26,11 @@ export default async function Home() {
                         </div>
                     </div>
                     <div className="order-2 lg:order-2 lg:col-span-8">
+                        {
+                            userData.data && <div className="sticky top-[70px] z-30 mt-4 p-2 pt-0 mb-10">
+                                <BookPostComponent userData={userData.data} />
+                            </div>
+                        }
                         <div className="space-y-6 md:space-y-8 lg:space-y-10">
                             {post?.data?.map((item: any) => (
                                 <PostCard key={item._id} post={item} />

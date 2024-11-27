@@ -7,6 +7,9 @@ import { useTranslations } from 'next-intl'
 import ProgressBar from '../../ui/progressBar'
 import { BookType } from 'enums/bookType'
 import { Books } from '@/types/book'
+import { useSelector } from 'react-redux'
+import { selectUser } from '@/store/UserStore/slice'
+import NonLoginSidebar from './NonLoginSidebar'
 
 interface BookProps {
     books: Books[];
@@ -14,6 +17,7 @@ interface BookProps {
 
 export default function ReadingTracker({ books }: BookProps) {
     const t = useTranslations('ReadingTracker');
+    const me = useSelector(selectUser)
     const currentBook = books
         .filter(book => book.type === BookType.Reading.toString())
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
@@ -38,7 +42,7 @@ export default function ReadingTracker({ books }: BookProps) {
         },
     ];
 
-    if (!currentBook) {
+    if (!currentBook && me) {
         return (
             <div className="w-full max-w-2xl mx-auto space-y-4 p-4 pb-0 sticky top-[55px]">
                 <Card className='bg-default-100'>
@@ -53,7 +57,7 @@ export default function ReadingTracker({ books }: BookProps) {
     }
 
     return (
-        <div className="w-full max-w-2xl mx-auto space-y-4 p-4 pb-0 sticky top-[55px]">
+        me ? <div className="w-full max-w-2xl mx-auto space-y-4 p-4 pb-0 sticky top-[55px]">
             <Card className='bg-default-100'>
                 <CardHeader className="border-b">
                     <h2 className="text-lg font-semibold flex items-center gap-2">
@@ -139,6 +143,8 @@ export default function ReadingTracker({ books }: BookProps) {
                     </div>
                 </CardBody>
             </Card>
-        </div>
-    )
+        </div> : <div className="w-full max-w-2xl mx-auto space-y-4 p-4 pb-0 sticky top-[55px]">
+            <NonLoginSidebar />
+        </div>)
+
 }
