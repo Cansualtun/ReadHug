@@ -5,12 +5,15 @@ import { getAllBookLists } from "../server/book";
 import { GetAllPost } from "../server/post";
 import { Me } from "../server/me";
 import BookPostComponent from "../components/ui/widget/BookPostComponent";
+import Posts from "../components/home/posts";
 
 
 export default async function Home() {
+    let page = 1;
+    let limit = 10
     const cookieStore = cookies();
     const userName = cookieStore.get('userName')?.value || '';
-    const [allPost] = await Promise.all([GetAllPost()]);
+    const [allPost] = await Promise.all([GetAllPost({ page, limit })]);
     const [allBook] = await Promise.all([getAllBookLists(userName)]);
     const [userGet] = await Promise.all([Me()]);
     const post = await allPost.json();
@@ -32,9 +35,10 @@ export default async function Home() {
                             </div>
                         }
                         <div className="space-y-6 md:space-y-8 lg:space-y-10">
-                            {post?.data?.map((item: any) => (
+                            <Posts data={post} />
+                            {/* {post?.data?.map((item: any) => (
                                 <PostCard key={item._id} post={item} />
-                            ))}
+                            ))} */}
                         </div>
                     </div>
                 </div>

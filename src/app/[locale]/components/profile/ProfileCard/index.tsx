@@ -135,11 +135,11 @@ const ProfileCard = ({ profileData }: any) => {
 
           return (
             <Link href={`/profile/${userData.userName}`}>
-              <div
+              <span
                 key={item._id}
                 className="flex items-center justify-between p-2 hover:bg-default-100 rounded-lg"
               >
-                <div className="flex items-center gap-3">
+                <span className="flex items-center gap-3">
                   <Avatar
                     src={userData.image || 'https://picsum.photos/200/300'}
                     size="sm"
@@ -153,8 +153,8 @@ const ProfileCard = ({ profileData }: any) => {
                       @{userData.userName}
                     </p>
                   </div>
-                </div>
-              </div>
+                </span>
+              </span>
             </Link>
           );
         })}

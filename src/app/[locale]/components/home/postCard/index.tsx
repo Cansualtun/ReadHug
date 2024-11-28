@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
@@ -32,6 +32,7 @@ export default function Post({
   isOpenComment,
   isProfileCard = true,
 }: any) {
+  const router = useRouter()
   const { locale } = useParams();
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
@@ -74,7 +75,7 @@ export default function Post({
         content: newComment,
         postId: post._id,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     setLikeCount(post.likeCount), setIsLiked(post.isLiked);
@@ -177,12 +178,12 @@ export default function Post({
               Comment: {post?.commentCount}
             </Button>
           </div>
-          <Link
-            href={`/${locale}/post/${post._id}`}
+          <button
+            onClick={() => router.push(`/${locale}/post/${post._id}`)}
             className="text-xs text-default-900 hover:text-primary"
           >
             {formatDate(post.createdAt, 'dateTime')}
-          </Link>
+          </button>
         </CardFooter>
 
         {showComments || isOpenComment ? (

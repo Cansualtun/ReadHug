@@ -16,7 +16,7 @@ export function formatDate(date: string, type: string = 'date'): string {
   const timeString = targetDate.toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
-    hour12: false, // 24 saat formatı
+    hour12: false,
   });
   const dateString = targetDate.toLocaleDateString();
 
@@ -25,12 +25,12 @@ export function formatDate(date: string, type: string = 'date'): string {
       return 'Now';
     } else if (isSameDay) {
       if (diffInHours < 1) {
-        return `${diffInMinutes} minutes ago`; // Eğer 1 saati geçmemişse dakika cinsinden
+        return `${diffInMinutes} minutes ago`;
       } else {
-        return `${diffInHours} hours ago`; // Eğer gün içinde ve saat farkı varsa
+        return `${diffInHours} hours ago`;
       }
     } else {
-      return `${dateString} ${timeString}`; // Farklı bir güne aitse tarih ve saat
+      return `${dateString} ${timeString}`;
     }
   } else if (type === 'date') {
     return dateString;

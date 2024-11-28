@@ -45,7 +45,6 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
 
             const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
             const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-            console.log("sadasd", `${BASE_URL}/book/user/books/${slug}/${selectedTab}?page=${page}&limit=10`);
 
             const response = await axios.get(`${BASE_URL}/book/user/books/${slug}/${selectedTab}?page=${page}&limit=10`, {
                 headers: {
