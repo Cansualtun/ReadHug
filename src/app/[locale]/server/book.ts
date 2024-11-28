@@ -87,10 +87,6 @@ export async function getSingleBook(slug: string) {
   const cookieStore = cookies();
   const token = cookieStore.get('token')?.value;
 
-  if (!token) {
-    console.log('Token bulunamadı');
-    throw new Error('Token not found');
-  }
   try {
     const response = await fetch(`${BASE_URL}/posts/single/${slug}`, {
       headers: {
