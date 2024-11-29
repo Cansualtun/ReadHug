@@ -13,6 +13,7 @@ import {
   Divider,
   Input,
 } from '@nextui-org/react';
+import axios from 'axios';
 import {
   ChevronDown,
   ChevronUp,
@@ -36,8 +37,11 @@ export default function Post({
   const { locale } = useParams();
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
+  const [comments, setComments] = useState([]);
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [likeCount, setLikeCount] = useState(post.likeCount);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   const [likeComment] = useLikeCommentMutation();
   const [commentPost] = useCommentPostMutation();
   const userData = useSelector(selectUser);
@@ -75,11 +79,39 @@ export default function Post({
         content: newComment,
         postId: post._id,
       });
+      setNewComment("")
+      await handleGetComment()
     } catch (error) { }
   };
+  const handleGetComment = async () => {
+
+    try {
+      const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
+      const { data } = await axios.get(`${BASE_URL}/comment/posts/${post._id}?page=${page}&limit=${limit}&sort=desc`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      });
+      setComments(data.data)
+    } catch (error) {
+      console.log("error", error);
+
+    }
+
+  }
+  const handleEnterKeyDown = (e: any) => {
+    e.key == "Enter" && handleComment()
+  }
   useEffect(() => {
-    setLikeCount(post.likeCount), setIsLiked(post.isLiked);
-  }, []);
+    setLikeCount(post.likeCount);
+    setIsLiked(post.isLiked);
+    if (showComments) {
+      handleGetComment()
+    }
+  }, [showComments]);
 
   return (
     <div className="relative w-full mt-10 p-2">
@@ -202,6 +234,7 @@ export default function Post({
                     type="text"
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
+                    onKeyDown={handleEnterKeyDown}
                     placeholder="Yorumunuzu yazın..."
                     variant="bordered"
                     radius="full"
@@ -223,7 +256,7 @@ export default function Post({
             )}
 
             <div className="space-y-4">
-              {post.comments.map((comment: any) => (
+              {comments.map((comment: any) => (
                 <Card key={comment.id} className="w-full bg-content1">
                   <CardBody className="p-4">
                     <div className="flex gap-2 items-center">
