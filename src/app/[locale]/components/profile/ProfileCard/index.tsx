@@ -39,6 +39,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import Skeleton from './Skeleton';
 
 const ProfileCard = ({ profileData }: any) => {
   const dispatch = useDispatch();
@@ -188,6 +189,11 @@ const ProfileCard = ({ profileData }: any) => {
   useEffect(() => {
     setProfile(profileData);
   }, [profileData]);
+  console.log('profileData', profileData);
+
+  if (!userProfileData) {
+    return <Skeleton />;
+  }
 
   return (
     <Card shadow="sm" className="bg-default-50">
@@ -280,6 +286,7 @@ const ProfileCard = ({ profileData }: any) => {
             <p className="text-xs text-default-500">{t('stats.following')}</p>
           </div>
         </div>
+
         {!isSelf && (
           <div className="flex justify-center mb-4">
             <Button
