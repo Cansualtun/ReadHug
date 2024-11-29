@@ -107,7 +107,7 @@ const ProfileCard = ({ profileData }: any) => {
           user: data.user,
         }),
       );
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const renderFollowList = () => {
@@ -138,9 +138,10 @@ const ProfileCard = ({ profileData }: any) => {
               >
                 <span className="flex items-center gap-3">
                   <Avatar
-                    src={userData.image || 'https://picsum.photos/200/300'}
+                    src={userData.image || '/assets/avatar.png'}
                     size="sm"
                     name={`${userData.firstName} ${userData.lastName}`}
+                    className="ring-1 ring-offset-1 ring-primary shadow"
                   />
                   <div>
                     <p className="font-medium">
@@ -181,7 +182,7 @@ const ProfileCard = ({ profileData }: any) => {
         },
       );
       //   await ProfilInfo(params.slug as string);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
