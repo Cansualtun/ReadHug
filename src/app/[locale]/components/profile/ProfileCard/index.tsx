@@ -41,12 +41,9 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 const ProfileCard = ({ profileData }: any) => {
-  console.log("profileData", profileData);
-
   const dispatch = useDispatch();
   const t = useTranslations('ProfileCard');
   const params = useParams();
-
   const [profile, setProfile] = useState(profileData);
   const { user, isSelf, isFollow: initialIsFollow } = profile;
   const [isFollow, setIsFollow] = useState(initialIsFollow);

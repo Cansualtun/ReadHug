@@ -1,23 +1,32 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import PostCard from '../postCard';
+import { useMorePostsMutation, usePostsMutation } from '@/store/PostStore';
+import { selectPost } from '@/store/PostStore/slice';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Loading from '../../ui/loading';
-import axios from 'axios';
+import PostCard from '../postCard';
 
 type Props = {
   data: any;
 };
 
 const Posts = ({ data }: Props) => {
-  const [post, setPost] = useState<any[]>([]);
+  const selectPosts = useSelector(selectPost);
+
+  const [posts] = usePostsMutation();
+  const [morePost] = useMorePostsMutation();
   const [page, setPage] = useState(2);
   const [limit] = useState(10);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
+  const firstLoadPosts = async () => {
+    await posts({ page: 1, limit });
+  };
+
   useEffect(() => {
-    if (data?.data) {
-      setPost(data.data);
+    if (data?.status) {
+      firstLoadPosts();
     }
   }, [data]);
 
@@ -26,30 +35,11 @@ const Posts = ({ data }: Props) => {
     setIsLoading(true);
 
     try {
-      const token = document.cookie
-        .split('; ')
-        .find((row) => row.startsWith('token='))
-        ?.split('=')[1];
-      const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-
-      const response = await axios.get(
-        `${BASE_URL}/posts/all?page=${page}&limit=${limit}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-
-      const newData = response.data;
-      if (!newData.data || newData.data.length === 0) {
+      const { data } = await morePost({ page, limit });
+      if (data?.data?.length === 0) {
         setHasMore(false);
         return;
       }
-
-      setPost((prev) => [...prev, ...newData.data]);
       setPage((prev) => prev + 1);
     } catch (error) {
       console.error('Error loading more posts:', error);
@@ -67,19 +57,20 @@ const Posts = ({ data }: Props) => {
     const clientHeight =
       document.documentElement.clientHeight || window.innerHeight;
 
-    if (scrollTop + clientHeight >= scrollHeight - 200) {
-      loadMore();
-    }
+    if (scrollTop + clientHeight >= scrollHeight - 25) loadMore();
   };
 
   useEffect(() => {
+    if (isLoading) {
+      return;
+    }
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [hasMore, isLoading]);
 
-  if (post.length === 0) {
+  if (selectPosts?.length === 0) {
     return (
       <div className="w-full flex justify-center items-center scale-50">
         <Loading />
@@ -89,9 +80,7 @@ const Posts = ({ data }: Props) => {
 
   return (
     <div>
-      {post.map((item: any) => (
-        <PostCard key={item._id} post={item} />
-      ))}
+      {selectPosts?.map((item: any) => <PostCard key={item._id} post={item} />)}
       {isLoading && (
         <div className="w-full flex justify-center my-4 scale-50">
           <Loading />

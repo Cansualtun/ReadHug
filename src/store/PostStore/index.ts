@@ -1,7 +1,17 @@
+// store/PostStore/index.ts
 import { toast } from 'sonner';
-import { setPostShareStore, setPostStore } from './slice';
+import {
+  setPosts,
+  setPostShareStore,
+  setPostsMore,
+  setPostComment,
+} from './slice';
 import {
   IPostCommentResponse,
+  IPostMoreRequest,
+  IPostMoreResult,
+  IPostRequest,
+  IPostResult,
   IPostShareRequest,
   IPostShareResult,
 } from './type';
@@ -25,7 +35,7 @@ export const postApi = baseApi.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           dispatch(
-            setPostStore({
+            setPostComment({
               postComment: {},
             }),
           );
@@ -38,6 +48,7 @@ export const postApi = baseApi.injectEndpoints({
     postShare: builder.mutation<IPostShareResult, IPostShareRequest>({
       query: (credentials) => {
         const token = getFromTokenCookies();
+
         return {
           url: `posts/user/create`,
           method: 'POST',
@@ -51,6 +62,9 @@ export const postApi = baseApi.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           dispatch(
+            postApi.endpoints.posts.initiate({ page: 1, limit: 10 }) as any,
+          );
+          dispatch(
             setPostShareStore({
               postShare: {},
             }),
@@ -61,8 +75,60 @@ export const postApi = baseApi.injectEndpoints({
         }
       },
     }),
+    posts: builder.mutation<IPostResult, IPostRequest>({
+      query: (credentials: any) => {
+        const token = getFromTokenCookies();
+        const headers: any = {};
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+        return {
+          url: `posts/all?page=${credentials.page}&limit=${credentials.limit ?? 10}`,
+          method: 'GET',
+          headers,
+        };
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setPosts(data.data));
+        } catch (error) {
+          toast.error('Post çekme işlemi başarısız oldu');
+          console.error('Post Comment error:', error);
+        }
+      },
+    }),
+    morePosts: builder.mutation<IPostMoreResult, IPostMoreRequest>({
+      query: (credentials: any) => {
+        const token = getFromTokenCookies();
+        const headers: any = {};
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+        return {
+          url: `posts/all?page=${credentials.page}&limit=${credentials.limit ?? 10}`,
+          method: 'GET',
+          headers,
+        };
+      },
+      async onQueryStarted(credentials, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+    
+          dispatch(setPostsMore(data));
+        } catch (error) {
+          toast.error('Paylaşım işlemi başarısız oldu');
+          console.error('Post Comment error:', error);
+        }
+      },
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { usePostCommentMutation, usePostShareMutation } = postApi;
+export const {
+  usePostCommentMutation,
+  usePostShareMutation,
+  usePostsMutation,
+  useMorePostsMutation,
+} = postApi;

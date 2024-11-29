@@ -8,7 +8,6 @@ type Props = {
 };
 
 const SinglePost = ({ post, profile }: Props) => {
-    console.log("post", post);
 
     return <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         <div className="order-1 lg:order-1 lg:col-span-4">

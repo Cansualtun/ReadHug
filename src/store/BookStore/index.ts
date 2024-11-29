@@ -22,8 +22,6 @@ export const authApi = baseApi.injectEndpoints({
             url += `?${queryParams.toString()}`;
           }
         }
-        console.log('URL', url);
-
         return {
           url,
           method: 'GET',
@@ -36,8 +34,6 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log('data', data);
-
           dispatch(setBookSearchStore({ data }));
         } catch (error) {
           toast.error('Post Comment işlemi başarısız oldu');

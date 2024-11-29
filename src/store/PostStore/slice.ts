@@ -1,20 +1,31 @@
+// store/PostStore/slice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
+import { RootState } from '../../store';
 interface PostState {
   postComment: {} | null;
   postShare: {} | null;
+  posts: any[] | null;
 }
 
 const initialState: PostState = {
   postComment: null,
   postShare: null,
+  posts: [],
 };
 
 const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
-    setPostStore(
+    setPosts(state, action: PayloadAction<any>) {
+      state.posts = action.payload as any;
+    },
+    setPostsMore(state, action: PayloadAction<any>) {
+      if (action.payload.data.length > 0) {
+        state.posts = [...(state.posts as any[]), ...action.payload.data];
+      }
+    },
+    setPostComment(
       state,
       action: PayloadAction<{
         postComment?: PostState['postComment'];
@@ -44,10 +55,28 @@ const postSlice = createSlice({
 });
 
 export const {
-  setPostStore,
+  setPosts,
+  setPostsMore,
+  setPostComment,
   clearPostStore,
   setPostShareStore,
   clearPostShareStore,
 } = postSlice.actions;
+// export const selectPost = (state: RootState) => {
+//   const mutations = state.baseApi.mutations;
+//   const latestFulfilled: any = Object.values(mutations)
+//     .filter(
+//       (mutation: any) =>
+//         mutation.endpointName === 'posts' && mutation.status === 'fulfilled',
+//     )
+//     .sort(
+//       (a: any, b: any) =>
+//         (b.fulfilledTimeStamp || 0) - (a.fulfilledTimeStamp || 0),
+//     )[0];
 
+//   return latestFulfilled?.data?.data || null;
+// };
+export const selectPost = (state: RootState) => {
+  return state.post?.posts || []; // Eğer post undefined ise boş dizi dönsün
+};
 export default postSlice.reducer;

@@ -8,7 +8,6 @@ interface BookDetailCardProps {
 }
 
 export default function BookDetailCard({ book }: BookDetailCardProps) {
-    console.log("book", book);
 
     return (
         <Card className="bg-gradient-to-r from-default-100 to-default-200 shadow-xl">

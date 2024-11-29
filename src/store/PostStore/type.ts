@@ -1,3 +1,5 @@
+import { IGlobalResponse } from '@/types';
+
 export interface IPostCommentResponse {
   page: number;
   totalPages: number;
@@ -36,4 +38,18 @@ export interface IPostShareRequest {
 export interface IPostShareResult {
   status: boolean;
   message: string;
+}
+export interface IPostRequest {
+  page: number;
+  limit: number;
+}
+export interface IPostResult extends IGlobalResponse {
+  data: any[];
+}
+export interface IPostMoreRequest {
+  page: number;
+  limit: number;
+}
+export interface IPostMoreResult extends IGlobalResponse {
+  data: any[];
 }
