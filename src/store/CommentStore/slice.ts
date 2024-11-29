@@ -1,37 +1,37 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 
-interface LikeState {
+interface CommentPostState {
   likes: {
     status: boolean;
     message?: string;
   } | null;
 }
 
-const initialState: LikeState = {
+const initialState: CommentPostState = {
   likes: null,
 };
 
-const likeSlice = createSlice({
-  name: 'like',
+const commentPostSlice = createSlice({
+  name: 'commentPost',
   initialState,
   reducers: {
-    setLikeStore(
+    setCommentPostStore(
       state,
       action: PayloadAction<{
-        likes?: LikeState['likes'];
+        likes?: CommentPostState['likes'];
       }>,
     ) {
       if (action.payload.likes) {
         state.likes = action.payload.likes;
       }
     },
-    clearLikeStore(state) {
+    clearCommentPostStore(state) {
       state.likes = null;
     },
   },
 });
 
-export const { setLikeStore, clearLikeStore } = likeSlice.actions;
+export const { setCommentPostStore, clearCommentPostStore } = commentPostSlice.actions;
 
-export default likeSlice.reducer;
+export default commentPostSlice.reducer;

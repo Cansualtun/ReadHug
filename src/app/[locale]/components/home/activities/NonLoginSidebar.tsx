@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { Card, CardHeader, CardBody } from '@nextui-org/react';
 import { Book, User, Pen } from 'lucide-react';

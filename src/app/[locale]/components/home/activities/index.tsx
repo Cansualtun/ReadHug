@@ -10,6 +10,8 @@ import { Books } from '@/types/book'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@/store/UserStore/slice'
 import NonLoginSidebar from './NonLoginSidebar'
+import { useParams } from 'next/navigation'
+import Link from 'next/link'
 
 interface BookProps {
     books: Books[];
@@ -18,6 +20,7 @@ interface BookProps {
 export default function ReadingTracker({ books }: BookProps) {
     const t = useTranslations('ReadingTracker');
     const me = useSelector(selectUser)
+    const params = useParams()
     const currentBook = books
         .filter(book => book.type === BookType.Reading.toString())
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
@@ -75,10 +78,10 @@ export default function ReadingTracker({ books }: BookProps) {
                                 objectFit="cover"
                                 className="rounded-lg transition-all duration-200"
                             />
-                            <div className="absolute inset-0 bg-default-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
-                                <Button size="sm" variant="flat" color="default">
+                            <div className="absolute px-2 inset-0 bg-default-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
+                                <Link href={`/${params.locale}/personalBooks/${currentBook.bookId.slug}`} className='text-sm bg-default-50/80 text-center rounded-lg px-2 py-1'>
                                     {t('currentlyReading.viewDetails')}
-                                </Button>
+                                </Link>
                             </div>
                         </div>
                         <div className="flex-1 space-y-4">
@@ -88,32 +91,26 @@ export default function ReadingTracker({ books }: BookProps) {
                                     {t('currentlyReading.by')} {currentBook.bookId.authors.map((author: any) => author.name).join(', ')}
                                 </p>
                             </div>
-                            <div className="space-y-2">
-                                <ProgressBar
-                                    value={progress}
-                                    total={currentBook.process.pageCount}
-                                    currentValue={currentBook.process.readCount}
-                                    showChip
-                                    showCompletedMessage
-                                    progressColor="warning"
-                                    labelPosition="top"
-                                    showPage={false}
-                                />
-                                {progress >= 100 && (
-                                    <div className="flex items-center gap-1.5 text-primary text-small">
-                                        <CheckCircle size={14} />
-                                        <span className="font-medium">{t('currentlyReading.bookCompleted')}</span>
-                                    </div>
-                                )}
-                            </div>
-                            <Button
-                                className="w-full bg-primary text-white"
-                                onPress={() => setProgress((p) => Math.min(100, p + 10))}
-                            >
-                                {t('currentlyReading.updateProgress')}
-                            </Button>
+
                         </div>
+
+
                     </div>
+                    <div className="space-y-2">
+                        <ProgressBar
+                            value={progress}
+                            total={currentBook.process.pageCount}
+                            currentValue={currentBook.process.readCount}
+                            showChip
+                            showCompletedMessage
+                            progressColor="warning"
+                            labelPosition="bottom"
+                            showPage={false}
+                            bookId={currentBook._id as string}
+                        />
+
+                    </div>
+
                 </CardBody>
             </Card>
 

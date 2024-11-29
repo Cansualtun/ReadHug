@@ -24,7 +24,10 @@ export async function UserPostInfo(
     headers,
   });
 }
-export async function GetAllPost(options: RequestInit = {}) {
+export async function GetAllPost(
+  { page = 1, limit = 10 }: { page?: number; limit?: number },
+  options: RequestInit = {},
+) {
   const cookieStore = cookies();
   const token = cookieStore.get('token')?.value;
 
@@ -38,7 +41,7 @@ export async function GetAllPost(options: RequestInit = {}) {
     ...options?.headers,
   };
 
-  return fetch(`${BASE_URL}/posts/all`, {
+  return fetch(`${BASE_URL}/posts/all?page=${page}&limit=${limit}`, {
     ...options,
     headers,
   });
