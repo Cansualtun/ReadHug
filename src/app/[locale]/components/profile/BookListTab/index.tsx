@@ -26,8 +26,12 @@ import BookSearchModal from '../../ui/modal/BookSearchModal';
 import ProgressBar from '../../ui/progressBar';
 import BookPostComponent from '../../ui/widget/BookPostComponent';
 import axios from 'axios';
+import { useSearchParams } from 'next/navigation';
 
 const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
+  const searchParams = useSearchParams();
+  const tab = searchParams.get('tab');
+
   const t = useTranslations('BookListTabs');
   const [serverBooks] = useState(bookLists.data || []);
   const [userPost, setUserPost] = useState([]);
@@ -47,6 +51,9 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
 
   useEffect(() => {
     setUserPost(post.data);
+    if (tab) {
+      setSelectedTab(tab);
+    }
   }, [post]);
 
   const loadMore = async () => {

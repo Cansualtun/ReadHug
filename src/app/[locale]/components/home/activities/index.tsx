@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Button } from '@nextui-org/react';
 import { Book, BookOpen, BookPlus, CheckCircle, Library } from 'lucide-react';
 import Image from 'next/image';
@@ -27,27 +27,37 @@ export default function ReadingTracker({ books }: BookProps) {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )[0];
-  const [progress, setProgress] = React.useState(
+  const [progress, setProgress] = useState(
     currentBook ? parseInt(currentBook.process.percent) : 0,
   );
+  const [openList, setOpenList] = useState<string>('');
   const shelves = [
-    {
-      icon: BookPlus,
-      label: t('library.shelves.toRead'),
-      count: books.filter((book) => book.type === BookType.WishList.toString())
-        .length,
-    },
     {
       icon: BookOpen,
       label: t('library.shelves.reading'),
       count: books.filter((book) => book.type === BookType.Reading.toString())
         .length,
+      list: books.filter((book) => book.type === BookType.Reading.toString()),
+      key: 'reading',
+      tab: '1',
     },
     {
       icon: Book,
       label: t('library.shelves.completed'),
       count: books.filter((book) => book.type === BookType.Read.toString())
         .length,
+      list: books.filter((book) => book.type === BookType.Read.toString()),
+      key: 'read',
+      tab: '0',
+    },
+    {
+      icon: BookPlus,
+      label: t('library.shelves.toRead'),
+      count: books.filter((book) => book.type === BookType.WishList.toString())
+        .length,
+      list: books.filter((book) => book.type === BookType.WishList.toString()),
+      key: 'wishlist',
+      tab: '2',
     },
   ];
 
@@ -131,17 +141,66 @@ export default function ReadingTracker({ books }: BookProps) {
           </h2>
         </CardHeader>
         <CardBody className="p-4">
-          <div className="space-y-2">
+          <div className="">
             {shelves.map((item) => (
               <div
-                key={item.label}
-                className="flex items-center justify-between p-3 rounded-lg hover:bg-default-100 transition-colors cursor-pointer"
+                key={item.key}
+                className="flex flex-col items-start justify-between p-3 py-1 rounded-lg hover:bg-default-100 transition-colors cursor-pointer"
               >
-                <div className="flex items-center gap-2">
-                  <item.icon className="h-4 w-4 text-default-500" />
-                  <span className="text-sm font-medium">{item.label}</span>
+                <div className="w-full flex items-start justify-between rounded-lg hover:bg-default-100 transition-colors cursor-pointer">
+                  <div
+                    className="flex items-center gap-2"
+                    onClick={() => {
+                      if (item.key === openList) {
+                        setOpenList('');
+                      } else {
+                        setOpenList(item.key);
+                      }
+                    }}
+                  >
+                    <item.icon
+                      className={`h-4 w-4 ${item.key == openList ? 'text-primary' : 'text-default-500'}`}
+                    />
+                    <span className="text-sm font-medium">{item.label}</span>
+                  </div>
+                  {item.list.length > 0 ? (
+                    <Link
+                      href={`/${params.locale}/profile/${me.userName}?tab=${item.tab}`}
+                      className={`p-2 min-w-11 flex justify-center items-center rounded-t-md hover:text-primary ${item.key === openList && 'bg-default-200/20 text-primary'}`}
+                    >
+                      {item.count}
+                    </Link>
+                  ) : (
+                    <div
+                      className={`p-2 min-w-11 flex justify-center items-center rounded-t-md ${item.key === openList && 'bg-default-200/20 text-primary'}`}
+                    >
+                      {item.count}
+                    </div>
+                  )}
                 </div>
-                <div>{item.count}</div>
+
+                <div
+                  className={`p-4 bg-default-200/20 border-l-3 border-l-primary ${item.key === openList ? 'animate-appearance-in block' : 'hidden animate-appearance-in delay-1000'}`}
+                >
+                  <div className="marker:text-primary list-outside list-disc ml-2 text-sm space-y-2">
+                    {item.list.slice(0, 5).map((i, index) => {
+                      return (
+                        <div key={i._id} className="flex items-center gap-2">
+                          <div>
+                            <Image
+                              src={i.bookId.images.smallThumbnail}
+                              width={28}
+                              height={36}
+                              className="min-w-7 min-h-9"
+                              alt={i.bookName}
+                            />
+                          </div>
+                          <p key={index}>{i.bookName}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             ))}
           </div>

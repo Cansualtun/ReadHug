@@ -152,8 +152,8 @@
       "title": "Kitaplık",
       "shelves": {
         "toRead": "İstek Listesi",
-        "reading": "Şuan Okunan",
-        "completed": "Tamamlanan"
+        "reading": "Okunuyor",
+        "completed": "Okunan"
       }
     }
   },
