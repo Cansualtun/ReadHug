@@ -7,19 +7,30 @@ export const notificationApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     notification: builder.mutation<INotificationResponse, void>({
       query: (credentials: any) => {
+        console.log('credentials', credentials);
+
         const token = getFromTokenCookies();
+        let url = `/notification/all?page=${credentials.page}&limit=10&sort=desc`;
+        if (credentials.onlyCount) {
+          url += '&onlyCount=true';
+        }
         return {
-          url: `/notification/all?page=${credentials}&limit=10&sort=desc`,
+          url,
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
           },
         };
       },
-      async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
+      async onQueryStarted(
+        credentials: any,
+        { dispatch, getState, queryFulfilled },
+      ) {
         try {
           const { data: newData } = await queryFulfilled;
-          dispatch(setNotification(newData));
+          if (!credentials.onlyCount) {
+            dispatch(setNotification(newData));
+          }
         } catch (error) {
           // toast.error('Me Service failed');
           console.error('Me Service error:', error);
