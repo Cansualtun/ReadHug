@@ -145,7 +145,8 @@
       "viewDetails": "View Details",
       "by": "by",
       "bookCompleted": "Book completed!",
-      "updateProgress": "Update Progress"
+      "updateProgress": "Update Progress",
+      "noBook": "No Book"
     },
     "library": {
       "title": "Library",
@@ -217,7 +218,7 @@
       }
     },
     "copyright": {
-      "text": "© 2024 ACME Reading. All rights reserved."
+      "text": "© 2024 ReadHug. All rights reserved."
     },
     "bottomLinks": {
       "privacy": "Privacy",

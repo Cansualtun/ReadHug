@@ -112,7 +112,7 @@ export default function Post({
   useEffect(() => {
     setLikeCount(post.likeCount);
     setIsLiked(post.isLiked);
-    if (showComments) {
+    if (showComments || !isProfileCard) {
       handleGetComment();
     }
   }, [showComments]);
