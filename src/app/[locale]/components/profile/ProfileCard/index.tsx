@@ -89,8 +89,15 @@ const ProfileCard = ({ profileData }: any) => {
       .find((row) => row.startsWith('token='))
       ?.split('=')[1];
     try {
+      let BASE_URL = '';
+      if (process.env.NODE_ENV === 'development') {
+        BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      }
+      if (process.env.NODE_ENV === 'production') {
+        BASE_URL = 'https://bookarchive-production.up.railway.app';
+      }
       const { data } = await axios.post(
-        `http://localhost:4000/message/create/row`,
+        `http://${BASE_URL}/message/create/row`,
         {
           receiver: profileData.user._id,
         },
@@ -172,8 +179,15 @@ const ProfileCard = ({ profileData }: any) => {
       }
       const formData = new FormData();
       formData.append('image', upgradeImage[0] as any);
+      let BASE_URL = '';
+      if (process.env.NODE_ENV === 'development') {
+        BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      }
+      if (process.env.NODE_ENV === 'production') {
+        BASE_URL = 'https://bookarchive-production.up.railway.app';
+      }
       const { data } = await axios.patch(
-        `http://localhost:4000/user/uploadProfileImage`,
+        `http://${BASE_URL}/user/uploadProfileImage`,
         formData,
         {
           headers: {

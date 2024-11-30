@@ -13,6 +13,7 @@ const initialState: NotificationState = {
   sort: 'desc',
   data: [],
   totalMessageCount: 0,
+  totalNotificationCount: 0,
 };
 
 const notificationSlice = createSlice({
@@ -32,6 +33,7 @@ const notificationSlice = createSlice({
         sort: 'desc',
         data: [],
         totalMessageCount: 0,
+        totalNotificationCount: 0,
       };
     },
   },

@@ -19,6 +19,13 @@ import { useParams, useRouter } from 'next/navigation';
 import { formatDate } from '@/utils/formatDate';
 
 type Props = { open: boolean; setOpen: any };
+let BASE_URL = '';
+if (process.env.NODE_ENV === 'development') {
+  BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+}
+if (process.env.NODE_ENV === 'production') {
+  BASE_URL = 'https://bookarchive-production.up.railway.app';
+}
 
 const Notifications = ({ open, setOpen }: Props) => {
   const router = useRouter();
@@ -39,8 +46,6 @@ const Notifications = ({ open, setOpen }: Props) => {
     try {
       setLoading(true);
       const token = getClientCookie();
-      const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
       const response = await fetch(
         `${BASE_URL}/notification/all?page=${page}&limit=10&onlyCount=false`,

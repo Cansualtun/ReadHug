@@ -32,6 +32,14 @@ const SidebarItems = [
   },
 ];
 
+let BASE_URL = '';
+if (process.env.NODE_ENV === 'development') {
+  BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+}
+if (process.env.NODE_ENV === 'production') {
+  BASE_URL = 'https://bookarchive-production.up.railway.app';
+}
+
 export default function Sidebar() {
   const [tab, setTab] = useState<any>('profile');
   const [upgradeImage, setUpgradeImage] = useState<null | FileList>(null);
@@ -56,7 +64,7 @@ export default function Sidebar() {
       const formData = new FormData();
       formData.append('image', upgradeImage[0] as any);
       const { data } = await axios.patch(
-        `http://localhost:4000/user/uploadProfileImage`,
+        `http://${BASE_URL}/user/uploadProfileImage`,
         formData,
         {
           headers: {

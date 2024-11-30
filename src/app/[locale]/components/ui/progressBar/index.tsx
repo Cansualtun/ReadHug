@@ -11,19 +11,19 @@ interface ProgressBarProps {
   showCompletedMessage?: boolean;
   className?: string;
   chipColor?:
-  | 'default'
-  | 'primary'
-  | 'secondary'
-  | 'success'
-  | 'warning'
-  | 'danger';
+    | 'default'
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'warning'
+    | 'danger';
   progressColor?:
-  | 'default'
-  | 'primary'
-  | 'secondary'
-  | 'success'
-  | 'warning'
-  | 'danger';
+    | 'default'
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'warning'
+    | 'danger';
   labelPosition?: 'top' | 'bottom';
   size?: 'sm' | 'md' | 'lg';
   showPage?: boolean;
@@ -91,8 +91,14 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         .split('; ')
         .find((row) => row.startsWith('token='))
         ?.split('=')[1];
-      const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      let BASE_URL = '';
+      if (process.env.NODE_ENV === 'development') {
+        BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      }
+      if (process.env.NODE_ENV === 'production') {
+        BASE_URL = 'https://bookarchive-production.up.railway.app';
+      }
+
       setLoading(true);
       await fetch(`${BASE_URL}/book/user/updateBookFromList`, {
         method: 'PATCH',

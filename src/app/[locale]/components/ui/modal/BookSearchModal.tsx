@@ -24,6 +24,14 @@ import { toast } from 'sonner';
 import Loading from '../loading';
 import Link from 'next/link';
 
+let BASE_URL = '';
+if (process.env.NODE_ENV === 'development') {
+  BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+}
+if (process.env.NODE_ENV === 'production') {
+  BASE_URL = 'https://bookarchive-production.up.railway.app';
+}
+
 const BookSearchModal = ({ isOpen, onClose }: any) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any>([]);
@@ -52,8 +60,9 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
         .split('; ')
         .find((row) => row.startsWith('token='))
         ?.split('=')[1];
+
       const { data } = await axios(
-        `http://localhost:4000/third/google/book/search?name=${query}`,
+        `http://${BASE_URL}/third/google/book/search?name=${query}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -140,7 +149,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
       for (const book of selectedBooks) {
         if (book._id) {
           const { data } = await axios.post(
-            `http://localhost:4000/book/user/createBookFromList`,
+            `http://${BASE_URL}/book/user/createBookFromList`,
             {
               bookId: book._id,
               type: book.type,
@@ -154,7 +163,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
           );
         } else {
           const { data } = await axios.post(
-            `http://localhost:4000/third/google/book/create`,
+            `http://${BASE_URL}/third/google/book/create`,
             {
               ...book,
             },
@@ -197,11 +206,11 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
           <h3> Kitap Ara</h3>
           <div className="flex items-center pr-10">
             <Link
-              href={"/tr/bookRequest"}
+              href={'/tr/bookRequest'}
               color="primary"
               className="p-0 rounded-lg min-w-6 min-h-6 mr-2 flex justify-center items-center bg-primary"
             >
-              <BookmarkPlus size={16} className='text-white' />
+              <BookmarkPlus size={16} className="text-white" />
             </Link>
             <p className="text-sm">Kitap Ekleme Talebi Oluştur.</p>
             <div className="ml-2">
@@ -222,7 +231,10 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                 }}
               >
                 <PopoverTrigger>
-                  <ShieldQuestion size={16} className="text-primary hover:text-primary/50 cursor-help" />
+                  <ShieldQuestion
+                    size={16}
+                    className="text-primary hover:text-primary/50 cursor-help"
+                  />
                 </PopoverTrigger>
                 <PopoverContent>
                   {(titleProps) => (
@@ -279,7 +291,10 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                         {book.name}
                       </p>
                       <p className="text-sm text-default-700">
-                        {book._id ? book.authors.map((i: any) => i.name).join(" & ") || '' : book.authors.join(" & ")}
+                        {book._id
+                          ? book.authors.map((i: any) => i.name).join(' & ') ||
+                            ''
+                          : book.authors.join(' & ')}
                       </p>
                     </div>
                   </div>
@@ -320,8 +335,10 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                             </h3>
                             <p className="text-sm text-default-700">
                               {book._id
-                                ? book.authors.map((i: any) => i.name).join(" & ") || ' '
-                                : book.authors.join(" & ")}
+                                ? book.authors
+                                    .map((i: any) => i.name)
+                                    .join(' & ') || ' '
+                                : book.authors.join(' & ')}
                             </p>
                           </div>
                         </div>
@@ -333,7 +350,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                               size="sm"
                               maxValue={book.pageCount}
                               onChange={(e: any) => {
-                                handleReadCountChange(book.name, e[0])
+                                handleReadCountChange(book.name, e[0]);
                               }}
                               getValue={(page) =>
                                 ` ${page} of ${book.pageCount} Page`

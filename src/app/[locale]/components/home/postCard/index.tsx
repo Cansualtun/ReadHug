@@ -89,8 +89,13 @@ export default function Post({
         .split('; ')
         .find((row) => row.startsWith('token='))
         ?.split('=')[1];
-      const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      let BASE_URL = '';
+      if (process.env.NODE_ENV === 'development') {
+        BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      }
+      if (process.env.NODE_ENV === 'production') {
+        BASE_URL = 'https://bookarchive-production.up.railway.app';
+      }
 
       const { data } = await axios.get(
         `${BASE_URL}/comment/posts/${post._id}?page=${page}&limit=${limit}&sort=desc`,
