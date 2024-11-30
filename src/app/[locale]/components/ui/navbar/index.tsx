@@ -109,7 +109,7 @@ export default function Header() {
                 src={'/assets/logo1.svg'}
                 width={240}
                 height={60}
-                alt=""
+                alt="logo"
                 className="w-[180px] h-[32px]"
               />
             </span>
@@ -118,12 +118,12 @@ export default function Header() {
                 src={'/assets/logo.svg'}
                 width={240}
                 height={60}
-                alt=""
+                alt="logo"
                 className="w-[180px] min-h-[40px] h-16"
               />
             </span>
           </Link>
-          <NavbarContent className="hidden md:flex gap-3">
+          {/* <NavbarContent className="hidden md:flex gap-3">
             <NavbarItem>
               <Link
                 color="foreground"
@@ -152,7 +152,7 @@ export default function Header() {
                 {t('navigation.stats')}
               </Link>
             </NavbarItem>
-          </NavbarContent>
+          </NavbarContent> */}
         </NavbarContent>
         <NavbarContent as="div" className="items-center" justify="end">
           <Input
@@ -192,7 +192,7 @@ export default function Header() {
             }
             startContent={<Sun className="w-3.5 h-3.5 text-warning-400" />}
             endContent={<Moon className="w-3.5 h-3.5 text-default-500" />}
-            className="ml-2"
+            className=""
             aria-label="Toggle theme"
           />
           <Dropdown placement="bottom-end">

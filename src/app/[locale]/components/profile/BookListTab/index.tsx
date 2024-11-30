@@ -323,6 +323,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
           <Tab
             key="post"
             className="bg-primary"
+            aria-label="Added Book"
             title={
               <div className="flex items-center space-x-2">
                 <PlusCircle className="w-4 h-4 text-white" />

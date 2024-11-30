@@ -135,6 +135,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         <Slider
           label=" "
           size="sm"
+          name={`book-update-${bookId}`}
           value={progressValue || 0}
           maxValue={total || 0}
           onChange={(page: any) => {

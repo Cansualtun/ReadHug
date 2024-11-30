@@ -328,6 +328,7 @@ const FloatingMessageWidget = () => {
 
           {/* Toggle butonu */}
           <button
+            aria-label="Messages"
             onClick={() => {
               setSelectedUser(null);
               dispatch(
