@@ -145,14 +145,15 @@
       "viewDetails": "Detayları Görüntüle",
       "by": "yazar:",
       "bookCompleted": "Kitap tamamlandı!",
-      "updateProgress": "İlerlemeyi Güncelle"
+      "updateProgress": "İlerlemeyi Güncelle",
+      "noBook": ""
     },
     "library": {
       "title": "Kitaplık",
       "shelves": {
         "toRead": "İstek Listesi",
-        "reading": "Şuan Okunan",
-        "completed": "Tamamlanan"
+        "reading": "Okunuyor",
+        "completed": "Okunan"
       }
     }
   },
@@ -217,7 +218,7 @@
       }
     },
     "copyright": {
-      "text": "© 2024 ACME Reading. Tüm hakları saklıdır."
+      "text": "© 2024 ReadHug. Tüm hakları saklıdır."
     },
     "bottomLinks": {
       "privacy": "Gizlilik",

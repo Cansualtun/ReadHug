@@ -2,10 +2,8 @@
 import { useGetUserBookSearchMutation } from '@/store/BookStore';
 import { usePostShareMutation } from '@/store/PostStore';
 import { Avatar, Button, Card, Input, Textarea } from '@nextui-org/react';
-import axios from 'axios';
 import { BookOpen, CircleX, ScrollText, User2 } from 'lucide-react';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 interface BookPostComponentProps {
@@ -33,7 +31,6 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
     setSelectedBook(book);
     setSearchTerm('');
   };
-  // submit etme fonksiyonumuz
   const handleSubmit = async () => {
     if (!selectedBook || !content) {
       toast.error('Kitap veya yorum seçilmedi');
@@ -48,7 +45,6 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
     setIsExpanded(false);
   };
 
-  // scroll yaptığımızda kapatma ve açma
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -66,7 +62,7 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  // handleClickOutside tanımladım kutu dışına tıklayınca kapanır
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -93,10 +89,10 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
       const payload: any = {
         userName: userData.userName,
         queries: {
-          search
-        }
-      }
-      const { data } = await getUserBookSearch(payload)
+          search,
+        },
+      };
+      const { data } = await getUserBookSearch(payload);
       setBooks(data?.data);
     } catch (error) {
       console.log(error);
@@ -113,56 +109,80 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
     <Card
       shadow="sm"
       ref={containerRef}
-      className={`w-full transition-all duration-300 ${isExpanded
-        ? 'p-4'
-        : 'p-2 transform hover:scale-[1.01] cursor-pointer'
-        }`}
+      className={`w-full transition-all duration-300 ${
+        isExpanded ? 'p-4' : 'p-2 transform hover:scale-[1.01] cursor-pointer'
+      }`}
       onClick={() => !isExpanded && setIsExpanded(true)}
     >
-      <div className={`flex flex-col gap-4 ${!isExpanded && 'opacity-90 hover:opacity-100'}`}>
+      <div
+        className={`flex flex-col gap-4 ${!isExpanded && 'opacity-90 hover:opacity-100'}`}
+      >
         {/* Header Section */}
-        <div className={`flex items-center justify-between transition-all duration-300 ${!isExpanded ? 'transform scale-95' : ''
-          }`}>
-          <div className={`flex-1 max-w-md transition-all duration-300 ${!isExpanded ? 'max-w-[200px]' : ''
-            }`}>
+        <div
+          className={`flex items-center justify-between transition-all duration-300 ${
+            !isExpanded ? 'transform scale-95' : ''
+          }`}
+        >
+          <div
+            className={`flex-1 max-w-md transition-all duration-300 ${
+              !isExpanded ? 'max-w-[200px]' : ''
+            }`}
+          >
             <Input
               type="text"
-              placeholder={isExpanded ? "Search in your books..." : "Click to share a book..."}
+              placeholder={
+                isExpanded
+                  ? 'Search in your books...'
+                  : 'Click to share a book...'
+              }
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onFocus={() => setIsExpanded(true)}
               startContent={
                 <BookOpen
-                  className={`transition-all duration-300 ${isExpanded ? 'text-default-400 w-4 h-4' : 'text-primary w-5 h-5'
-                    }`}
+                  className={`transition-all duration-300 ${
+                    isExpanded
+                      ? 'text-default-400 w-4 h-4'
+                      : 'text-primary w-5 h-5'
+                  }`}
                 />
               }
               classNames={{
                 input: `text-sm transition-all duration-300 ${!isExpanded ? 'pl-2' : ''}`,
-                inputWrapper: `transition-all duration-300 ${!isExpanded
-                  ? 'h-8 min-h-8 py-0 bg-transparent hover:bg-default-100'
-                  : 'h-10'
-                  }`
+                inputWrapper: `transition-all duration-300 ${
+                  !isExpanded
+                    ? 'h-8 min-h-8 py-0 bg-transparent hover:bg-default-100'
+                    : 'h-10'
+                }`,
               }}
               isReadOnly={!isExpanded}
             />
           </div>
-          <div className={`flex items-center gap-3 ml-4 transition-all duration-300 ${!isExpanded ? 'scale-90' : ''
-            }`}>
+          <div
+            className={`flex items-center gap-3 ml-4 transition-all duration-300 ${
+              !isExpanded ? 'scale-90' : ''
+            }`}
+          >
             <div className="flex flex-col items-end">
-              <span className="text-sm font-semibold">@{userData?.userName}</span>
-              <span className={`text-xs text-default-500 transition-all duration-300 ${!isExpanded ? 'hidden' : 'block'
-                }`}>
+              <span className="text-sm font-semibold">
+                @{userData?.userName}
+              </span>
+              <span
+                className={`text-xs text-default-500 transition-all duration-300 ${
+                  !isExpanded ? 'hidden' : 'block'
+                }`}
+              >
                 {userData?.firstName} {userData?.lastName}
               </span>
             </div>
             <Avatar
               src={userData?.image ?? '/assets/avatar.png'}
-              size={isExpanded ? "md" : "sm"}
-              className={`transition-all duration-300 ${isExpanded
-                ? 'border-2 border-primary/20'
-                : 'border border-primary/10'
-                }`}
+              size={isExpanded ? 'md' : 'sm'}
+              className={`transition-all duration-300 ${
+                isExpanded
+                  ? 'border-2 border-primary/20'
+                  : 'border border-primary/10'
+              }`}
             />
           </div>
         </div>
@@ -180,15 +200,22 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
                   >
                     <div className="relative w-10 h-14 flex-shrink-0">
                       <Image
-                        src={book?.book?.images?.thumbnail ?? '/assets/book-placeholder.png'}
+                        src={
+                          book?.book?.images?.thumbnail ??
+                          '/assets/book-placeholder.png'
+                        }
                         alt={book?.book?.name}
                         fill
                         className="rounded-sm object-cover"
                       />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium truncate">{book?.book?.name}</p>
-                      <p className="text-xs text-default-500 truncate">{book?.authorData[0]?.name}</p>
+                      <p className="text-sm font-medium truncate">
+                        {book?.book?.name}
+                      </p>
+                      <p className="text-xs text-default-500 truncate">
+                        {book?.authorData[0]?.name}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -210,7 +237,10 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
 
               <div className="relative w-20 h-28 flex-shrink-0">
                 <Image
-                  src={selectedBook?.book?.images?.thumbnail ?? '/assets/book-placeholder.png'}
+                  src={
+                    selectedBook?.book?.images?.thumbnail ??
+                    '/assets/book-placeholder.png'
+                  }
                   alt={selectedBook?.bookName}
                   fill
                   className="rounded-md shadow-sm object-cover"
@@ -224,19 +254,23 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
                     {selectedBook?.book?.name}
                   </span>
                 </div>
-                {
-                  selectedBook?.authorData.length > 0 && <div className="flex items-center gap-2">
+                {selectedBook?.authorData.length > 0 && (
+                  <div className="flex items-center gap-2">
                     <User2 size={16} className="text-primary flex-shrink-0" />
                     <span className="text-sm text-default-600 truncate">
-
-                      {selectedBook?.authorData?.map((author: any) => author.name).join(', ')}
+                      {selectedBook?.authorData
+                        ?.map((author: any) => author.name)
+                        .join(', ')}
                     </span>
                   </div>
-                }
+                )}
 
                 {selectedBook?.book?.pageCount && (
                   <div className="flex items-center gap-2">
-                    <ScrollText size={16} className="text-primary flex-shrink-0" />
+                    <ScrollText
+                      size={16}
+                      className="text-primary flex-shrink-0"
+                    />
                     <span className="text-sm text-default-600 truncate">
                       {selectedBook.book.pageCount} pages
                     </span>
@@ -254,7 +288,7 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
               onChange={(e) => setContent(e.target.value)}
               minRows={3}
               classNames={{
-                input: "text-sm"
+                input: 'text-sm',
               }}
             />
 

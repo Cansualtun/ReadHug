@@ -12,7 +12,6 @@ export const profileApi = baseApi.injectEndpoints({
     >({
       query: (credentials) => {
         const token = getFromTokenCookies();
-        console.log(token, 'cans');
         return {
           url: '/user/updateProfile',
           method: 'PATCH',

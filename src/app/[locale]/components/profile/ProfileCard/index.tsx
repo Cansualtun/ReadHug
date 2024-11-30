@@ -39,14 +39,12 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import Skeleton from './Skeleton';
 
 const ProfileCard = ({ profileData }: any) => {
-  console.log("profileData", profileData);
-
   const dispatch = useDispatch();
   const t = useTranslations('ProfileCard');
   const params = useParams();
-
   const [profile, setProfile] = useState(profileData);
   const { user, isSelf, isFollow: initialIsFollow } = profile;
   const [isFollow, setIsFollow] = useState(initialIsFollow);
@@ -110,7 +108,7 @@ const ProfileCard = ({ profileData }: any) => {
           user: data.user,
         }),
       );
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const renderFollowList = () => {
@@ -141,9 +139,10 @@ const ProfileCard = ({ profileData }: any) => {
               >
                 <span className="flex items-center gap-3">
                   <Avatar
-                    src={userData.image || 'https://picsum.photos/200/300'}
+                    src={userData.image || '/assets/avatar.png'}
                     size="sm"
                     name={`${userData.firstName} ${userData.lastName}`}
+                    className="ring-1 ring-offset-1 ring-primary shadow"
                   />
                   <div>
                     <p className="font-medium">
@@ -184,12 +183,17 @@ const ProfileCard = ({ profileData }: any) => {
         },
       );
       //   await ProfilInfo(params.slug as string);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
     setProfile(profileData);
   }, [profileData]);
+  console.log('profileData', profileData);
+
+  if (!userProfileData) {
+    return <Skeleton />;
+  }
 
   return (
     <Card shadow="sm" className="bg-default-50">
@@ -282,6 +286,7 @@ const ProfileCard = ({ profileData }: any) => {
             <p className="text-xs text-default-500">{t('stats.following')}</p>
           </div>
         </div>
+
         {!isSelf && (
           <div className="flex justify-center mb-4">
             <Button

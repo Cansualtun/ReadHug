@@ -37,10 +37,10 @@ const BookRequests: React.FC = () => {
 
   const clearStates = () => {
     setTitle('');
-    setAuthors([""]);
-    setPublishers([""]);
-    setCategories([""]);
-    setIsbns([""]);
+    setAuthors(['']);
+    setPublishers(['']);
+    setCategories(['']);
+    setIsbns(['']);
     setImageUrl('');
     setPublishedDate('');
     setPageCount('');
@@ -127,7 +127,6 @@ const BookRequests: React.FC = () => {
     };
 
     try {
-      console.log(bookData);
     } catch (error) {
       setIsSuccess(true);
       setLoading(false);
@@ -174,7 +173,7 @@ const BookRequests: React.FC = () => {
                       <Button
                         onClick={() => {
                           setIsSuccess(false);
-                          clearStates()
+                          clearStates();
                         }}
                         className="mt-6 px-8 py-3 bg-primary rounded-lg hover:bg-primary/80 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 text-white"
                       >

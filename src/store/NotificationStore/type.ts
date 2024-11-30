@@ -3,6 +3,7 @@ import { IGlobalResponse, IUser } from '@/types';
 export interface INotificationResponse extends IGlobalResponse {
   data: NotificationData[];
   totalMessageCount: number;
+  totalNotificationCount: number;
 }
 
 export interface NotificationData {

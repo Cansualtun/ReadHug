@@ -1,7 +1,5 @@
 'use client';
 import { useLogoutMutation } from '@/store/AuthStore';
-import { NotificationState } from '@/store/MessageStore/type';
-import { selectNotification } from '@/store/NotificationStore/slice';
 import { useMeMutation } from '@/store/UserStore';
 import {
   Avatar,
@@ -13,17 +11,16 @@ import {
   Navbar,
   NavbarContent,
   NavbarItem,
-  Switch
+  Switch,
 } from '@nextui-org/react';
 import {
-  Bell,
   LogIn,
   LogOut,
   Milestone,
   Moon,
   Settings,
   Sun,
-  User
+  User,
 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { createSharedPathnamesNavigation } from 'next-intl/navigation';
@@ -32,7 +29,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import LanguageDropdown from '../languageDropdown';
 import { SearchIcon } from '../svg/SearchIcon.jsx';
 import Notifications from './Notifications';
@@ -63,12 +59,6 @@ export default function Header() {
   const changeLanguage = (newLocale: string) => {
     routerIntl.push(pathname, { locale: newLocale });
   };
-  const selectNotifications: NotificationState =
-    useSelector(selectNotification);
-
-  const readAllNotifications = async () => {
-    console.log('read notifications');
-  };
 
   const fetchMe = async () => {
     try {
@@ -87,7 +77,6 @@ export default function Header() {
     fetchMe();
   }, [me, t]);
 
-
   const logouts = async () => {
     await logout();
     router.push('/login');
@@ -98,7 +87,6 @@ export default function Header() {
       router.push(`/profile/${userData.userName}`);
     }
   };
-  
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -116,13 +104,22 @@ export default function Header() {
       <div className="container mx-auto flex justify-between items-center">
         <NavbarContent>
           <Link href="/">
-            <span className="flex justify-center items-center">
+            <span className="hidden justify-center items-center md:flex">
               <Image
                 src={'/assets/logo1.svg'}
                 width={240}
                 height={60}
                 alt=""
                 className="w-[180px] h-[32px]"
+              />
+            </span>
+            <span className="flex justify-center items-center md:hidden">
+              <Image
+                src={'/assets/logo.svg'}
+                width={240}
+                height={60}
+                alt=""
+                className="w-[180px] min-h-[40px] h-16"
               />
             </span>
           </Link>
@@ -174,30 +171,10 @@ export default function Header() {
           />
           {userData.userName && (
             <div className="relative" ref={dropdownRef}>
-              <div
-                className="relative cursor-pointer select-none"
-                onClick={() => setOpenNotification(!openNotification)}
-              >
-                <Bell />
-                {selectNotifications?.data?.filter((i: any) => !i.isRead)
-                  .length > 0 && (
-                    <span className="absolute border-1 border-default-50 -top-1 -right-1 min-w-[16px] min-h-[16px] rounded-full bg-primary text-[8px] text-white flex justify-center items-center p-0 m-0">
-                      {selectNotifications?.data?.filter((i: any) => !i.isRead)
-                        .length > 9
-                        ? '9+'
-                        : selectNotifications?.data?.filter((i: any) => !i.isRead)
-                          .length}
-                    </span>
-                  )}
-              </div>
-
-              <div
-                className={`absolute z-50 top-10 right-0 ${openNotification ? 'block  animate-fadeindown' : 'hidden'}`}
-              >
-                <div className="max-h-[300px] w-[300px] overflow-y-auto scroll-container p-1 bg-default-50 rounded-lg shadow">
-                  <Notifications />
-                </div>
-              </div>
+              <Notifications
+                open={openNotification}
+                setOpen={setOpenNotification}
+              />
             </div>
           )}
 

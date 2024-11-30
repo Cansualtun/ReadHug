@@ -36,9 +36,6 @@ export default async function Home() {
                         }
                         <div className="space-y-6 md:space-y-8 lg:space-y-10">
                             <Posts data={post} />
-                            {/* {post?.data?.map((item: any) => (
-                                <PostCard key={item._id} post={item} />
-                            ))} */}
                         </div>
                     </div>
                 </div>

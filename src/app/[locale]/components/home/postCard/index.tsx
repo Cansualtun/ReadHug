@@ -33,7 +33,7 @@ export default function Post({
   isOpenComment,
   isProfileCard = true,
 }: any) {
-  const router = useRouter()
+  const router = useRouter();
   const { locale } = useParams();
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState('');
@@ -79,37 +79,41 @@ export default function Post({
         content: newComment,
         postId: post._id,
       });
-      setNewComment("")
-      await handleGetComment()
-    } catch (error) { }
+      setNewComment('');
+      await handleGetComment();
+    } catch (error) {}
   };
   const handleGetComment = async () => {
-
     try {
-      const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+      const token = document.cookie
+        .split('; ')
+        .find((row) => row.startsWith('token='))
+        ?.split('=')[1];
+      const BASE_URL =
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
-      const { data } = await axios.get(`${BASE_URL}/comment/posts/${post._id}?page=${page}&limit=${limit}&sort=desc`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        }
-      });
-      setComments(data.data)
+      const { data } = await axios.get(
+        `${BASE_URL}/comment/posts/${post._id}?page=${page}&limit=${limit}&sort=desc`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      setComments(data.data);
     } catch (error) {
-      console.log("error", error);
-
+      console.log('error', error);
     }
-
-  }
+  };
   const handleEnterKeyDown = (e: any) => {
-    e.key == "Enter" && handleComment()
-  }
+    e.key == 'Enter' && handleComment();
+  };
   useEffect(() => {
     setLikeCount(post.likeCount);
     setIsLiked(post.isLiked);
-    if (showComments) {
-      handleGetComment()
+    if (showComments || !isProfileCard) {
+      handleGetComment();
     }
   }, [showComments]);
 
@@ -123,7 +127,8 @@ export default function Post({
           <Link href={`/personalBooks/${post?.book?.slug}`} className="h-full">
             <Image
               src={
-                post?.book?.bookId?.images?.thumbnail ??
+                post?.book?.bookId?.images?.thumbnail ||
+                post?.book?.bookId?.images?.smallThumbnail ||
                 '/assets/book-placeholder.png'
               }
               alt="Book cover"
