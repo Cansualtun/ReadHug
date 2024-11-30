@@ -127,7 +127,8 @@ export default function Post({
           <Link href={`/personalBooks/${post?.book?.slug}`} className="h-full">
             <Image
               src={
-                post?.book?.bookId?.images?.thumbnail ??
+                post?.book?.bookId?.images?.thumbnail ||
+                post?.book?.bookId?.images?.smallThumbnail ||
                 '/assets/book-placeholder.png'
               }
               alt="Book cover"

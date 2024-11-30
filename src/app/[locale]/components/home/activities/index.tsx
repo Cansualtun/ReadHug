@@ -28,7 +28,7 @@ export default function ReadingTracker({ books }: BookProps) {
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )[0];
   const [progress, setProgress] = useState(
-    currentBook ? parseInt(currentBook.process.percent) : 0,
+    currentBook ? parseInt(currentBook?.process.percent) : 0,
   );
   const [openList, setOpenList] = useState<string>('');
   const shelves = [
@@ -88,15 +88,19 @@ export default function ReadingTracker({ books }: BookProps) {
           <div className="flex flex-col sm:flex-row gap-6">
             <div className="relative group w-[120px] h-[160px]">
               <Image
-                src={currentBook.bookId.images.thumbnail}
-                alt={`${currentBook.bookId.name} book cover`}
+                src={
+                  currentBook?.bookId?.images?.thumbnail ||
+                  currentBook?.bookId?.images?.smallThumbnail ||
+                  '/assets/book-placeholder.png'
+                }
+                alt={`${currentBook?.bookId?.name} book cover`}
                 layout="fill"
                 objectFit="cover"
                 className="rounded-lg transition-all duration-200"
               />
               <div className="absolute px-2 inset-0 bg-default-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
                 <Link
-                  href={`/${params.locale}/personalBooks/${currentBook.bookId.slug}`}
+                  href={`/${params.locale}/personalBooks/${currentBook?.bookId.slug}`}
                   className="text-sm bg-default-50/80 text-center rounded-lg px-2 py-1"
                 >
                   {t('currentlyReading.viewDetails')}
@@ -106,11 +110,11 @@ export default function ReadingTracker({ books }: BookProps) {
             <div className="flex-1 space-y-4">
               <div>
                 <h3 className="font-semibold text-lg">
-                  {currentBook.bookId.name}
+                  {currentBook?.bookId.name}
                 </h3>
                 <p className="text-default-500">
                   {t('currentlyReading.by')}{' '}
-                  {currentBook.bookId.authors
+                  {currentBook?.bookId.authors
                     .map((author: any) => author.name)
                     .join(', ')}
                 </p>
@@ -120,14 +124,14 @@ export default function ReadingTracker({ books }: BookProps) {
           <div className="space-y-2">
             <ProgressBar
               value={progress}
-              total={currentBook.process.pageCount}
-              currentValue={currentBook.process.readCount}
+              total={currentBook?.process.pageCount}
+              currentValue={currentBook?.process.readCount}
               showChip
               showCompletedMessage
               progressColor="warning"
               labelPosition="bottom"
               showPage={false}
-              bookId={currentBook._id as string}
+              bookId={currentBook?._id as string}
             />
           </div>
         </CardBody>
@@ -180,15 +184,19 @@ export default function ReadingTracker({ books }: BookProps) {
                 </div>
 
                 <div
-                  className={`p-4 bg-default-200/20 border-l-3 border-l-primary ${item.key === openList ? 'animate-appearance-in block' : 'hidden animate-appearance-in delay-1000'}`}
+                  className={`p-4 bg-default-200/20 border-l-3 border-l-primary w-full ${item.key === openList ? 'animate-appearance-in block' : 'hidden animate-appearance-in delay-1000'}`}
                 >
-                  <div className="marker:text-primary list-outside list-disc ml-2 text-sm space-y-2">
+                  <div className="marker:text-primary list-outside list-disc ml-2 text-sm space-y-2  w-full">
                     {item.list.slice(0, 5).map((i, index) => {
                       return (
                         <div key={i._id} className="flex items-center gap-2">
                           <div>
                             <Image
-                              src={i.bookId.images.smallThumbnail}
+                              src={
+                                i.bookId.images?.smallThumbnail ||
+                                i.bookId.images?.thumbnail ||
+                                '/assets/book-placeholder.png'
+                              }
                               width={28}
                               height={36}
                               className="min-w-7 min-h-9"

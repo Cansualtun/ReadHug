@@ -31,6 +31,7 @@ import { useSearchParams } from 'next/navigation';
 const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
+  console.log('bookLists', bookLists);
 
   const t = useTranslations('BookListTabs');
   const [serverBooks] = useState(bookLists.data || []);
@@ -134,7 +135,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                 <img
                   src={
                     book?.bookId?.images?.thumbnail ||
-                    '/assets/book-placeholder.jpg'
+                    '/assets/book-placeholder.png'
                   }
                   alt={book?.bookId?.name}
                   className="w-20 h-28 object-cover rounded-md shadow-md"
