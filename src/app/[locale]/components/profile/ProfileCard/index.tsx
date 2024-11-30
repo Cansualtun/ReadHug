@@ -203,7 +203,6 @@ const ProfileCard = ({ profileData }: any) => {
   useEffect(() => {
     setProfile(profileData);
   }, [profileData]);
-  console.log('profileData', profileData);
 
   if (!userProfileData) {
     return <Skeleton />;
