@@ -97,7 +97,7 @@ const ProfileCard = ({ profileData }: any) => {
         BASE_URL = 'https://bookarchive-production.up.railway.app';
       }
       const { data } = await axios.post(
-        `http://${BASE_URL}/message/create/row`,
+        `${BASE_URL}/message/create/row`,
         {
           receiver: profileData.user._id,
         },
@@ -115,7 +115,7 @@ const ProfileCard = ({ profileData }: any) => {
           user: data.user,
         }),
       );
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const renderFollowList = () => {
@@ -187,7 +187,7 @@ const ProfileCard = ({ profileData }: any) => {
         BASE_URL = 'https://bookarchive-production.up.railway.app';
       }
       const { data } = await axios.patch(
-        `http://${BASE_URL}/user/uploadProfileImage`,
+        `${BASE_URL}/user/uploadProfileImage`,
         formData,
         {
           headers: {
@@ -197,7 +197,7 @@ const ProfileCard = ({ profileData }: any) => {
         },
       );
       //   await ProfilInfo(params.slug as string);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {

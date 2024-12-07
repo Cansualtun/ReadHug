@@ -64,7 +64,7 @@ export default function Sidebar() {
       const formData = new FormData();
       formData.append('image', upgradeImage[0] as any);
       const { data } = await axios.patch(
-        `http://${BASE_URL}/user/uploadProfileImage`,
+        `${BASE_URL}/user/uploadProfileImage`,
         formData,
         {
           headers: {
@@ -74,7 +74,7 @@ export default function Sidebar() {
         },
       );
       //   await ProfilInfo(params.slug as string);
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     meHandler();

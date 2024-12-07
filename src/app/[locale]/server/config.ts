@@ -1,4 +1,4 @@
 export default {
   liveBaseUrl: 'https://bookarchive-production.up.railway.app/',
-  devBaseUrl: 'http://localhost:4000/',
+  devBaseUrl: 'https://bookarchive-production.up.railway.app/',
 };

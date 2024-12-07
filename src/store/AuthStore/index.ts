@@ -37,7 +37,7 @@ export const authApi = baseApi.injectEndpoints({
             toast.error(data.message || 'Login failed');
           }
         } catch (error: any) {
-          const errorData = error?.error.data.message;
+          const errorData = error?.error?.data?.message;
           toast.error(errorData || 'Login failed');
           console.error('Login error:', error);
         }

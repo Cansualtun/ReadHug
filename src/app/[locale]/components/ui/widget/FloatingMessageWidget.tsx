@@ -44,7 +44,7 @@ const FloatingMessageWidget = () => {
       });
 
       setMessageList(data.data);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const getMessage = async (messageRowId: string) => {
@@ -55,7 +55,7 @@ const FloatingMessageWidget = () => {
 
     try {
       const { data } = await axios(
-        `http://${BASE_URL}/message/user/${messageRowId}`,
+        `${BASE_URL}/message/user/${messageRowId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -63,9 +63,9 @@ const FloatingMessageWidget = () => {
           },
         },
       );
-      await axios(`http://${BASE_URL}/notification/read/${messageRowId}`);
+      await axios(`${BASE_URL}/notification/read/${messageRowId}`);
       setMessages(data.data);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handleSendMessage = async (receiver: string) => {
@@ -75,7 +75,7 @@ const FloatingMessageWidget = () => {
       ?.split('=')[1];
     try {
       await axios.post(
-        `http://${BASE_URL}/message/create`,
+        `${BASE_URL}/message/create`,
         {
           receiver,
           message: newMessage,
@@ -89,7 +89,7 @@ const FloatingMessageWidget = () => {
       );
       await getMessage(selectedUser.messageRowId);
       setNewMessage('');
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -123,12 +123,12 @@ const FloatingMessageWidget = () => {
         {/* Ana konteyner */}
         <div className="flex flex-col items-end relative">
           {!messageData.isOpenMessage &&
-          totalMessageCount &&
-          totalMessageCount > 0 ? (
+            totalMessageCount &&
+            totalMessageCount > 0 ? (
             <div className="absolute top-0 right-0 bg-green-500 w-4 h-4 rounded-full flex justify-center items-center text-[9px] p-1 text-white leading-0">
               {totalMessageCount &&
-              totalMessageCount < 10 &&
-              totalMessageCount > 0
+                totalMessageCount < 10 &&
+                totalMessageCount > 0
                 ? totalMessageCount
                 : '9+'}
             </div>
@@ -189,11 +189,10 @@ const FloatingMessageWidget = () => {
                           <div
                             key={user?.messageRowId}
                             onClick={() => setSelectedUser(user)}
-                            className={`p-3 flex gap-3 hover:bg-default-50 cursor-pointer ${
-                              selectedUser?._id === user?._id
-                                ? 'bg-default-100'
-                                : ''
-                            }`}
+                            className={`p-3 flex gap-3 hover:bg-default-50 cursor-pointer ${selectedUser?._id === user?._id
+                              ? 'bg-default-100'
+                              : ''
+                              }`}
                           >
                             <div className="relative">
                               <img
@@ -277,11 +276,10 @@ const FloatingMessageWidget = () => {
                           >
                             <div className="flex flex-col gap-1">
                               <div
-                                className={`p-2 rounded-lg  max-w-[200px] ${
-                                  message.isMe
-                                    ? 'bg-primary text-white rounded-br-none'
-                                    : 'bg-default-100 rounded-bl-none'
-                                }`}
+                                className={`p-2 rounded-lg  max-w-[200px] ${message.isMe
+                                  ? 'bg-primary text-white rounded-br-none'
+                                  : 'bg-default-100 rounded-bl-none'
+                                  }`}
                               >
                                 <p className="text-sm">{message.message}</p>
                               </div>
@@ -339,15 +337,13 @@ const FloatingMessageWidget = () => {
                 }),
               );
             }}
-            className={`p-3 rounded-full shadow-lg transition-colors ${
-              messageData.isOpenMessage
-                ? 'bg-gray-200 hover:bg-gray-300 ring-'
-                : 'bg-primary/80 hover:bg-primary text-white'
-            }
-             ${
-               totalMessageCount > 0 &&
-               'ring-2 ring-transparent ring-offset-1  animate-scale-pulse'
-             }
+            className={`p-3 rounded-full shadow-lg transition-colors ${messageData.isOpenMessage
+              ? 'bg-gray-200 hover:bg-gray-300 ring-'
+              : 'bg-primary/80 hover:bg-primary text-white'
+              }
+             ${totalMessageCount > 0 &&
+              'ring-2 ring-transparent ring-offset-1  animate-scale-pulse'
+              }
             `}
           >
             <MessageSquare size={24} />

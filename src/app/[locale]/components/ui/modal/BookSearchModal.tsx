@@ -62,7 +62,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
         ?.split('=')[1];
 
       const { data } = await axios(
-        `http://${BASE_URL}/third/google/book/search?name=${query}`,
+        `${BASE_URL}/third/google/book/search?name=${query}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -149,7 +149,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
       for (const book of selectedBooks) {
         if (book._id) {
           const { data } = await axios.post(
-            `http://${BASE_URL}/book/user/createBookFromList`,
+            `${BASE_URL}/book/user/createBookFromList`,
             {
               bookId: book._id,
               type: book.type,
@@ -163,7 +163,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
           );
         } else {
           const { data } = await axios.post(
-            `http://${BASE_URL}/third/google/book/create`,
+            `${BASE_URL}/third/google/book/create`,
             {
               ...book,
             },
@@ -293,7 +293,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                       <p className="text-sm text-default-700">
                         {book._id
                           ? book.authors.map((i: any) => i.name).join(' & ') ||
-                            ''
+                          ''
                           : book.authors.join(' & ')}
                       </p>
                     </div>
@@ -336,8 +336,8 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                             <p className="text-sm text-default-700">
                               {book._id
                                 ? book.authors
-                                    .map((i: any) => i.name)
-                                    .join(' & ') || ' '
+                                  .map((i: any) => i.name)
+                                  .join(' & ') || ' '
                                 : book.authors.join(' & ')}
                             </p>
                           </div>
