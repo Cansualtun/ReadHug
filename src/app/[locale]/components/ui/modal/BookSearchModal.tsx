@@ -26,7 +26,7 @@ import Link from 'next/link';
 
 let BASE_URL = '';
 if (process.env.NODE_ENV === 'development') {
-  BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+  BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
 }
 if (process.env.NODE_ENV === 'production') {
   BASE_URL = 'https://bookarchive-production.up.railway.app';
@@ -89,7 +89,6 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
   );
 
   useEffect(() => {
-    // Component unmount olduğunda debounce'u temizle
     return () => {
       debouncedSearch.cancel();
     };

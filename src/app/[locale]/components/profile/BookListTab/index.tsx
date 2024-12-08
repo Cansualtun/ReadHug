@@ -4,7 +4,6 @@ import {
   Card,
   CardBody,
   Selection,
-  Slider,
   Tab,
   Tabs,
 } from '@nextui-org/react';
@@ -13,7 +12,6 @@ import {
   BookMarked,
   BookOpen,
   BookPlus,
-  CheckCircleIcon,
   MessageCircle,
   PlusCircle,
 } from 'lucide-react';
@@ -121,7 +119,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
     return allData.length > 0 ? (
       <InfiniteScroll
         dataLength={allData.length}
-        next={() => {}}
+        next={() => { }}
         hasMore={hasMore}
         loader={loading && <h4 className="text-center py-4">{t('loading')}</h4>}
         endMessage={
@@ -213,12 +211,11 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
     ) : (
       <EmptyState
         message={t(
-          `emptyStates.${
-            type === BookType.Reading
-              ? 'reading'
-              : type === BookType.Read
-                ? 'read'
-                : 'wishlist'
+          `emptyStates.${type === BookType.Reading
+            ? 'reading'
+            : type === BookType.Read
+              ? 'read'
+              : 'wishlist'
           }`,
         )}
       />

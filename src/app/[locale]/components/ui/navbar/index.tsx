@@ -7,10 +7,8 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Input,
   Navbar,
   NavbarContent,
-  NavbarItem,
   Switch,
 } from '@nextui-org/react';
 import {
@@ -30,7 +28,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import LanguageDropdown from '../languageDropdown';
-import { SearchIcon } from '../svg/SearchIcon.jsx';
 import Notifications from './Notifications';
 
 const locales = ['tr', 'en'];
@@ -155,20 +152,6 @@ export default function Header() {
           </NavbarContent> */}
         </NavbarContent>
         <NavbarContent as="div" className="items-center" justify="end">
-          <Input
-            classNames={{
-              base: 'max-w-full sm:max-w-[18rem] h-10',
-              mainWrapper: 'h-full',
-              input: 'text-small',
-              inputWrapper:
-                'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20',
-            }}
-            placeholder={t('search.placeholder')}
-            size="sm"
-            startContent={<SearchIcon size={12} width={12} height={12} />}
-            type="search"
-            className="hidden lg:block"
-          />
           {userData.userName && (
             <div className="relative" ref={dropdownRef}>
               <Notifications
