@@ -10,7 +10,6 @@ import { fontSans } from "@/config/fonts";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import Header from "../components/ui/navbar";
-import Footer from "../components/ui/footer";
 import FloatingMessageWidget from "../components/ui/widget/FloatingMessageWidget";
 
 
@@ -38,11 +37,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
   params: { locale: string };
-
 }) {
   const messages = await getMessages();
   return (
-    <html lang={locale} >
+    <html lang={locale}>
       <body
         className={clsx(
           "min-h-screen bg-[#F6F5F2] font-sans antialiased",
@@ -52,13 +50,15 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
             <Toaster position="top-center" />
-            <div className="flex min-h-screen flex-col bg-default-50">
+            <div className="flex flex-col min-h-screen">
               <Header />
-              <main className="flex-1 container mx-auto py-10">{children}</main>
-              <Footer />
+              <main className="flex-1 container mx-auto py-10">
+                <div className="mb-auto ">
+                  {children}
+                </div>
+              </main>
             </div>
             <FloatingMessageWidget />
-
           </Providers>
         </NextIntlClientProvider>
       </body>

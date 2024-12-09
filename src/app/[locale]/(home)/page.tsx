@@ -5,6 +5,7 @@ import BookPostComponent from '../components/ui/widget/BookPostComponent';
 import { getAllBookLists } from '../server/book';
 import { Me } from '../server/me';
 import { GetAllPost } from '../server/post';
+import Footer from '../components/ui/footer';
 
 export default async function Home() {
 
@@ -25,12 +26,14 @@ export default async function Home() {
           <div className="order-1 lg:order-1 lg:col-span-4">
             <div className="sticky top-[55px]">
               <ReadingTracker books={allBook.data} />
+              <Footer />
             </div>
           </div>
           <div className="order-2 lg:order-2 lg:col-span-8">
             {userData.data && (
               <div className="sticky top-[70px] z-30 mt-4 p-2 pt-0 mb-10">
                 <BookPostComponent userData={userData.data} />
+
               </div>
             )}
             <div className="space-y-6 md:space-y-8 lg:space-y-10">

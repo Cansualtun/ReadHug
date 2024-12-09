@@ -19,6 +19,7 @@ import ProgressBar from '../../ui/progressBar';
 import BookPostComponent from '../../ui/widget/BookPostComponent';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
+import Loading from '../../ui/loading';
 
 const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   const searchParams = useSearchParams();
@@ -28,7 +29,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
 
   const t = useTranslations('BookListTabs');
   const [serverBooks] = useState(bookLists.data || []);
-  const [userPost, setUserPost] = useState([]);
+  const [userPost, setUserPost] = useState<any[]>([]);
   const [additionalBooks, setAdditionalBooks] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(2);
@@ -36,6 +37,9 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   const [loading, setLoading] = useState(false);
   const [openBookModal, setOpenBookModal] = useState(false);
   const userData = useSelector(selectUser);
+  const [postPage, setPostPage] = useState(2);
+  const [postLoading, setPostLoading] = useState(false);
+  const [postHasMore, setPostHasMore] = useState(true);
 
   const EmptyState = ({ message }: { message: string }) => (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
@@ -43,16 +47,51 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
     </div>
   );
 
+
   useEffect(() => {
-    setUserPost(post.data);
+    if (post?.data) {
+      setUserPost([]);
+      setPostPage(1);
+      setPostHasMore(true);
+      loadMorePosts();
+    }
     if (tab) {
       setSelectedTab(tab);
     }
   }, [post]);
 
+
+  const loadMorePosts = async () => {
+    if (postLoading || !postHasMore) return;
+
+    try {
+      setPostLoading(true);
+      const startIndex = (postPage - 1) * 4;
+      const endIndex = startIndex + 4;
+      const newPosts = post.data.slice(startIndex, endIndex);
+      if (newPosts.length === 0) {
+        setPostHasMore(false);
+        return;
+      }
+      setUserPost(prevPosts => [...prevPosts, ...newPosts]);
+      setPostPage(prev => prev + 1);
+      setPostHasMore(endIndex < post.data.length);
+    } catch (error) {
+      console.error('Error loading more posts:', error);
+      setPostHasMore(false);
+    } finally {
+      setPostLoading(false);
+    }
+  };
+
+
+
+
   useEffect(() => {
     setProfile(profileData);
   }, [profileData]);
+
+
 
   const loadMore = async () => {
     if (loading) return;
@@ -97,6 +136,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
       setLoading(false);
     }
   };
+
   const handleTabChange = (key: Selection | string) => {
     const selectedKey = Array.from(key)[0] as string;
     if (key == 'post') {
@@ -119,7 +159,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
     return allData.length > 0 ? (
       <InfiniteScroll
         dataLength={allData.length}
-        next={() => {}}
+        next={loadMore}
         hasMore={hasMore}
         loader={loading && <h4 className="text-center py-4">{t('loading')}</h4>}
         endMessage={
@@ -205,12 +245,11 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
     ) : (
       <EmptyState
         message={t(
-          `emptyStates.${
-            type === BookType.Reading
-              ? 'reading'
-              : type === BookType.Read
-                ? 'read'
-                : 'wishlist'
+          `emptyStates.${type === BookType.Reading
+            ? 'reading'
+            : type === BookType.Read
+              ? 'read'
+              : 'wishlist'
           }`,
         )}
       />
@@ -305,9 +344,26 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
 
           <Card shadow="none" className="bg-transparent shadow-none w-full p-0">
             <CardBody className="p-0">
-              {userPost?.map((item: any) => (
-                <PostCard key={item.id} post={item} />
-              ))}
+              <InfiniteScroll
+                dataLength={post?.length || 0}
+                next={loadMore}
+                hasMore={hasMore}
+                loader={
+                  <div className="w-full flex justify-center my-4 scale-50">
+                    <Loading />
+                  </div>
+                }
+                endMessage={
+                  <div className="w-full text-center mt-8 p-4 bg-default-100 rounded-lg border shadow text-default-700">
+                    Tüm paylaşımlar yüklendi
+                  </div>
+                }
+                className="space-y-4"
+              >
+                {userPost.map((item: any) => (
+                  <PostCard key={item._id} post={item} />
+                ))}
+              </InfiniteScroll>
             </CardBody>
           </Card>
         </Tab>
