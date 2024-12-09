@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../loading';
 import { formatDate } from '@/utils/formatDate';
 import { selectNotification } from '@/store/NotificationStore/slice';
+import Image from 'next/image';
+import { Chip } from '@nextui-org/react';
 
 const FloatingMessageWidget = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -15,13 +17,17 @@ const FloatingMessageWidget = () => {
   const dispatch = useDispatch();
   const messageData = useSelector(selectMessageOpened);
   const messageCounts = useSelector(selectNotification);
+
   const me = useSelector(selectUser);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState<any>('');
   const [newMessage, setNewMessage] = useState<any>('');
   const [messageList, setMessageList] = useState<any>([]);
   const [messages, setMessages] = useState<any>([]);
-  const totalMessageCount = messageCounts?.notifications?.totalMessageCount;
+  const totalMessageCount = messageList.filter((i: any) => !i.isRead).length;
+  console.log('messageList', messageList);
+  console.log('totalMessageCount', totalMessageCount);
+
   let BASE_URL = '';
   if (process.env.NODE_ENV === 'development') {
     BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
@@ -36,7 +42,7 @@ const FloatingMessageWidget = () => {
       ?.split('=')[1];
 
     try {
-      const { data } = await axios(`http://${BASE_URL}/message/userList`, {
+      const { data } = await axios(`${BASE_URL}/message/userList`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -44,7 +50,29 @@ const FloatingMessageWidget = () => {
       });
 
       setMessageList(data.data);
-    } catch (error) { }
+    } catch (error) {}
+  };
+
+  const getMessageRead = async (messageRowId: string) => {
+    const token = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('token='))
+      ?.split('=')[1];
+
+    try {
+      await axios(`${BASE_URL}/message/user/readMessage/${messageRowId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {}
+  };
+
+  const loadMessageData = async (user: any) => {
+    setSelectedUser(user);
+    await getMessage(user.messageRowId);
+    await getMessageRead(user.messageRowId);
   };
 
   const getMessage = async (messageRowId: string) => {
@@ -54,18 +82,16 @@ const FloatingMessageWidget = () => {
       ?.split('=')[1];
 
     try {
-      const { data } = await axios(
-        `${BASE_URL}/message/user/${messageRowId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
+      const { data } = await axios(`${BASE_URL}/message/user/${messageRowId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-      );
-      await axios(`${BASE_URL}/notification/read/${messageRowId}`);
+      });
+
+      await getMessageList();
       setMessages(data.data);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const handleSendMessage = async (receiver: string) => {
@@ -89,7 +115,7 @@ const FloatingMessageWidget = () => {
       );
       await getMessage(selectedUser.messageRowId);
       setNewMessage('');
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -104,7 +130,7 @@ const FloatingMessageWidget = () => {
         getMessageList();
       }
     }
-  }, [messageData]);
+  }, [me]);
 
   useEffect(() => {
     if (selectedUser) {
@@ -123,12 +149,12 @@ const FloatingMessageWidget = () => {
         {/* Ana konteyner */}
         <div className="flex flex-col items-end relative">
           {!messageData.isOpenMessage &&
-            totalMessageCount &&
-            totalMessageCount > 0 ? (
+          totalMessageCount &&
+          totalMessageCount > 0 ? (
             <div className="absolute top-0 right-0 bg-green-500 w-4 h-4 rounded-full flex justify-center items-center text-[9px] p-1 text-white leading-0">
               {totalMessageCount &&
-                totalMessageCount < 10 &&
-                totalMessageCount > 0
+              totalMessageCount < 10 &&
+              totalMessageCount > 0
                 ? totalMessageCount
                 : '9+'}
             </div>
@@ -188,36 +214,53 @@ const FloatingMessageWidget = () => {
                         return (
                           <div
                             key={user?.messageRowId}
-                            onClick={() => setSelectedUser(user)}
-                            className={`p-3 flex gap-3 hover:bg-default-50 cursor-pointer ${selectedUser?._id === user?._id
-                              ? 'bg-default-100'
-                              : ''
-                              }`}
+                            onClick={() => loadMessageData(user)}
+                            className={`p-3 flex gap-3 hover:bg-default-50 cursor-pointer ${
+                              selectedUser?._id === user?._id
+                                ? 'bg-default-100'
+                                : ''
+                            }`}
                           >
                             <div className="relative">
                               <img
                                 src={user?.image ?? '/assets/avatar.png'}
                                 alt={user?.userName}
-                                className="w-8 h-8 rounded-full"
+                                className="w-10 h-10 rounded-full"
                               />
 
-                              {user?.isRead && (
-                                <div className="absolute bottom-0 right-0 w-2 h-2 bg-primary rounded-full border border-white" />
-                              )}
+                              {/* {!user?.isRead && (
+                                <div className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-white" />
+                              )} */}
                             </div>
                             {!selectedUser && (
                               <div className="flex-1 min-w-0">
                                 <div className="flex justify-between items-start">
-                                  <span className="font-medium text-sm truncate">
-                                    {user?.firstName + ' ' + user?.lastName}
-                                  </span>
-                                  <span className="text-xs text-gray-500">
-                                    {formatDate(user?.createdAt)}
-                                  </span>
+                                  <div className="">
+                                    <p className="font-medium text-sm truncate">
+                                      {user?.firstName + ' ' + user?.lastName}
+                                    </p>
+                                    <p className="text-sm text-gray-500 truncate">
+                                      {user?.lastMessage.length > 25
+                                        ? user?.lastMessage.slice(0, 22) + '...'
+                                        : user?.lastMessage}
+                                    </p>
+                                  </div>
+                                  <div className="flex flex-col items-end">
+                                    <p className="text-xs text-gray-500">
+                                      {formatDate(user?.createdAt)}
+                                    </p>
+                                    {!user.isRead && (
+                                      <Chip
+                                        className="bg-green-500/20"
+                                        size="sm"
+                                      >
+                                        <p className="text-xs text-green-700">
+                                          Yeni Mesaj
+                                        </p>
+                                      </Chip>
+                                    )}
+                                  </div>
                                 </div>
-                                <p className="text-sm text-gray-500 truncate">
-                                  {user?.lastMessage}
-                                </p>
                               </div>
                             )}
                           </div>
@@ -274,18 +317,51 @@ const FloatingMessageWidget = () => {
                             }
                             className={`flex ${message.isMe ? 'justify-end' : 'justify-start'}`}
                           >
-                            <div className="flex flex-col gap-1">
+                            <div
+                              className={`flex flex-col gap-2 ${message.isMe ? 'justify-end items-end' : 'justify-start items-start'}`}
+                            >
                               <div
-                                className={`p-2 rounded-lg  max-w-[200px] ${message.isMe
-                                  ? 'bg-primary text-white rounded-br-none'
-                                  : 'bg-default-100 rounded-bl-none'
-                                  }`}
+                                className={`p-2 rounded-2xl max-w-fit ${
+                                  message.isMe
+                                    ? 'bg-primary text-white rounded-br-none'
+                                    : 'bg-default-100 rounded-bl-none'
+                                } `}
                               >
-                                <p className="text-sm">{message.message}</p>
+                                <p className="text-sm break-words text-end">
+                                  {message.message}
+                                </p>
                               </div>
-                              <span className="text-xs text-gray-500 self-end">
-                                {formatDate(message.createdAt, 'dateTime')}
-                              </span>
+                              <div
+                                className={`flex items-center ${message.isMe ? 'self-end' : 'self-start'}`}
+                              >
+                                {/* {!message.isMe && (
+                                  <Image
+                                    src={
+                                      message.sender.image ??
+                                      '/assets/avatar.png'
+                                    }
+                                    width={30}
+                                    height={30}
+                                    alt="sender image"
+                                    className="rounded-full"
+                                  />
+                                )} */}
+                                <p className="text-xs text-gray-500">
+                                  {formatDate(message.createdAt, 'dateTime')}
+                                </p>
+                                {/* {message.isMe && (
+                                  <Image
+                                    src={
+                                      message.sender.image ??
+                                      '/assets/avatar.png'
+                                    }
+                                    width={30}
+                                    height={30}
+                                    alt="sender image"
+                                    className="rounded-full"
+                                  />
+                                )} */}
+                              </div>
                             </div>
                           </div>
                         ))}
@@ -337,13 +413,15 @@ const FloatingMessageWidget = () => {
                 }),
               );
             }}
-            className={`p-3 rounded-full shadow-lg transition-colors ${messageData.isOpenMessage
-              ? 'bg-gray-200 hover:bg-gray-300 ring-'
-              : 'bg-primary/80 hover:bg-primary text-white'
-              }
-             ${totalMessageCount > 0 &&
-              'ring-2 ring-transparent ring-offset-1  animate-scale-pulse'
-              }
+            className={`p-3 rounded-full shadow-lg transition-colors ${
+              messageData.isOpenMessage
+                ? 'bg-gray-200 hover:bg-gray-300 ring-'
+                : 'bg-primary/80 hover:bg-primary text-white'
+            }
+             ${
+               totalMessageCount > 0 &&
+               'ring-2 ring-transparent ring-offset-1  animate-scale-pulse'
+             }
             `}
           >
             <MessageSquare size={24} />

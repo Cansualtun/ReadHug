@@ -23,7 +23,6 @@ import { useSearchParams } from 'next/navigation';
 const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
-  console.log('bookLists', bookLists);
   const [profile, setProfile] = useState(profileData);
   const { isSelf } = profile;
 

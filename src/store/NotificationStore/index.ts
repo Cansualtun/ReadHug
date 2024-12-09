@@ -7,8 +7,6 @@ export const notificationApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     notification: builder.mutation<INotificationResponse, void>({
       query: (credentials: any) => {
-        console.log('credentials', credentials);
-
         const token = getFromTokenCookies();
         let url = `/notification/all?page=${credentials.page}&limit=10&sort=desc`;
         if (credentials.onlyCount) {
