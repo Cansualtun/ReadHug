@@ -35,7 +35,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className='flex flex-row-reverse'>
-                    <Image src={"/assets/logo1.svg"} alt='logo' width={100} height={20} />
+                    <Image src={"/assets/logo.svg"} alt='logo' width={75} height={20} />
                 </div>
             </div>
         </div>

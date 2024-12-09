@@ -39,7 +39,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   className = '',
   labelPosition = 'top',
   bookId,
-  isSelf,
+  isSelf = true,
 }) => {
   const t = useTranslations('ReadingTracker');
   const [progressValue, setProgressValue] = useState<number>(currentValue);
