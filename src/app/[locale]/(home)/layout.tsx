@@ -41,14 +41,15 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang={locale}>
-      <body
-        className={clsx(
-          "min-h-screen bg-[#F6F5F2] font-sans antialiased",
-          fontSans.variable
-        )}
-      >
-        <NextIntlClientProvider messages={messages}>
-          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+      <NextIntlClientProvider messages={messages}>
+        <body
+          className={clsx(
+            "min-h-screen font-sans antialiased",
+            fontSans.variable
+          )}
+        >
+
+          <Providers themeProps={{ attribute: "class" }}>
             <Toaster position="top-center" />
             <div className="flex flex-col min-h-screen">
               <Header />
@@ -60,8 +61,9 @@ export default async function RootLayout({
             </div>
             <FloatingMessageWidget />
           </Providers>
-        </NextIntlClientProvider>
-      </body>
+
+        </body>
+      </NextIntlClientProvider>
     </html>
   );
 }
