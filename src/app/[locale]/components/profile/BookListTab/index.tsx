@@ -1,12 +1,6 @@
 'use client';
 import { selectUser } from '@/store/UserStore/slice';
-import {
-  Card,
-  CardBody,
-  Selection,
-  Tab,
-  Tabs,
-} from '@nextui-org/react';
+import { Card, CardBody, Selection, Tab, Tabs } from '@nextui-org/react';
 import { BookType } from 'enums/bookType';
 import {
   BookMarked,
@@ -30,6 +24,8 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
   console.log('bookLists', bookLists);
+  const [profile, setProfile] = useState(profileData);
+  const { isSelf } = profile;
 
   const t = useTranslations('BookListTabs');
   const [serverBooks] = useState(bookLists.data || []);
@@ -55,6 +51,10 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
     }
   }, [post]);
 
+  useEffect(() => {
+    setProfile(profileData);
+  }, [profileData]);
+
   const loadMore = async () => {
     if (loading) return;
 
@@ -67,7 +67,8 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
         ?.split('=')[1];
       let BASE_URL = '';
       if (process.env.NODE_ENV === 'development') {
-        BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+        BASE_URL =
+          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
       }
       if (process.env.NODE_ENV === 'production') {
         BASE_URL = 'https://bookarchive-production.up.railway.app';
@@ -119,7 +120,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
     return allData.length > 0 ? (
       <InfiniteScroll
         dataLength={allData.length}
-        next={() => { }}
+        next={() => {}}
         hasMore={hasMore}
         loader={loading && <h4 className="text-center py-4">{t('loading')}</h4>}
         endMessage={
@@ -165,14 +166,8 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                         showCompletedMessage
                         progressColor="success"
                         chipColor="success"
+                        isSelf={isSelf}
                       />
-
-                      {/* {parseFloat(book.process?.percent || "0") >= 100 && (
-                                            <div className="flex items-center gap-1.5 text-tiny text-success">
-                                                <CheckCircleIcon size={14} />
-                                                <span className="font-medium">{t('bookInfo.bookCompleted')}</span>
-                                            </div>
-                                        )} */}
                     </div>
                   )}
                   {type === BookType.Read && (
@@ -211,11 +206,12 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
     ) : (
       <EmptyState
         message={t(
-          `emptyStates.${type === BookType.Reading
-            ? 'reading'
-            : type === BookType.Read
-              ? 'read'
-              : 'wishlist'
+          `emptyStates.${
+            type === BookType.Reading
+              ? 'reading'
+              : type === BookType.Read
+                ? 'read'
+                : 'wishlist'
           }`,
         )}
       />

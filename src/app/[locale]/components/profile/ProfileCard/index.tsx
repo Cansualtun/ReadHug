@@ -1,9 +1,8 @@
 'use client';
-import { ProfilInfo } from '@/app/[locale]/server/profile';
 import {
   useFollowUserMutation,
-  useUnfollowUserMutation,
   useGetFollowListQuery,
+  useUnfollowUserMutation,
 } from '@/store/FollowStore';
 import { setMessageOpened } from '@/store/MessageStore';
 import { useUserProfileQuery } from '@/store/UserStore';
@@ -15,28 +14,25 @@ import {
   CardHeader,
   Divider,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalContent,
-  Spinner,
-  button,
+  ModalHeader,
+  Spinner
 } from '@nextui-org/react';
 import axios from 'axios';
 import {
   BookMarked,
   BookOpen,
   BookPlus,
-  Edit2Icon,
   ImagePlus,
   Save,
   Send,
   UserCheck,
   UserPlus,
-  Users,
+  Users
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Skeleton from './Skeleton';
@@ -44,7 +40,6 @@ import Skeleton from './Skeleton';
 const ProfileCard = ({ profileData }: any) => {
   const dispatch = useDispatch();
   const t = useTranslations('ProfileCard');
-  const params = useParams();
   const [profile, setProfile] = useState(profileData);
   const { user, isSelf, isFollow: initialIsFollow } = profile;
   const [isFollow, setIsFollow] = useState(initialIsFollow);

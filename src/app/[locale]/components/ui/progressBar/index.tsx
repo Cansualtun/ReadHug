@@ -11,8 +11,21 @@ interface ProgressBarProps {
   showChip?: boolean;
   showCompletedMessage?: boolean;
   className?: string;
-  chipColor?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
-  progressColor?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+  isSelf?: boolean;
+  chipColor?:
+    | 'default'
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'warning'
+    | 'danger';
+  progressColor?:
+    | 'default'
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'warning'
+    | 'danger';
   labelPosition?: 'top' | 'bottom';
   size?: 'sm' | 'md' | 'lg';
   showPage?: boolean;
@@ -26,6 +39,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   className = '',
   labelPosition = 'top',
   bookId,
+  isSelf,
 }) => {
   const t = useTranslations('ReadingTracker');
   const [progressValue, setProgressValue] = useState<number>(currentValue);
@@ -41,7 +55,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         ?.split('=')[1];
       let BASE_URL = '';
       if (process.env.NODE_ENV === 'development') {
-        BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+        BASE_URL =
+          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
       }
       if (process.env.NODE_ENV === 'production') {
         BASE_URL = 'https://bookarchive-production.up.railway.app';
@@ -78,12 +93,14 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   return (
     <div className={`space-y-3 relative ${className}`}>
       {showConfetti && (
-        <Confetti
-          width={window.innerWidth}
-          height={window.innerHeight}
-          recycle={false}
-          numberOfPieces={200}
-        />
+        <div className="fixed top-0 left-0" style={{ zIndex: 99999999999 }}>
+          <Confetti
+            width={window.innerWidth}
+            height={window.innerHeight}
+            recycle={false}
+            numberOfPieces={200}
+          />
+        </div>
       )}
 
       {progressValue >= total && labelPosition === 'top' && (
@@ -103,9 +120,13 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
           value={progressValue || 0}
           maxValue={total || 0}
           onChange={(page: any) => {
-            setProgressValue(parseInt(page));
-            setOpenProgress(true);
+            if (isSelf) {
+              setProgressValue(parseInt(page));
+              setOpenProgress(true);
+            }
           }}
+          isDisabled={!isSelf}
+          radius={!isSelf ? 'none' : 'full'}
           getValue={(page) => `${page} / ${total}`}
           className="w-full"
         />
