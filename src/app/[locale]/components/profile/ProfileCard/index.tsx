@@ -17,7 +17,7 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-  Spinner
+  Spinner,
 } from '@nextui-org/react';
 import axios from 'axios';
 import {
@@ -29,7 +29,7 @@ import {
   Send,
   UserCheck,
   UserPlus,
-  Users
+  Users,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -41,7 +41,9 @@ const ProfileCard = ({ profileData }: any) => {
   const dispatch = useDispatch();
   const t = useTranslations('ProfileCard');
   const [profile, setProfile] = useState(profileData);
-  const { user, isSelf, isFollow: initialIsFollow } = profile;
+  const { user, isSelf, isFollow: initialIsFollow, isLoggedIn } = profile;
+  console.log('profile', profile);
+
   const [isFollow, setIsFollow] = useState(initialIsFollow);
   const [followUser] = useFollowUserMutation();
   const [unfollowUser] = useUnfollowUserMutation();
@@ -86,7 +88,8 @@ const ProfileCard = ({ profileData }: any) => {
     try {
       let BASE_URL = '';
       if (process.env.NODE_ENV === 'development') {
-        BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+        BASE_URL =
+          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
       }
       if (process.env.NODE_ENV === 'production') {
         BASE_URL = 'https://bookarchive-production.up.railway.app';
@@ -110,7 +113,7 @@ const ProfileCard = ({ profileData }: any) => {
           user: data.user,
         }),
       );
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const renderFollowList = () => {
@@ -176,7 +179,8 @@ const ProfileCard = ({ profileData }: any) => {
       formData.append('image', upgradeImage[0] as any);
       let BASE_URL = '';
       if (process.env.NODE_ENV === 'development') {
-        BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+        BASE_URL =
+          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
       }
       if (process.env.NODE_ENV === 'production') {
         BASE_URL = 'https://bookarchive-production.up.railway.app';
@@ -192,12 +196,13 @@ const ProfileCard = ({ profileData }: any) => {
         },
       );
       //   await ProfilInfo(params.slug as string);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
     setProfile(profileData);
   }, [profileData]);
+  console.log('isLoggedIn', isLoggedIn);
 
   if (!userProfileData) {
     return <Skeleton />;
@@ -222,7 +227,7 @@ const ProfileCard = ({ profileData }: any) => {
               className="w-24 h-24 text-large ring-white dark:ring-primary"
             />
           )}
-          {isSelf && (
+          {isSelf && isLoggedIn && (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:flex w-24 h-24 bg-white/50 justify-center items-center">
               <label
                 htmlFor="upgradeImage"
@@ -295,7 +300,7 @@ const ProfileCard = ({ profileData }: any) => {
           </div>
         </div>
 
-        {!isSelf && (
+        {!isSelf && isLoggedIn && (
           <div className="flex justify-center mb-4">
             <Button
               color={isFollow ? 'default' : 'primary'}

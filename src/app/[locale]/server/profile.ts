@@ -14,10 +14,6 @@ export async function ProfilInfo(userName: string, options: RequestInit = {}) {
   const cookieStore = cookies();
   const token = cookieStore.get('token')?.value;
 
-  if (!token) {
-    console.log('Token bulunamadı');
-  }
-
   const headers = {
     Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
