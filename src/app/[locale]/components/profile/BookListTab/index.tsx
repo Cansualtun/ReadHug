@@ -198,7 +198,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
               </div>
             );
           })}
-          {!loading && hasMore && (
+          {!loading && hasMore && allData.length >= 10 && (
             <button onClick={loadMore}>Daha fazla</button>
           )}
         </div>
