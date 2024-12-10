@@ -17,6 +17,9 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Spinner,
 } from '@nextui-org/react';
 import axios from 'axios';
@@ -24,9 +27,12 @@ import {
   BookMarked,
   BookOpen,
   BookPlus,
+  EllipsisVertical,
   ImagePlus,
   Save,
   Send,
+  ShieldAlert,
+  ShieldBan,
   UserCheck,
   UserPlus,
   Users,
@@ -38,12 +44,12 @@ import { useDispatch } from 'react-redux';
 import Skeleton from './Skeleton';
 
 const ProfileCard = ({ profileData }: any) => {
+  console.log('profileData', profileData);
+
   const dispatch = useDispatch();
   const t = useTranslations('ProfileCard');
   const [profile, setProfile] = useState(profileData);
   const { user, isSelf, isFollow: initialIsFollow, isLoggedIn } = profile;
-  console.log('profile', profile);
-
   const [isFollow, setIsFollow] = useState(initialIsFollow);
   const [followUser] = useFollowUserMutation();
   const [unfollowUser] = useUnfollowUserMutation();
@@ -199,6 +205,29 @@ const ProfileCard = ({ profileData }: any) => {
     } catch (error) {}
   };
 
+  const blockerService = async () => {
+    const token = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('token='))
+      ?.split('=')[1];
+    try {
+      let BASE_URL = '';
+      if (process.env.NODE_ENV === 'development') {
+        BASE_URL =
+          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+      }
+      if (process.env.NODE_ENV === 'production') {
+        BASE_URL = 'https://bookarchive-production.up.railway.app';
+      }
+      await axios.get(`${BASE_URL}/user/blocker/${profileData.user.userName}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {}
+  };
+
   useEffect(() => {
     setProfile(profileData);
   }, [profileData]);
@@ -209,8 +238,45 @@ const ProfileCard = ({ profileData }: any) => {
   }
 
   return (
-    <Card shadow="sm" className="bg-default-50">
+    <Card shadow="sm" className="bg-default-50 relative">
       <CardHeader className="flex flex-col items-center pt-6 pb-2">
+        <div className="absolute right-2 top-4 z-10">
+          <Popover
+            classNames={{
+              content: 'p-1',
+            }}
+            placement="bottom-end"
+            showArrow
+            offset={5}
+          >
+            <PopoverTrigger>
+              <div role="button">
+                <EllipsisVertical size={16} />
+              </div>
+            </PopoverTrigger>
+            <PopoverContent>
+              <div className="flex flex-col  w-40">
+                <Button
+                  variant="light"
+                  onClick={blockerService}
+                  className="flex items-center justify-start hover:bg-default-500"
+                >
+                  <ShieldBan />{' '}
+                  {profileData.isBlocked === '0' ||
+                  profileData.isBlocked === '2'
+                    ? 'Engelle'
+                    : 'Engeli Kaldır'}
+                </Button>
+                <Button
+                  variant="light"
+                  className="flex items-center justify-start hover:bg-default-500"
+                >
+                  <ShieldAlert /> Bildir
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
         <div className="relative group">
           {!upgradeImage ? (
             <Avatar
