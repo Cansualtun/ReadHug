@@ -103,8 +103,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         </div>
       )}
 
-      {progressValue >= total && labelPosition === 'top' && (
-        <div className="absolute -top-4 right-0 flex justify-end items-center flex-1 w-full gap-1.5 text-primary text-small">
+      {total > 0 && progressValue >= total && labelPosition === 'top' && (
+        <div className="absolute -top-6 right-0 flex justify-end items-center flex-1 w-full gap-1.5 text-primary text-small">
           <CheckCircle size={14} />
           <span className="font-medium">
             {t('currentlyReading.bookCompleted')}
@@ -147,14 +147,14 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         )}
       </div>
 
-      {progressValue >= total && labelPosition === 'bottom' && (
+      {/* {progressValue >= total && labelPosition === 'bottom' && (
         <div className="flex justify-end items-center flex-1 w-full gap-1.5 text-primary text-small">
           <CheckCircle size={14} />
           <span className="font-medium">
             {t('currentlyReading.bookCompleted')}
           </span>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

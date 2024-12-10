@@ -1,32 +1,44 @@
 'use client';
 import { selectMessageOpened, setMessageOpened } from '@/store/MessageStore';
 import { selectUser } from '@/store/UserStore/slice';
+import { formatDate } from '@/utils/formatDate';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Chip,
+} from '@nextui-org/react';
 import axios from 'axios';
-import { ChevronLeft, MessageSquare, Search, Send, X } from 'lucide-react';
+import {
+  ChevronLeft,
+  MessageSquare,
+  Search,
+  Send,
+  ShieldBanIcon,
+  Trash2,
+  X,
+} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'sonner';
 import Loading from '../loading';
-import { formatDate } from '@/utils/formatDate';
-import { selectNotification } from '@/store/NotificationStore/slice';
-import Image from 'next/image';
-import { Chip } from '@nextui-org/react';
 
 const FloatingMessageWidget = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const messageData = useSelector(selectMessageOpened);
-  const messageCounts = useSelector(selectNotification);
-
   const me = useSelector(selectUser);
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  console.log('selectedUser', selectedUser);
   const [searchQuery, setSearchQuery] = useState<any>('');
   const [newMessage, setNewMessage] = useState<any>('');
   const [messageList, setMessageList] = useState<any>([]);
   const [messages, setMessages] = useState<any>([]);
+  const [openDeleteMessage, setOpenDeleteMessage] = useState<boolean>(false);
   const totalMessageCount = messageList.filter((i: any) => !i.isRead).length;
-  console.log('messageList', messageList);
-  console.log('totalMessageCount', totalMessageCount);
 
   let BASE_URL = '';
   if (process.env.NODE_ENV === 'development') {
@@ -93,8 +105,33 @@ const FloatingMessageWidget = () => {
       setMessages(data.data);
     } catch (error) {}
   };
+  const deleteMessage = async (messageRowId: string) => {
+    const token = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('token='))
+      ?.split('=')[1];
+
+    try {
+      const { data } = await axios(
+        `${BASE_URL}/message/delete/${messageRowId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      setMessages(null);
+      await getMessageList();
+      setMessages(data.data);
+    } catch (error) {}
+  };
 
   const handleSendMessage = async (receiver: string) => {
+    if (selectedUser.isBlocked) {
+      toast.error('Engellenmiş kullanıcıya mesaj gönderemezsiniz');
+      return;
+    }
     const token = document.cookie
       .split('; ')
       .find((row) => row.startsWith('token='))
@@ -147,6 +184,7 @@ const FloatingMessageWidget = () => {
     me && (
       <div className="fixed bottom-4 right-4 z-50">
         {/* Ana konteyner */}
+
         <div className="flex flex-col items-end relative">
           {!messageData.isOpenMessage &&
           totalMessageCount &&
@@ -215,12 +253,21 @@ const FloatingMessageWidget = () => {
                           <div
                             key={user?.messageRowId}
                             onClick={() => loadMessageData(user)}
-                            className={`p-3 flex gap-3 hover:bg-default-50 cursor-pointer ${
+                            className={`p-3 flex gap-3 hover:bg-default-50 cursor-pointer relative ${
                               selectedUser?._id === user?._id
                                 ? 'bg-default-100'
                                 : ''
-                            }`}
+                            }
+                               ${user.isBlocked && 'bg-danger/20 hover:bg-danger/30'} `}
                           >
+                            {user.isBlocked && (
+                              <div className="absolute top-1 left-1">
+                                <ShieldBanIcon
+                                  size={16}
+                                  className="text-danger"
+                                />
+                              </div>
+                            )}
                             <div className="relative">
                               <img
                                 src={user?.image ?? '/assets/avatar.png'}
@@ -240,7 +287,8 @@ const FloatingMessageWidget = () => {
                                       {user?.firstName + ' ' + user?.lastName}
                                     </p>
                                     <p className="text-sm text-gray-500 truncate">
-                                      {user?.lastMessage.length > 25
+                                      {user?.lastMessage &&
+                                      user?.lastMessage.length > 25
                                         ? user?.lastMessage.slice(0, 22) + '...'
                                         : user?.lastMessage}
                                     </p>
@@ -285,11 +333,12 @@ const FloatingMessageWidget = () => {
                           onClick={() => {
                             setSelectedUser(null);
                             setMessages([]);
+                            setOpenDeleteMessage(false);
                           }}
                         >
                           <ChevronLeft />
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-1">
                           <img
                             src={selectedUser?.image ?? '/assets/avatar.png'}
                             alt={selectedUser?.userName}
@@ -301,12 +350,49 @@ const FloatingMessageWidget = () => {
                               selectedUser?.lastName}
                           </span>
                         </div>
+                        <Button
+                          size="sm"
+                          className="px-2 min-w-6 bg-danger/20"
+                          onClick={() => setOpenDeleteMessage(true)}
+                        >
+                          <Trash2 className="text-danger" size={16} />
+                        </Button>
                       </div>
 
                       <div
                         ref={scrollRef}
-                        className="scroll-container flex-1 overflow-y-auto p-4 flex flex-col gap-3"
+                        className="scroll-container flex-1 overflow-y-auto p-4 flex flex-col gap-3 relative"
                       >
+                        {openDeleteMessage && (
+                          <div
+                            className="absolute left-0 top-0 flex justify-center items-center z-50 bg-default-200/20"
+                            style={{
+                              width: scrollRef.current?.clientWidth,
+                              height: scrollRef.current?.clientHeight,
+                            }}
+                          >
+                            <Card className="bg-default-100 w-3/4 h-3/4">
+                              <CardHeader className="border-b border-b-default-200">
+                                Bu Mesajı silmek istediğinizden emin misiniz?
+                              </CardHeader>
+                              <CardBody className="flex-1 h-full self-stretch text-center text-default-900 flex justify-center items-center">
+                                Mesajlar geri alınamayacak şekilde silinecektir
+                              </CardBody>
+                              <CardFooter className="border-t border-t-default-200 flex justify-center items-center gap-2">
+                                <Button size="sm">İptal</Button>
+                                <Button
+                                  size="sm"
+                                  onClick={() =>
+                                    deleteMessage(selectedUser.messageRowId)
+                                  }
+                                  className="bg-danger/20 text-danger"
+                                >
+                                  Sil
+                                </Button>
+                              </CardFooter>
+                            </Card>
+                          </div>
+                        )}
                         {messages.map((message: any, index: number) => (
                           <div
                             key={message._id}
@@ -368,22 +454,33 @@ const FloatingMessageWidget = () => {
                       </div>
 
                       <div className="p-3 border-t">
+                        {selectedUser?.isBlocked && (
+                          <p className="self-end items-end text-sm text-danger">
+                            Bu kullancıya mesaj gönderemezsiniz.
+                          </p>
+                        )}
                         <div className="flex gap-2">
                           <input
                             type="text"
                             value={newMessage}
                             onChange={(e) => setNewMessage(e.target.value)}
                             placeholder="Mesaj yazın..."
-                            className="flex-1 p-2 border rounded-lg text-sm"
+                            className="flex-1 p-2 border rounded-lg text-sm disabled:bg-default-300"
+                            readOnly={selectedUser?.isBlocked}
+                            disabled={selectedUser?.isBlocked}
                             onKeyPress={(e) => {
-                              if (e.key === 'Enter') {
+                              if (
+                                e.key === 'Enter' &&
+                                !selectedUser?.isBlocked
+                              ) {
                                 handleSendMessage(selectedUser._id);
                               }
                             }}
                           />
                           <button
                             onClick={() => handleSendMessage(selectedUser._id)}
-                            className="p-2 bg-primary/80 text-white rounded-lg hover:bg-primary"
+                            disabled={selectedUser?.isBlocked}
+                            className="p-2 bg-primary/80 text-white rounded-lg hover:bg-primary disabled:bg-danger disabled:cursor-not-allowed"
                           >
                             <Send size={16} />
                           </button>

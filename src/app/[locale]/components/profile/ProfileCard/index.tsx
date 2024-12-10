@@ -44,12 +44,16 @@ import { useDispatch } from 'react-redux';
 import Skeleton from './Skeleton';
 
 const ProfileCard = ({ profileData }: any) => {
-  console.log('profileData', profileData);
-
   const dispatch = useDispatch();
   const t = useTranslations('ProfileCard');
   const [profile, setProfile] = useState(profileData);
-  const { user, isSelf, isFollow: initialIsFollow, isLoggedIn } = profile;
+  const {
+    user,
+    isSelf,
+    isFollow: initialIsFollow,
+    isLoggedIn,
+    isBlocked,
+  } = profile;
   const [isFollow, setIsFollow] = useState(initialIsFollow);
   const [followUser] = useFollowUserMutation();
   const [unfollowUser] = useUnfollowUserMutation();
@@ -240,43 +244,46 @@ const ProfileCard = ({ profileData }: any) => {
   return (
     <Card shadow="sm" className="bg-default-50 relative">
       <CardHeader className="flex flex-col items-center pt-6 pb-2">
-        <div className="absolute right-2 top-4 z-10">
-          <Popover
-            classNames={{
-              content: 'p-1',
-            }}
-            placement="bottom-end"
-            showArrow
-            offset={5}
-          >
-            <PopoverTrigger>
-              <div role="button">
-                <EllipsisVertical size={16} />
-              </div>
-            </PopoverTrigger>
-            <PopoverContent>
-              <div className="flex flex-col  w-40">
-                <Button
-                  variant="light"
-                  onClick={blockerService}
-                  className="flex items-center justify-start hover:bg-default-500"
-                >
-                  <ShieldBan />{' '}
-                  {profileData.isBlocked === '0' ||
-                  profileData.isBlocked === '2'
-                    ? 'Engelle'
-                    : 'Engeli Kaldır'}
-                </Button>
-                <Button
-                  variant="light"
-                  className="flex items-center justify-start hover:bg-default-500"
-                >
-                  <ShieldAlert /> Bildir
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
-        </div>
+        {!isSelf && isLoggedIn && (
+          <div className="absolute right-2 top-4 z-10">
+            <Popover
+              classNames={{
+                content: 'p-1',
+              }}
+              placement="bottom-end"
+              showArrow
+              offset={5}
+            >
+              <PopoverTrigger>
+                <div role="button">
+                  <EllipsisVertical size={16} />
+                </div>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="flex flex-col  w-40">
+                  <Button
+                    variant="light"
+                    onClick={blockerService}
+                    className="flex items-center justify-start hover:bg-default-500"
+                  >
+                    <ShieldBan />{' '}
+                    {profileData.isBlocked === '0' ||
+                    profileData.isBlocked === '2'
+                      ? 'Engelle'
+                      : 'Engeli Kaldır'}
+                  </Button>
+                  <Button
+                    variant="light"
+                    className="flex items-center justify-start hover:bg-default-500"
+                  >
+                    <ShieldAlert /> Bildir
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
+
         <div className="relative group">
           {!upgradeImage ? (
             <Avatar
@@ -337,121 +344,123 @@ const ProfileCard = ({ profileData }: any) => {
           </p>
         </div>
       </CardHeader>
-      <CardBody className="px-4 py-2">
-        <div className="flex justify-center space-x-8 mb-4">
-          <div
-            onClick={() => handleModalOpen('followers')}
-            className="text-center group cursor-pointer hover:scale-105 transition-transform"
-          >
-            <div className="flex items-center space-x-1">
-              <Users className="w-4 h-4 text-primary" />
-              <span className="font-semibold">
-                {userProfileData?.counts?.followersCount}
-              </span>
-            </div>
-            <p className="text-xs text-default-500">{t('stats.followers')}</p>
-          </div>
-          <Divider orientation="vertical" className="h-8" />
-          <div
-            onClick={() => handleModalOpen('following')}
-            className="text-center group cursor-pointer hover:scale-105 transition-transform"
-          >
-            <div className="flex items-center space-x-1">
-              <UserPlus className="w-4 h-4 text-primary" />
-              <span className="font-semibold">
-                {userProfileData?.counts?.followsCount}
-              </span>
-            </div>
-            <p className="text-xs text-default-500">{t('stats.following')}</p>
-          </div>
-        </div>
-
-        {!isSelf && isLoggedIn && (
-          <div className="flex justify-center mb-4">
-            <Button
-              color={isFollow ? 'default' : 'primary'}
-              variant={isFollow ? 'bordered' : 'solid'}
-              onPress={handleFollowAction}
-              startContent={
-                isFollow ? <UserCheck size={18} /> : <UserPlus size={18} />
-              }
-              className="font-medium"
+      {isBlocked == '0' && (
+        <CardBody className="px-4 py-2">
+          <div className="flex justify-center space-x-8 mb-4">
+            <div
+              onClick={() => handleModalOpen('followers')}
+              className="text-center group cursor-pointer hover:scale-105 transition-transform"
             >
-              {isFollow
-                ? t('followButton.following')
-                : t('followButton.follow')}
-            </Button>
-            <Button
-              color={isFollow ? 'default' : 'primary'}
-              variant={isFollow ? 'bordered' : 'solid'}
-              onPress={handleMessageAction}
-              startContent={<Send size={18} />}
-              className="font-medium ml-1"
+              <div className="flex items-center space-x-1">
+                <Users className="w-4 h-4 text-primary" />
+                <span className="font-semibold">
+                  {userProfileData?.counts?.followersCount}
+                </span>
+              </div>
+              <p className="text-xs text-default-500">{t('stats.followers')}</p>
+            </div>
+            <Divider orientation="vertical" className="h-8" />
+            <div
+              onClick={() => handleModalOpen('following')}
+              className="text-center group cursor-pointer hover:scale-105 transition-transform"
             >
-              {t('messageButton.sendMessage')}
-            </Button>
+              <div className="flex items-center space-x-1">
+                <UserPlus className="w-4 h-4 text-primary" />
+                <span className="font-semibold">
+                  {userProfileData?.counts?.followsCount}
+                </span>
+              </div>
+              <p className="text-xs text-default-500">{t('stats.following')}</p>
+            </div>
           </div>
-        )}
 
-        <div className="bg-default-200 rounded-lg p-3">
-          <div className="grid grid-cols-3 gap-2">
-            <div className="text-center p-2 rounded-md bg-default-50 transition-colors cursor-pointer">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <BookOpen className="w-4 h-4 text-success" />
-                <span className="font-semibold text-sm">
-                  {userProfileData?.counts?.readingBooksCount}
-                </span>
-              </div>
-              <p className="text-xs text-default-500">
-                {t('stats.books.reading')}
-              </p>
+          {!isSelf && isLoggedIn && (
+            <div className="flex justify-center mb-4">
+              <Button
+                color={isFollow ? 'default' : 'primary'}
+                variant={isFollow ? 'bordered' : 'solid'}
+                onPress={handleFollowAction}
+                startContent={
+                  isFollow ? <UserCheck size={18} /> : <UserPlus size={18} />
+                }
+                className="font-medium"
+              >
+                {isFollow
+                  ? t('followButton.following')
+                  : t('followButton.follow')}
+              </Button>
+              <Button
+                color={isFollow ? 'default' : 'primary'}
+                variant={isFollow ? 'bordered' : 'solid'}
+                onPress={handleMessageAction}
+                startContent={<Send size={18} />}
+                className="font-medium ml-1"
+              >
+                {t('messageButton.sendMessage')}
+              </Button>
             </div>
-            <div className="text-center p-2 rounded-md bg-default-50 transition-colors cursor-pointer">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <BookMarked className="w-4 h-4 text-warning" />
-                <span className="font-semibold text-sm">
-                  {userProfileData?.counts?.readBooksCount}
-                </span>
+          )}
+
+          <div className="bg-default-200 rounded-lg p-3">
+            <div className="grid grid-cols-3 gap-2">
+              <div className="text-center p-2 rounded-md bg-default-50 transition-colors cursor-pointer">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <BookOpen className="w-4 h-4 text-success" />
+                  <span className="font-semibold text-sm">
+                    {userProfileData?.counts?.readingBooksCount}
+                  </span>
+                </div>
+                <p className="text-xs text-default-500">
+                  {t('stats.books.reading')}
+                </p>
               </div>
-              <p className="text-xs text-default-500">
-                {t('stats.books.read')}
-              </p>
-            </div>
-            <div className="text-center p-2 rounded-md bg-default-50 transition-colors cursor-pointer">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <BookPlus className="w-4 h-4 text-secondary" />
-                <span className="font-semibold text-sm">
-                  {userProfileData?.counts?.wishlistBooksCount}
-                </span>
+              <div className="text-center p-2 rounded-md bg-default-50 transition-colors cursor-pointer">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <BookMarked className="w-4 h-4 text-warning" />
+                  <span className="font-semibold text-sm">
+                    {userProfileData?.counts?.readBooksCount}
+                  </span>
+                </div>
+                <p className="text-xs text-default-500">
+                  {t('stats.books.read')}
+                </p>
               </div>
-              <p className="text-xs text-default-500">
-                {t('stats.books.wishlist')}
-              </p>
+              <div className="text-center p-2 rounded-md bg-default-50 transition-colors cursor-pointer">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <BookPlus className="w-4 h-4 text-secondary" />
+                  <span className="font-semibold text-sm">
+                    {userProfileData?.counts?.wishlistBooksCount}
+                  </span>
+                </div>
+                <p className="text-xs text-default-500">
+                  {t('stats.books.wishlist')}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-3 text-center">
-          <p className="text-xs text-default-500">
-            {t('stats.books.total', {
-              count: userProfileData?.counts?.totalBookCount,
-            })}
-          </p>
-        </div>
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          size="md"
-        >
-          <ModalContent>
-            <ModalHeader>
-              {modalType === 'followers'
-                ? t('modal.followers')
-                : t('modal.following')}
-            </ModalHeader>
-            <ModalBody>{renderFollowList()}</ModalBody>
-          </ModalContent>
-        </Modal>
-      </CardBody>
+          <div className="mt-3 text-center">
+            <p className="text-xs text-default-500">
+              {t('stats.books.total', {
+                count: userProfileData?.counts?.totalBookCount,
+              })}
+            </p>
+          </div>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            size="md"
+          >
+            <ModalContent>
+              <ModalHeader>
+                {modalType === 'followers'
+                  ? t('modal.followers')
+                  : t('modal.following')}
+              </ModalHeader>
+              <ModalBody>{renderFollowList()}</ModalBody>
+            </ModalContent>
+          </Modal>
+        </CardBody>
+      )}
     </Card>
   );
 };
