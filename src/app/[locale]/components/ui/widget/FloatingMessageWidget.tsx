@@ -28,11 +28,11 @@ import Loading from '../loading';
 const FloatingMessageWidget = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
+  const messageInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const messageData = useSelector(selectMessageOpened);
   const me = useSelector(selectUser);
   const [selectedUser, setSelectedUser] = useState<any>(null);
-  console.log('selectedUser', selectedUser);
   const [searchQuery, setSearchQuery] = useState<any>('');
   const [newMessage, setNewMessage] = useState<any>('');
   const [messageList, setMessageList] = useState<any>([]);
@@ -123,6 +123,7 @@ const FloatingMessageWidget = () => {
       );
       setMessages(null);
       setMessages(data.data);
+      setOpenDeleteMessage(false);
     } catch (error) {}
   };
 
@@ -166,7 +167,11 @@ const FloatingMessageWidget = () => {
         getMessageList();
       }
     }
-  }, [me]);
+    if (messageInputRef.current) {
+      messageInputRef.current?.focus();
+    }
+   
+  }, [me, messageData]);
 
   useEffect(() => {
     if (selectedUser) {
@@ -246,7 +251,7 @@ const FloatingMessageWidget = () => {
                   <div
                     className={`overflow-y-auto ${!selectedUser && 'flex-1'}`}
                   >
-                    {messageList.length > 0 ? (
+                    {messageList.length > 0 &&
                       messageList.map((user: any) => {
                         return (
                           <div
@@ -312,18 +317,43 @@ const FloatingMessageWidget = () => {
                             )}
                           </div>
                         );
-                      })
-                    ) : (
-                      <div className="flex-1 h-full self-stretch flex items-center justify-center text-primary">
-                        <Loading width={150} height={40} />
-                      </div>
-                    )}
+                      })}
                   </div>
                 </div>
                 {/* Mesajlaşma */}
                 <div
-                  className={`w-1/2 flex flex-col ${!selectedUser ? 'hidden ' : 'w-full'}`}
+                  className={`w-1/2 flex flex-col relative ${!selectedUser ? 'hidden ' : 'w-full'}`}
                 >
+                  {openDeleteMessage && (
+                    <div
+                      className="absolute left-0 top-0 flex justify-center items-center z-50 bg-default-200/20"
+                      style={{
+                        width: scrollRef.current?.clientWidth,
+                        height: scrollRef.current?.clientHeight,
+                      }}
+                    >
+                      <Card className="bg-default-100 w-3/4 h-3/4">
+                        <CardHeader className="border-b border-b-default-200">
+                          Bu Mesajı silmek istediğinizden emin misiniz?
+                        </CardHeader>
+                        <CardBody className="flex-1 h-full self-stretch text-center text-default-900 flex justify-center items-center">
+                          Mesajlar geri alınamayacak şekilde silinecektir
+                        </CardBody>
+                        <CardFooter className="border-t border-t-default-200 flex justify-center items-center gap-2">
+                          <Button size="sm">İptal</Button>
+                          <Button
+                            size="sm"
+                            onClick={() =>
+                              deleteMessage(selectedUser.messageRowId)
+                            }
+                            className="bg-danger/20 text-danger"
+                          >
+                            Sil
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    </div>
+                  )}
                   {messages ? (
                     <>
                       <div className="p-3 border-b bg-default-50 flex items-center">
@@ -360,38 +390,8 @@ const FloatingMessageWidget = () => {
 
                       <div
                         ref={scrollRef}
-                        className="scroll-container flex-1 overflow-y-auto p-4 flex flex-col gap-3 relative"
+                        className="scroll-container flex-1 overflow-y-auto p-4 flex flex-col gap-3"
                       >
-                        {openDeleteMessage && (
-                          <div
-                            className="absolute left-0 top-0 flex justify-center items-center z-50 bg-default-200/20"
-                            style={{
-                              width: scrollRef.current?.clientWidth,
-                              height: scrollRef.current?.clientHeight,
-                            }}
-                          >
-                            <Card className="bg-default-100 w-3/4 h-3/4">
-                              <CardHeader className="border-b border-b-default-200">
-                                Bu Mesajı silmek istediğinizden emin misiniz?
-                              </CardHeader>
-                              <CardBody className="flex-1 h-full self-stretch text-center text-default-900 flex justify-center items-center">
-                                Mesajlar geri alınamayacak şekilde silinecektir
-                              </CardBody>
-                              <CardFooter className="border-t border-t-default-200 flex justify-center items-center gap-2">
-                                <Button size="sm">İptal</Button>
-                                <Button
-                                  size="sm"
-                                  onClick={() =>
-                                    deleteMessage(selectedUser.messageRowId)
-                                  }
-                                  className="bg-danger/20 text-danger"
-                                >
-                                  Sil
-                                </Button>
-                              </CardFooter>
-                            </Card>
-                          </div>
-                        )}
                         {messages.map((message: any, index: number) => (
                           <div
                             key={message._id}
@@ -460,6 +460,7 @@ const FloatingMessageWidget = () => {
                         )}
                         <div className="flex gap-2">
                           <input
+                            ref={messageInputRef}
                             type="text"
                             value={newMessage}
                             onChange={(e) => setNewMessage(e.target.value)}

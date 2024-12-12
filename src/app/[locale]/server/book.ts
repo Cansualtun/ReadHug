@@ -120,3 +120,23 @@ export async function getSingleBook(slug: string) {
     };
   }
 }
+
+export async function getBookNotes(bookId: string) {
+  try {
+    const response = await fetch(`${BASE_URL}/note/getNotes/${bookId}`);
+    if (!response.ok) {
+      throw new Error('Paylaşım Getirilemedi');
+    }
+    const data = await response.json();
+    return {
+      status: true,
+      data: data.data,
+    };
+  } catch (error) {
+    console.error('Paylaşım getirilirken hata oluştu:', error);
+    return {
+      status: false,
+      error: 'Paylaşım getirilirken bir hata oluştu',
+    };
+  }
+}
