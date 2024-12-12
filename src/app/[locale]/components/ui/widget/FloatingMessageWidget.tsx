@@ -122,7 +122,6 @@ const FloatingMessageWidget = () => {
         },
       );
       setMessages(null);
-      await getMessageList();
       setMessages(data.data);
     } catch (error) {}
   };
