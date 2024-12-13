@@ -8,6 +8,8 @@ interface BookDetailCardProps {
 }
 
 export default function BookDetailCard({ book }: BookDetailCardProps) {
+  console.log('book', book);
+
   return (
     <Card className="bg-gradient-to-r from-default-100 to-default-200 shadow-xl">
       <CardBody className="p-6">
@@ -20,7 +22,7 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                   book?.bookId?.images?.smallThumbnail ||
                   '/assets/book-placeholder.png'
                 }
-                alt={book.bookId?.name}
+                alt={book?.bookId?.name}
                 width={300}
                 height={450}
                 className="rounded-xl shadow-lg"
@@ -33,7 +35,7 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                   className="bg-default-50/70 backdrop-blur-md"
                 >
                   <Heart
-                    className={`w-5 h-5 ${book.isFavorite ? 'fill-red-500 text-red-500' : 'text-primary'}`}
+                    className={`w-5 h-5 ${book?.isFavorite ? 'fill-red-500 text-red-500' : 'text-primary'}`}
                   />
                 </Button>
                 <Button
@@ -49,7 +51,7 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
 
           <div className="md:col-span-2 space-y-6">
             <div>
-              <h1 className="text-3xl font-bold mb-2">{book.bookId?.name}</h1>
+              <h1 className="text-3xl font-bold mb-2">{book?.bookId?.name}</h1>
               <div className="flex items-center gap-4 mb-6">
                 <p className="text-xl text-default-700">
                   {book?.bookId?.authors.map((i: any) => i.name).join(' & ')}
@@ -69,11 +71,11 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                     <h3 className="text-lg font-semibold">Okuma İlerlemen</h3>
                   </div>
                   <p className="text-2xl font-bold text-orange-600">
-                    {book.process.percent}%
+                    {book?.process.percent}%
                   </p>
                 </div>
                 <Progress
-                  value={parseFloat(book.process.percent)}
+                  value={parseFloat(book?.process.percent)}
                   className="mb-3"
                   classNames={{
                     indicator: 'bg-gradient-to-r from-primary to-amber-500',
@@ -94,7 +96,7 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                 </p>
                 <p className="text-default-700">
                   <span className="font-semibold">ISBN:</span>{' '}
-                  {book?.bookId?.ISBNS[0].identifier ?? ''}
+                  {book?.bookId?.ISBNS[0]?.identifier ?? ''}
                 </p>
               </div>
               <div className="space-y-2">

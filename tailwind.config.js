@@ -27,6 +27,7 @@ export default {
       },
       colors: {
         primary: '#f97316',
+        danger: "#dc2626"
       },
       animation: {
         'scale-pulse': 'ringPulse 2s infinite', // mesaj bildirim animasyonu

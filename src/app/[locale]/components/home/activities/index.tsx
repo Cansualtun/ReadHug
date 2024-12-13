@@ -1,17 +1,17 @@
 'use client';
-import React, { useState } from 'react';
-import { Card, CardBody, CardHeader, Button } from '@nextui-org/react';
-import { Book, BookOpen, BookPlus, CheckCircle, Library } from 'lucide-react';
-import Image from 'next/image';
-import { useTranslations } from 'next-intl';
-import ProgressBar from '../../ui/progressBar';
-import { BookType } from 'enums/bookType';
-import { Books } from '@/types/book';
-import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/UserStore/slice';
-import NonLoginSidebar from './NonLoginSidebar';
-import { useParams } from 'next/navigation';
+import { Books } from '@/types/book';
+import { Card, CardBody, CardHeader } from '@nextui-org/react';
+import { BookType } from 'enums/bookType';
+import { Book, BookOpen, BookPlus, Library } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import ProgressBar from '../../ui/progressBar';
+import NonLoginSidebar from './NonLoginSidebar';
 
 interface BookProps {
   books: Books[];
@@ -76,7 +76,7 @@ export default function ReadingTracker({ books }: BookProps) {
   }
 
   return me ? (
-    <div className="w-full max-w-2xl mx-auto space-y-4 p-4 pb-0 sticky top-[55px]">
+    <div className="w-full max-w-2xl mx-auto space-y-4 p-4 pb-0">
       <Card className="bg-default-100">
         <CardHeader className="border-b">
           <h2 className="text-lg font-semibold flex items-center gap-2">
@@ -100,7 +100,7 @@ export default function ReadingTracker({ books }: BookProps) {
               />
               <div className="absolute px-2 inset-0 bg-default-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
                 <Link
-                  href={`/${params.locale}/personalBooks/${currentBook?.bookId.slug}`}
+                  href={`/${params.locale}/userBook/${currentBook?.bookId.slug}`}
                   className="text-sm bg-default-50/80 text-center rounded-lg px-2 py-1"
                 >
                   {t('currentlyReading.viewDetails')}

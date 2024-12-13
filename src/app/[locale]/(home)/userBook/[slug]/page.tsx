@@ -1,4 +1,4 @@
-import UserBookDetailCard from '@/app/[locale]/components/book/bookDetailCard/userBookDetailCard';
+import UserBookDetailCard from '@/app/[locale]/components/book/bookDetailCard/UserBookDetailCard';
 import ProfileCard from '@/app/[locale]/components/profile/ProfileCard';
 import { getPersonalBooks } from '@/app/[locale]/server/book';
 import { ProfilInfo } from '@/app/[locale]/server/profile';
@@ -30,7 +30,7 @@ export default async function PersonalBooksSlug({
           <ProfileCard profileData={profile} />
         </div>
         <div className="col-span-12 lg:col-span-8">
-          <UserBookDetailCard book={result.data} />
+          <UserBookDetailCard book={result.data} profileData={profile} />
         </div>
       </div>
     );

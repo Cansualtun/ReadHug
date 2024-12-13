@@ -1,13 +1,44 @@
 'use client';
-import { Card, CardBody, Progress, Button } from '@nextui-org/react';
-import { BookOpen, Heart, Share2 } from 'lucide-react';
+import { Card, CardBody, Progress, Button, Tabs, Tab } from '@nextui-org/react';
+import {
+  BookOpen,
+  Heart,
+  NotebookPen,
+  Share2,
+  Notebook,
+  MessageCircle,
+} from 'lucide-react';
 import Image from 'next/image';
-
-interface BookDetailCardProps {
+import { useEffect, useState } from 'react';
+import BookNotes from '../../profile/BookListTab/BookNotes';
+import { getClientBookPosts } from '@/app/[locale]/client/post';
+import PostCard from '../../home/postCard';
+interface UserBookDetailCardProps {
   book: any;
+  profileData: any;
 }
 
-export default function BookDetailCard({ book }: BookDetailCardProps) {
+export default function UserBookDetailCard({
+  book,
+  profileData,
+}: UserBookDetailCardProps) {
+  const [selectedTab, setSelectedTab] = useState('1');
+  const [posts, setPosts] = useState<any>([]);
+  console.log('posts', posts);
+
+  const handleTabChange = (key: Selection | string) => {
+    setSelectedTab(key as any);
+  };
+  const getBookPosts = async () => {
+    const { data } = await getClientBookPosts(book._id);
+    setPosts(data);
+  };
+
+  useEffect(() => {
+    if (selectedTab === '2') {
+      getBookPosts();
+    }
+  }, [selectedTab]);
   return (
     <Card className="bg-gradient-to-r from-default-100 to-default-200 shadow-xl">
       <CardBody className="p-6">
@@ -22,8 +53,8 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                     '/assets/book-placeholder.png'
                   }
                   alt={book.bookId?.name}
-                  width={200}
-                  height={340}
+                  width={120}
+                  height={200}
                   className="rounded-xl shadow-lg"
                   objectFit="cover"
                 />
@@ -97,7 +128,7 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
                 </p>
                 <p className="text-default-700">
                   <span className="font-semibold">ISBN:</span>{' '}
-                  {book?.bookId?.ISBNS[0].identifier ?? ''}
+                  {book?.bookId?.ISBNS[0]?.identifier ?? ''}
                 </p>
               </div>
               <div className="space-y-2">
@@ -113,10 +144,62 @@ export default function BookDetailCard({ book }: BookDetailCardProps) {
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold mb-3">Kitap Hakkında</h3>
-              <p className="text-default-900 leading-relaxed">
-                {book?.bookId?.description}
-              </p>
+              <Tabs
+                aria-label="User Book"
+                variant="bordered"
+                selectedKey={selectedTab}
+                onSelectionChange={handleTabChange as any}
+              >
+                <Tab
+                  key="1"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <NotebookPen className="w-4 h-4" />
+                      <span className="lg:block hidden">Notlar</span>
+                    </div>
+                  }
+                >
+                  <BookNotes
+                    openBookNotes={book}
+                    book={book}
+                    profileData={profileData}
+                  />
+                </Tab>
+                <Tab
+                  key="2"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <MessageCircle className="w-4 h-4" />
+                      <span className="lg:block hidden">Paylaşımlar</span>
+                    </div>
+                  }
+                >
+                  <div>
+                    {posts.map((item: any) => {
+                      return (
+                        <PostCard
+                          post={item}
+                          isOpenComment={true}
+                          isProfileCard={false}
+                        />
+                      );
+                    })}
+                  </div>
+                </Tab>
+                <Tab
+                  key="3"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <Notebook className="w-4 h-4" />
+                      <span className="lg:block hidden">Kitap Hakkında</span>
+                    </div>
+                  }
+                >
+                  <p className="text-default-900 leading-relaxed">
+                    {book?.bookId?.description}
+                  </p>
+                </Tab>
+              </Tabs>
             </div>
           </div>
         </div>
