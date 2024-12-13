@@ -6,7 +6,7 @@ import Image from 'next/image';
 const Footer = () => {
     const t = useTranslations('footer');
     return (
-        <div className="w-full max-w-2xl mx-auto space-y-4 p-4 pb-0 sticky top-[55px]">
+        <div className="w-full max-w-2xl mx-auto space-y-4 p-4 pb-0">
             <div className='flex flex-row gap-10'>
                 <div>
                     <div className="flex flex-col space-y-2">

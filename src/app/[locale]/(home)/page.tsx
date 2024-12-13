@@ -8,7 +8,6 @@ import { GetAllPost } from '../server/post';
 import Footer from '../components/ui/footer';
 
 export default async function Home() {
-
   let page = 1;
   let limit = 10;
   const cookieStore = cookies();
@@ -33,7 +32,6 @@ export default async function Home() {
             {userData.data && (
               <div className="sticky top-[70px] z-30 mt-4 p-2 pt-0 mb-10">
                 <BookPostComponent userData={userData.data} />
-
               </div>
             )}
             <div className="space-y-6 md:space-y-8 lg:space-y-10">

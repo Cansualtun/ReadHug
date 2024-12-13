@@ -17,9 +17,10 @@ import {
   MessageCircle,
   NotebookPen,
   PlusCircle,
+  SquareArrowOutUpRight,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useSelector } from 'react-redux';
@@ -29,9 +30,11 @@ import BookSearchModal from '../../ui/modal/BookSearchModal';
 import ProgressBar from '../../ui/progressBar';
 import BookPostComponent from '../../ui/widget/BookPostComponent';
 import BookNotes from './BookNotes';
+import Link from 'next/link';
 
 const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   const searchParams = useSearchParams();
+  const params = useParams();
   const userData = useSelector(selectUser);
   const tab = searchParams.get('tab');
   const t = useTranslations('BookListTabs');
@@ -176,14 +179,22 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
             return (
               <Fragment key={book._id}>
                 <div className="flex items-start space-x-4 p-4 hover:bg-default-100 rounded-lg transition-colors">
-                  <img
-                    src={
-                      book?.bookId?.images?.thumbnail ||
-                      '/assets/book-placeholder.png'
-                    }
-                    alt={book?.bookId?.name}
-                    className="w-20 h-28 object-cover rounded-md shadow-md"
-                  />
+                  <div className="relative group">
+                    <Link
+                      href={`/${params.locale}/userBook/${book?.slug}`}
+                      className="group-hover:block hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                    >
+                      <SquareArrowOutUpRight className="" />
+                    </Link>
+                    <img
+                      src={
+                        book?.bookId?.images?.thumbnail ||
+                        '/assets/book-placeholder.png'
+                      }
+                      alt={book?.bookId?.name}
+                      className="w-20 h-28 object-cover rounded-md shadow-md"
+                    />
+                  </div>
                   <div className="flex-1 relative">
                     <div className="flex justify-between items-center">
                       <h3 className="font-semibold text-md">
@@ -253,7 +264,11 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                   </div>
                 </div>
                 {openBookNotes?._id === book._id && (
-                  <BookNotes openBookNotes={openBookNotes} book={book} />
+                  <BookNotes
+                    openBookNotes={openBookNotes}
+                    book={book}
+                    profileData={profileData}
+                  />
                 )}
               </Fragment>
             );
@@ -382,9 +397,11 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                 }
                 className="space-y-4"
               >
-                {userPost.map((item: any) => (
-                  <PostCard key={item._id} post={item} />
-                ))}
+                <div>
+                  {userPost.map((item: any) => (
+                    <PostCard key={item._id} post={item} />
+                  ))}
+                </div>
               </InfiniteScroll>
             </CardBody>
           </Card>

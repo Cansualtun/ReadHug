@@ -235,7 +235,6 @@ const ProfileCard = ({ profileData }: any) => {
   useEffect(() => {
     setProfile(profileData);
   }, [profileData]);
-  console.log('isLoggedIn', isLoggedIn);
 
   if (!userProfileData) {
     return <Skeleton />;

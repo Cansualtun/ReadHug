@@ -11,13 +11,18 @@ import { toast } from 'sonner';
 type Props = {
   openBookNotes: any;
   book: any;
+  profileData: any;
 };
 
-const BookNotes = ({ openBookNotes, book }: Props) => {
-  //   console.log('book', book);
+const BookNotes = ({ openBookNotes, book, profileData }: Props) => {
   const [notes, setNotes] = useState([]);
   const [note, setNote] = useState('');
   const [page, setPage] = useState('');
+  const [profile, setProfile] = useState(profileData);
+  const { isSelf, isLoggedIn } = profile;
+  useEffect(() => {
+    setProfile(profileData);
+  }, [profileData]);
   const getNotes = async (bookId: string) => {
     const { data } = await getClientBookNotes(bookId);
     console.log('getNotes', data);
@@ -51,50 +56,53 @@ const BookNotes = ({ openBookNotes, book }: Props) => {
   if (openBookNotes?._id === book?._id) {
     return (
       <div className="p-4 bg-default-100 rounded-lg">
-        <div className="space-y-4">
-          <Textarea
-            placeholder="Type anythins..."
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            minRows={3}
-            required
-            classNames={{
-              input: 'text-sm',
-              inputWrapper:
-                'bg-default-50 focus:border-default-50 focus:border',
-            }}
-          />
+        {isSelf && isLoggedIn && (
+          <div className="space-y-4">
+            <Textarea
+              placeholder="Type anythins..."
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              minRows={3}
+              required
+              classNames={{
+                input: 'text-sm',
+                inputWrapper:
+                  'bg-default-50 focus:border-default-50 focus:border',
+              }}
+            />
 
-          <div className="flex justify-between items-center">
-            {book?.process?.pageCount > 0 && (
-              <div className="max-w-[150px] min-w-[150px]">
-                <Input
-                  type="number"
-                  min={0}
-                  size="sm"
-                  value={page}
-                  onChange={(e) => setPage(e.target.value)}
-                  max={book?.process?.pageCount}
-                  label="Sayfa Sayısı"
-                  classNames={{
-                    input: 'text-sm',
-                    inputWrapper:
-                      'bg-default-50 focus:border-default-50 focus:border',
-                  }}
-                />
-              </div>
-            )}
+            <div className="flex justify-between items-center">
+              {book?.process?.pageCount > 0 && (
+                <div className="max-w-[150px] min-w-[150px]">
+                  <Input
+                    type="number"
+                    min={0}
+                    size="sm"
+                    value={page}
+                    onChange={(e) => setPage(e.target.value)}
+                    max={book?.process?.pageCount}
+                    label="Sayfa Sayısı"
+                    classNames={{
+                      input: 'text-sm',
+                      inputWrapper:
+                        'bg-default-50 focus:border-default-50 focus:border',
+                    }}
+                  />
+                </div>
+              )}
 
-            <Button
-              color="primary"
-              className="px-8 text-sm font-medium disabled:bg-default-500"
-              disabled={!note}
-              onClick={createBookNote}
-            >
-              Not Oluştur
-            </Button>
+              <Button
+                color="primary"
+                className="px-8 text-sm font-medium disabled:bg-default-500"
+                disabled={!note}
+                onClick={createBookNote}
+              >
+                Not Oluştur
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
+
         <div>
           {notes.length > 0 ? (
             <div className="mt-4">

@@ -131,7 +131,7 @@ const Notifications = ({ open, setOpen }: Props) => {
         )}
       </div>
       <div
-        className={`absolute z-50 top-10 left-0 ${open ? 'block  animate-fadeindown' : 'hidden'}`}
+        className={`absolute z-50 top-10 -left-12 md:left-1/2 md:-translate-x-1/2 ${open ? 'block  animate-fadeindown' : 'hidden'}`}
       >
         <div className="max-h-[300px] md:max-h-[600px] w-[300px] overflow-y-auto scroll-container p-1 bg-default-50 rounded-lg shadow">
           <InfiniteScroll
