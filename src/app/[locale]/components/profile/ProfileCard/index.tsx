@@ -61,6 +61,7 @@ const ProfileCard = ({ profileData }: any) => {
   const { data: userProfileData, refetch: refetchUserProfile } =
     useUserProfileQuery(user.userName);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [modalType, setModalType] = useState<'followers' | 'following'>(
     'followers',
   );
@@ -185,6 +186,7 @@ const ProfileCard = ({ profileData }: any) => {
         console.error('No image selected for upload');
         return;
       }
+      setLoading(true);
       const formData = new FormData();
       formData.append('image', upgradeImage[0] as any);
       let BASE_URL = '';
@@ -205,8 +207,10 @@ const ProfileCard = ({ profileData }: any) => {
           },
         },
       );
-      //   await ProfilInfo(params.slug as string);
-    } catch (error) {}
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   const blockerService = async () => {
@@ -326,10 +330,19 @@ const ProfileCard = ({ profileData }: any) => {
         {upgradeImage && (
           <div className="mt-2">
             <button
+              disabled={loading}
               onClick={avatarUpgrade}
               className="flex items-center bg-primary text-white px-2 py-0.5 rounded-md text-sm"
             >
-              <Save size={16} className="mr-1" /> Kaydet
+              {loading ? (
+                <div className='flex items-center gap-0.5'>
+                  <div className="animate-spin">⌛</div> Yükleniyor...
+                </div>
+              ) : (
+                <div className="flex items-center gap-1">
+                  <Save size={16} className="mr-1" /> Kaydet
+                </div>
+              )}
             </button>
           </div>
         )}

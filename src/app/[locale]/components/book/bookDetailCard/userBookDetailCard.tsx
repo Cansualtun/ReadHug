@@ -154,8 +154,14 @@ export default function UserBookDetailCard({
                   key="1"
                   title={
                     <div className="flex items-center space-x-2">
-                      <NotebookPen className="w-4 h-4" />
-                      <span className="lg:block hidden">Notlar</span>
+                      <NotebookPen
+                        className={`w-4 h-4 ${selectedTab === '1' && 'text-primary'}`}
+                      />
+                      <span
+                        className={` ${selectedTab === '1' && 'text-primary'}`}
+                      >
+                        Notlar
+                      </span>
                     </div>
                   }
                 >
@@ -169,8 +175,14 @@ export default function UserBookDetailCard({
                   key="2"
                   title={
                     <div className="flex items-center space-x-2">
-                      <MessageCircle className="w-4 h-4" />
-                      <span className="lg:block hidden">Paylaşımlar</span>
+                      <MessageCircle
+                        className={`w-4 h-4 ${selectedTab === '2' && 'text-primary'}`}
+                      />
+                      <span
+                        className={` ${selectedTab === '2' && 'text-primary'}`}
+                      >
+                        Paylaşımlar
+                      </span>
                     </div>
                   }
                 >
@@ -190,8 +202,14 @@ export default function UserBookDetailCard({
                   key="3"
                   title={
                     <div className="flex items-center space-x-2">
-                      <Notebook className="w-4 h-4" />
-                      <span className="lg:block hidden">Kitap Hakkında</span>
+                      <Notebook
+                        className={`w-4 h-4 ${selectedTab === '3' && 'text-primary'}`}
+                      />
+                      <span
+                        className={` ${selectedTab === '3' && 'text-primary'}`}
+                      >
+                        Kitap Hakkında
+                      </span>
                     </div>
                   }
                 >
