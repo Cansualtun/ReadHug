@@ -59,3 +59,24 @@ export async function clientCreateBookNotes(body: any) {
     };
   }
 }
+
+export async function getLibraryLists(
+  userName: string,
+  type: 0 | 1 | 2,
+  limit: number = 10,
+  page: number = 1,
+) {
+  const requests = [
+    fetch(
+      `${BASE_URL}/book/user/books/${userName}/${type}?limit=${limit}&page=${page}`,
+    ),
+  ];
+
+  const responses = await Promise.all(requests);
+  const [data] = await Promise.all(responses.map((res) => res.json()));
+
+  return {
+    status: true,
+    data: data.data || [],
+  };
+}
