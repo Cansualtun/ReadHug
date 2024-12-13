@@ -6,6 +6,7 @@ import { Button } from '@nextui-org/button';
 import { Input, Textarea } from '@nextui-org/input';
 import { NotepadText } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 type Props = {
   openBookNotes: any;
@@ -23,6 +24,10 @@ const BookNotes = ({ openBookNotes, book }: Props) => {
     setNotes(data);
   };
   const createBookNote = async () => {
+    if (book.process.pageCount < parseInt(page)) {
+      toast.error('Not sayfası kitap sayfasından büyük olamaz');
+      return;
+    }
     let payload: any = {
       note,
       userBookId: book._id,
@@ -30,6 +35,7 @@ const BookNotes = ({ openBookNotes, book }: Props) => {
     if (page) {
       payload.notePage = parseInt(page);
     }
+
     const data = await clientCreateBookNotes(payload);
     await getNotes(book._id);
     setNote('');
@@ -108,7 +114,7 @@ const BookNotes = ({ openBookNotes, book }: Props) => {
                         {item.notePage ? (
                           <div className="px-3 flex items-center bg-default-200 text-default-900 mr-2 min-w-fit rounded-md col-span-2 max-h-9">
                             <NotepadText size={18} className="mr-1" />
-                            <p className='flex-1 text-end'>{item.notePage}</p>
+                            <p className="flex-1 text-end">{item.notePage}</p>
                           </div>
                         ) : (
                           <div className="col-span-2"></div>

@@ -190,7 +190,13 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                         {book?.bookId?.name}
                       </h3>
                       <Button
-                        onClick={() => setOpenBookNotes(book)}
+                        onClick={() => {
+                          if (openBookNotes?._id === book._id) {
+                            setOpenBookNotes(null);
+                          } else {
+                            setOpenBookNotes(book);
+                          }
+                        }}
                         className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 ${openBookNotes?._id === book._id ? 'bg-primary text-white' : 'bg-default-50'}`}
                         size="sm"
                       >
