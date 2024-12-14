@@ -1,9 +1,25 @@
 'use client';
+import { clientBookTypeChange } from '@/app/[locale]/client/book';
 import { setProfileStore } from '@/store/ProfileStore/slice';
-import { Button } from '@nextui-org/react';
+import {
+  Button,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Select,
+  SelectItem,
+} from '@nextui-org/react';
 import axios from 'axios';
 import { BookType } from 'enums/bookType';
-import { NotebookPen, SquareArrowOutUpRight } from 'lucide-react';
+import {
+  BookMarked,
+  BookOpen,
+  BookPlus,
+  NotebookPen,
+  Save,
+  Settings2,
+  SquareArrowOutUpRight,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useParams, useSearchParams } from 'next/navigation';
@@ -22,6 +38,7 @@ type Props = {
   additionalBooks: any;
   setAdditionalBooks: any;
   serverBooks: any;
+  mount: () => void;
 };
 
 const RenderBookList = ({
@@ -34,6 +51,7 @@ const RenderBookList = ({
   additionalBooks,
   setAdditionalBooks,
   serverBooks,
+  mount,
 }: Props) => {
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
@@ -44,7 +62,7 @@ const RenderBookList = ({
   const [page, setPage] = useState(2);
   const [hasMore, setHasMore] = useState(true);
   const [openBookNotes, setOpenBookNotes] = useState<any>(null);
-
+  const [selectedKeys, setSelectedKeys] = useState(type);
   const loadMore = async () => {
     if (loading) return;
 
@@ -94,7 +112,19 @@ const RenderBookList = ({
       dispatch(setProfileStore({ key, data: bookLists }));
     }
   }, [bookLists]);
+  const changeBookType = async (book: any) => {
+    // 0-okundu, 1-okunmakta olan, 2-okumak istenilen
+    const payload: any = {
+      userBookId: book._id,
+      type: selectedKeys,
+    };
 
+    if (selectedKeys == '1') {
+      payload.readCount = 0;
+    }
+    await clientBookTypeChange(payload);
+    await mount();
+  };
   const serverFilteredData = serverBooks.filter(
     (book: any) => book.type === type,
   );
@@ -138,19 +168,80 @@ const RenderBookList = ({
                     <h3 className="font-semibold text-md">
                       {book?.bookId?.name}
                     </h3>
-                    <Button
-                      onClick={() => {
-                        if (openBookNotes?._id === book._id) {
-                          setOpenBookNotes(null);
-                        } else {
-                          setOpenBookNotes(book);
-                        }
-                      }}
-                      className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 ${openBookNotes?._id === book._id ? 'bg-primary text-white' : 'bg-default-50'}`}
-                      size="sm"
-                    >
-                      <NotebookPen size={16} />
-                    </Button>
+                    <div className="flex gap-2 items-center">
+                      <Button
+                        onClick={() => {
+                          if (openBookNotes?._id === book._id) {
+                            setOpenBookNotes(null);
+                          } else {
+                            setOpenBookNotes(book);
+                          }
+                        }}
+                        className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 ${openBookNotes?._id === book._id ? 'bg-primary text-white' : 'bg-default-50'}`}
+                        size="sm"
+                      >
+                        <NotebookPen size={16} />
+                      </Button>
+                      <div>
+                        <Popover
+                          classNames={{
+                            content: 'p-1',
+                          }}
+                          placement="bottom-end"
+                          showArrow
+                          offset={5}
+                        >
+                          <PopoverTrigger>
+                            <Button
+                              className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 ${openBookNotes?._id === book._id ? 'bg-primary text-white' : 'bg-default-50'}`}
+                              size="sm"
+                            >
+                              <Settings2 size={16} />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent>
+                            <div className="w-[300px] flex items-center gap-2">
+                              <Select
+                                className="max-w-xs"
+                                label="Select Library"
+                                defaultSelectedKeys={selectedKeys}
+                                value={[selectedKeys]}
+                                size="sm"
+                                onChange={(e) => {
+                                  setSelectedKeys(e.target.value);
+                                }}
+                              >
+                                <SelectItem
+                                  key={'1'}
+                                  startContent={<BookOpen size={14} />}
+                                >
+                                  Okunuyor
+                                </SelectItem>
+                                <SelectItem
+                                  key={'0'}
+                                  startContent={<BookMarked size={14} />}
+                                >
+                                  Okunan
+                                </SelectItem>
+                                <SelectItem
+                                  key={'2'}
+                                  startContent={<BookPlus size={14} />}
+                                >
+                                  İstek Listesi
+                                </SelectItem>
+                              </Select>
+                              <Button
+                                onClick={() => changeBookType(book)}
+                                className="bg-primary text-white disabled:bg-default-500 w-12 h-12 min-w-12 min-h-12 max-w-12 max-h-12 p-1"
+                                disabled={type === selectedKeys}
+                              >
+                                <Save size={16} />
+                              </Button>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    </div>
                   </div>
 
                   <p className="text-default-500 text-sm">

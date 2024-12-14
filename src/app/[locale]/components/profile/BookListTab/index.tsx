@@ -77,6 +77,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
               className="overflow-auto scroll-container"
             >
               <RenderBookList
+                mount={getLibraryData}
                 serverBooks={serverBooks}
                 setAdditionalBooks={setAdditionalBooks}
                 additionalBooks={additionalBooks}
@@ -105,6 +106,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
               className="overflow-auto scroll-container"
             >
               <RenderBookList
+                mount={getLibraryData}
                 serverBooks={serverBooks}
                 setAdditionalBooks={setAdditionalBooks}
                 additionalBooks={additionalBooks}
@@ -133,6 +135,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
               className="overflow-auto scroll-container"
             >
               <RenderBookList
+                mount={getLibraryData}
                 serverBooks={serverBooks}
                 setAdditionalBooks={setAdditionalBooks}
                 additionalBooks={additionalBooks}
