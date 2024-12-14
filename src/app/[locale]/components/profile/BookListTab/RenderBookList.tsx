@@ -59,6 +59,7 @@ const RenderBookList = ({
   const t = useTranslations('BookListTabs');
   const params = useParams();
   const [loading, setLoading] = useState(false);
+  const [loadingType, setLoadingType] = useState(false);
   const [page, setPage] = useState(2);
   const [hasMore, setHasMore] = useState(true);
   const [openBookNotes, setOpenBookNotes] = useState<any>(null);
@@ -113,17 +114,23 @@ const RenderBookList = ({
     }
   }, [bookLists]);
   const changeBookType = async (book: any) => {
-    // 0-okundu, 1-okunmakta olan, 2-okumak istenilen
-    const payload: any = {
-      userBookId: book._id,
-      type: selectedKeys,
-    };
+    try {
+      setLoadingType(true);
+      // 0-okundu, 1-okunmakta olan, 2-okumak istenilen
+      const payload: any = {
+        userBookId: book._id,
+        type: selectedKeys,
+      };
 
-    if (selectedKeys == '1') {
-      payload.readCount = 0;
+      if (selectedKeys == '1') {
+        payload.readCount = 0;
+      }
+      await clientBookTypeChange(payload);
+      await mount();
+      setLoadingType(false);
+    } catch (error) {
+      setLoadingType(false);
     }
-    await clientBookTypeChange(payload);
-    await mount();
   };
   const serverFilteredData = serverBooks.filter(
     (book: any) => book.type === type,
@@ -193,7 +200,7 @@ const RenderBookList = ({
                         >
                           <PopoverTrigger>
                             <Button
-                              className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 ${openBookNotes?._id === book._id ? 'bg-primary text-white' : 'bg-default-50'}`}
+                              className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 bg-default-50`}
                               size="sm"
                             >
                               <Settings2 size={16} />
@@ -235,7 +242,11 @@ const RenderBookList = ({
                                 className="bg-primary text-white disabled:bg-default-500 w-12 h-12 min-w-12 min-h-12 max-w-12 max-h-12 p-1"
                                 disabled={type === selectedKeys}
                               >
-                                <Save size={16} />
+                                {loadingType ? (
+                                  <div className="animate-spin">⌛</div>
+                                ) : (
+                                  <Save size={16} />
+                                )}
                               </Button>
                             </div>
                           </PopoverContent>
@@ -263,6 +274,7 @@ const RenderBookList = ({
                         progressColor="success"
                         chipColor="success"
                         isSelf={isSelf}
+                        mount={mount}
                       />
                     </div>
                   )}
