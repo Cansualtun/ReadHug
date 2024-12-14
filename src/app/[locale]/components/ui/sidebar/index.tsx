@@ -1,17 +1,11 @@
 'use client';
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
-import { Tabs, Tab, Avatar } from '@nextui-org/react';
-import { User2, KeyRound, Info, ImagePlus, Save } from 'lucide-react';
-import ProfileUpdate from '../../profile/ProfileUpdate';
-import ChangePassword from '../../profile/ChangePassword';
-import { useMeMutation, useUserProfileQuery } from '@/store/UserStore';
+import { useMeMutation } from '@/store/UserStore';
+import { Avatar, Tab, Tabs } from '@nextui-org/react';
 import axios from 'axios';
+import { ImagePlus, KeyRound, Save, User2 } from 'lucide-react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import ChangePassword from '../../profile/ChangePassword';
+import ProfileUpdate from '../../profile/ProfileUpdate';
 
 const SidebarItems = [
   {
@@ -44,6 +38,7 @@ export default function Sidebar() {
   const [tab, setTab] = useState<any>('profile');
   const [upgradeImage, setUpgradeImage] = useState<null | FileList>(null);
   const [meData, setMeData] = useState<any>({});
+  const [loading, setLoading] = useState(false);
   const [me] = useMeMutation();
 
   const meHandler = async () => {
@@ -61,6 +56,7 @@ export default function Sidebar() {
         console.error('No image selected for upload');
         return;
       }
+      setLoading(true);
       const formData = new FormData();
       formData.append('image', upgradeImage[0] as any);
       const { data } = await axios.patch(
@@ -73,8 +69,10 @@ export default function Sidebar() {
           },
         },
       );
-      //   await ProfilInfo(params.slug as string);
-    } catch (error) { }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
   useEffect(() => {
     meHandler();
@@ -170,10 +168,19 @@ export default function Sidebar() {
             {upgradeImage && (
               <div className="mt-2">
                 <button
+                  disabled={loading}
                   onClick={avatarUpgrade}
                   className="flex items-center bg-primary text-white px-2 py-0.5 rounded-md text-sm"
                 >
-                  <Save size={16} className="mr-1" /> Kaydet
+                  {loading ? (
+                    <div className="flex items-center gap-0.5">
+                      <div className="animate-spin">⌛</div> Yükleniyor...
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <Save size={16} className="mr-1" /> Kaydet
+                    </div>
+                  )}
                 </button>
               </div>
             )}

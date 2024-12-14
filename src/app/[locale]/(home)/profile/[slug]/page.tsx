@@ -1,4 +1,3 @@
-import { getLibraryLists } from '@/app/[locale]/client/book';
 import BlockedUserMessage from '@/app/[locale]/components/profile/BlockedUser';
 import BookListTabs from '@/app/[locale]/components/profile/BookListTab';
 import ProfileCard from '@/app/[locale]/components/profile/ProfileCard';
@@ -14,14 +13,10 @@ export default async function ProfileSlug({
   params: { slug: string };
   searchParams: { tab: '0' | '1' | '2' };
 }) {
-  console.log('searchParams', searchParams.tab);
   const [profileResponse, postResponse, libraryResponse] = await Promise.all([
     ProfilInfo(params.slug),
     UserPostInfo(params.slug),
-    getLibraryLists(
-      params.slug,
-      (parseInt(searchParams.tab) as 0 | 1 | 2) || 1,
-    ),
+    getAllBookLists(params.slug),
   ]);
 
   const profile = await profileResponse.json();

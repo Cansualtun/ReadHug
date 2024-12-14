@@ -1,16 +1,16 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { baseApi } from '@/services/baseApi';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 //service slices
 import { authApi } from './AuthStore';
-import { userApi } from './UserStore';
 import { likeApi } from './LikeStore';
 import { notificationApi } from './NotificationStore';
-import { postApi } from './PostStore';
+import { userApi } from './UserStore';
 
 // no service slices
 import messageSlice from '@/store/MessageStore';
-import postSlice from './PostStore/slice';
 import { commentApi } from './CommentStore';
+import postSlice from './PostStore/slice';
+import profileSlice from './ProfileStore/slice';
 
 const rootReducer = combineReducers({
   auth: authApi,
@@ -20,6 +20,7 @@ const rootReducer = combineReducers({
   notification: notificationApi,
   post: postSlice,
   message: messageSlice,
+  profile: profileSlice,
   [baseApi.reducerPath]: baseApi.reducer,
 });
 

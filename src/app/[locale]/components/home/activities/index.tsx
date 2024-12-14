@@ -3,7 +3,13 @@ import { selectUser } from '@/store/UserStore/slice';
 import { Books } from '@/types/book';
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import { BookType } from 'enums/bookType';
-import { Book, BookOpen, BookPlus, Library } from 'lucide-react';
+import {
+  Book,
+  BookOpen,
+  BookPlus,
+  Library,
+  SquareArrowOutUpRight,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -172,7 +178,7 @@ export default function ReadingTracker({ books }: BookProps) {
                       href={`/${params.locale}/profile/${me.userName}?tab=${item.tab}`}
                       className={`p-2 min-w-11 flex justify-center items-center rounded-t-md hover:text-primary ${item.key === openList && 'bg-default-200/20 text-primary'}`}
                     >
-                      {item.count}
+                      <SquareArrowOutUpRight size={16} />
                     </Link>
                   ) : (
                     <div
@@ -187,7 +193,7 @@ export default function ReadingTracker({ books }: BookProps) {
                   className={`p-4 bg-default-200/20 border-l-3 border-l-primary w-full ${item.key === openList ? 'animate-appearance-in block' : 'hidden animate-appearance-in delay-1000'}`}
                 >
                   <div className="marker:text-primary list-outside list-disc ml-2 text-sm space-y-2  w-full">
-                    {item.list.slice(0, 5).map((i, index) => {
+                    {item.list.slice(0, 3).map((i, index) => {
                       return (
                         <div key={i._id} className="flex items-center gap-2">
                           <div>

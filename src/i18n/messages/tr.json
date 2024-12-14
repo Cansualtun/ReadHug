@@ -52,7 +52,7 @@
       "books": {
         "read": "Okunan",
         "reading": "Okunuyor",
-        "wishlist": "İstek Listesi",
+        "wishlist": "İstek",
         "total": "Toplam {count} kitap"
       }
     },
@@ -72,7 +72,7 @@
     "tabs": {
       "reading": "Okunuyor",
       "read": "Okunan",
-      "wishlist": "İstek Listesi",
+      "wishlist": "İstek",
       "posts": "Gönderiler"
     },
     "bookInfo": {
@@ -151,7 +151,7 @@
     "library": {
       "title": "Kitaplık",
       "shelves": {
-        "toRead": "İstek Listesi",
+        "toRead": "İstek",
         "reading": "Okunuyor",
         "completed": "Okunan"
       }

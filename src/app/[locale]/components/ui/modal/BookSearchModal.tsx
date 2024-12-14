@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'production') {
   BASE_URL = 'https://bookarchive-production.up.railway.app';
 }
 
-const BookSearchModal = ({ isOpen, onClose }: any) => {
+const BookSearchModal = ({ isOpen, onClose, mount }: any) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any>([]);
   const [selectedBooks, setSelectedBooks] = useState<any>([]);
@@ -178,6 +178,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
       setLoadingData(false);
       setSelectedBooks([]);
       onClose();
+      await mount();
     } catch (error: any) {
       setLoadingData(false);
       toast.error(error?.response?.data?.message);
@@ -292,7 +293,7 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                       <p className="text-sm text-default-700">
                         {book._id
                           ? book.authors.map((i: any) => i.name).join(' & ') ||
-                          ''
+                            ''
                           : book.authors.join(' & ')}
                       </p>
                     </div>
@@ -335,8 +336,8 @@ const BookSearchModal = ({ isOpen, onClose }: any) => {
                             <p className="text-sm text-default-700">
                               {book._id
                                 ? book.authors
-                                  .map((i: any) => i.name)
-                                  .join(' & ') || ' '
+                                    .map((i: any) => i.name)
+                                    .join(' & ') || ' '
                                 : book.authors.join(' & ')}
                             </p>
                           </div>

@@ -8,6 +8,13 @@ if (process.env.NODE_ENV === 'development') {
 if (process.env.NODE_ENV === 'production') {
   BASE_URL = 'https://bookarchive-production.up.railway.app';
 }
+
+export enum BookType {
+  Read = 0,
+  Reading = 1,
+  WishList = 2,
+}
+
 export async function getClientBookNotes(bookId: string) {
   try {
     const response = await fetch(`${BASE_URL}/note/getNotes/${bookId}`);
@@ -78,5 +85,27 @@ export async function getLibraryLists(
   return {
     status: true,
     data: data.data || [],
+  };
+}
+
+export async function getAllBookLists(userName: string) {
+  const requests = [
+    fetch(`${BASE_URL}/book/user/books/${userName}/${BookType.Read}`, {}),
+    fetch(`${BASE_URL}/book/user/books/${userName}/${BookType.Reading}`, {}),
+    fetch(`${BASE_URL}/book/user/books/${userName}/${BookType.WishList}`, {}),
+  ];
+
+  const responses = await Promise.all(requests);
+  const [readBooks, readingBooks, wishlistBooks] = await Promise.all(
+    responses.map((res) => res.json()),
+  );
+
+  return {
+    status: true,
+    data: [
+      ...(readBooks.data || []),
+      ...(readingBooks.data || []),
+      ...(wishlistBooks.data || []),
+    ],
   };
 }
