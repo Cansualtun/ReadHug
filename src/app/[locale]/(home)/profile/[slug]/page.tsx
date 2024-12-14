@@ -8,19 +8,20 @@ import { ProfilInfo } from '@/app/[locale]/server/profile';
 
 export default async function ProfileSlug({
   params,
+  searchParams,
 }: {
   params: { slug: string };
+  searchParams: { tab: '0' | '1' | '2' };
 }) {
-  const [profileResponse, booksResponse, postResponse] = await Promise.all([
+  const [profileResponse, postResponse, libraryResponse] = await Promise.all([
     ProfilInfo(params.slug),
-    getAllBookLists(params.slug),
     UserPostInfo(params.slug),
+    getAllBookLists(params.slug),
   ]);
 
   const profile = await profileResponse.json();
   const post = await postResponse.json();
-  const books = booksResponse;
-
+  const library = libraryResponse;
   return (
     <>
       <div className="mb-10">
@@ -34,7 +35,7 @@ export default async function ProfileSlug({
             {profile.isBlocked === '0' ? (
               <BookListTabs
                 profileData={profile}
-                bookLists={books}
+                bookLists={library}
                 slug={params.slug}
                 post={post}
               />

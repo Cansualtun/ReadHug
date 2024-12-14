@@ -30,6 +30,7 @@ interface ProgressBarProps {
   size?: 'sm' | 'md' | 'lg';
   showPage?: boolean;
   bookId: string;
+  mount?: () => void;
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({
@@ -40,6 +41,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   labelPosition = 'top',
   bookId,
   isSelf = true,
+  mount,
 }) => {
   const t = useTranslations('ReadingTracker');
   const [progressValue, setProgressValue] = useState<number>(currentValue);
@@ -84,6 +86,9 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
       }
       setOpenProgress(false);
       setLoading(false);
+      if (mount) {
+        await mount();
+      }
     } catch (error) {
       setOpenProgress(false);
       setLoading(false);

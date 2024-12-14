@@ -58,6 +58,27 @@ export async function getAllBookLists(userName: string) {
     ],
   };
 }
+export async function getLibraryLists(userName: string, type: 0 | 1 | 2) {
+  const cookieStore = cookies();
+  const token = cookieStore.get('token')?.value;
+  const requests = [
+    fetch(`${BASE_URL}/book/user/books/${userName}/${type}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      next: { revalidate: 0 },
+    }),
+  ];
+
+  const responses = await Promise.all(requests);
+  const [data] = await Promise.all(responses.map((res) => res.json()));
+
+  return {
+    status: true,
+    data: data.data || [],
+  };
+}
 
 export async function getPersonalBooks(slug: string) {
   const cookieStore = cookies();
