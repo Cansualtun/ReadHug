@@ -19,10 +19,10 @@ import axios from 'axios';
 import { debounce } from 'lodash';
 import { BookmarkPlus, Search, ShieldQuestion } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import Loading from '../loading';
-import Link from 'next/link';
 
 let BASE_URL = '';
 if (process.env.NODE_ENV === 'development') {

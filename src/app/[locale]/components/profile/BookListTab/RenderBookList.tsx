@@ -6,18 +6,12 @@ import {
 import { setProfileStore } from '@/store/ProfileStore/slice';
 import {
   Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Modal,
-  ModalHeader,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Select,
   SelectItem,
-  Tooltip,
+  Tooltip
 } from '@nextui-org/react';
 import axios from 'axios';
 import { BookType } from 'enums/bookType';
@@ -25,12 +19,11 @@ import {
   BookMarked,
   BookOpen,
   BookPlus,
-  DeleteIcon,
   NotebookPen,
   Save,
   Settings2,
   SquareArrowOutUpRight,
-  Trash2,
+  Trash2
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -38,9 +31,9 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
+import CustomModal from '../../ui/modal/CustomModal';
 import ProgressBar from '../../ui/progressBar';
 import BookNotes from './BookNotes';
-import CustomModal from '../../ui/modal/CustomModal';
 type Props = {
   type: any;
   bookLists: any;

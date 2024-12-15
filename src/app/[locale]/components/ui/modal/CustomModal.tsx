@@ -1,12 +1,11 @@
 import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Modal,
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader
 } from '@nextui-org/react';
-import React, { ReactHTMLElement, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 type Props = {
   isOpen: boolean;
