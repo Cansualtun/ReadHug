@@ -1,13 +1,23 @@
 'use client';
-import { clientBookTypeChange } from '@/app/[locale]/client/book';
+import {
+  clientBookDelete,
+  clientBookTypeChange,
+} from '@/app/[locale]/client/book';
 import { setProfileStore } from '@/store/ProfileStore/slice';
 import {
   Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Modal,
+  ModalHeader,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Select,
   SelectItem,
+  Tooltip,
 } from '@nextui-org/react';
 import axios from 'axios';
 import { BookType } from 'enums/bookType';
@@ -15,10 +25,12 @@ import {
   BookMarked,
   BookOpen,
   BookPlus,
+  DeleteIcon,
   NotebookPen,
   Save,
   Settings2,
   SquareArrowOutUpRight,
+  Trash2,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -28,6 +40,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
 import ProgressBar from '../../ui/progressBar';
 import BookNotes from './BookNotes';
+import CustomModal from '../../ui/modal/CustomModal';
 type Props = {
   type: any;
   bookLists: any;
@@ -63,6 +76,7 @@ const RenderBookList = ({
   const [page, setPage] = useState(2);
   const [hasMore, setHasMore] = useState(true);
   const [openBookNotes, setOpenBookNotes] = useState<any>(null);
+  const [deleteOpen, setDeleteOpen] = useState<any>(null);
   const [selectedKeys, setSelectedKeys] = useState(type);
   const loadMore = async () => {
     if (loading) return;
@@ -132,205 +146,262 @@ const RenderBookList = ({
       setLoadingType(false);
     }
   };
+  const deleteBook = async (bookId: string) => {
+    try {
+      setLoading(true);
+
+      await clientBookDelete(bookId);
+      setLoading(false);
+      setDeleteOpen(false);
+      await mount();
+    } catch (error) {
+      setLoading(false);
+    }
+  };
   const serverFilteredData = serverBooks.filter(
     (book: any) => book.type === type,
   );
   const additionalFilteredData = selectedTab === type ? additionalBooks : [];
   const allData = [...serverFilteredData, ...additionalFilteredData];
-  return allData.length > 0 ? (
-    <InfiniteScroll
-      dataLength={allData.length}
-      next={loadMore}
-      hasMore={hasMore}
-      loader={loading && <h4 className="text-center py-4">{t('loading')}</h4>}
-      endMessage={
-        !hasMore && <p className="text-center py-4">{t('allBooksLoaded')}</p>
-      }
-      scrollableTarget="scrollableDiv"
-      className=""
-    >
-      <div className="grid gap-4">
-        {allData.map((book: any) => {
-          return (
-            <Fragment key={book._id}>
-              <div className="flex items-start space-x-4 p-4 hover:bg-default-100 rounded-lg transition-colors">
-                <div className="relative group">
-                  <Link
-                    href={`/${params.locale}/userBook/${book?.slug}`}
-                    className="group-hover:block hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                  >
-                    <SquareArrowOutUpRight className="" />
-                  </Link>
-                  <img
-                    src={
-                      book?.bookId?.images?.thumbnail ||
-                      '/assets/book-placeholder.png'
-                    }
-                    alt={book?.bookId?.name}
-                    className="w-20 h-28 object-cover rounded-md shadow-md"
-                  />
-                </div>
-                <div className="flex-1 relative">
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-semibold text-md">
-                      {book?.bookId?.name}
-                    </h3>
-                    <div className="flex gap-2 items-center">
-                      <Button
-                        onClick={() => {
-                          if (openBookNotes?._id === book._id) {
-                            setOpenBookNotes(null);
-                          } else {
-                            setOpenBookNotes(book);
-                          }
-                        }}
-                        className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 ${openBookNotes?._id === book._id ? 'bg-primary text-white' : 'bg-default-50'}`}
-                        size="sm"
+  return (
+    <div>
+      {allData.length > 0 ? (
+        <InfiniteScroll
+          dataLength={allData.length}
+          next={loadMore}
+          hasMore={hasMore}
+          loader={
+            loading && <h4 className="text-center py-4">{t('loading')}</h4>
+          }
+          endMessage={
+            !hasMore && (
+              <p className="text-center py-4">{t('allBooksLoaded')}</p>
+            )
+          }
+          scrollableTarget="scrollableDiv"
+          className=""
+        >
+          <div className="grid gap-4">
+            {allData.map((book: any) => {
+              return (
+                <Fragment key={book._id}>
+                  <div className="flex items-start space-x-4 p-4 hover:bg-default-100 rounded-lg transition-colors">
+                    <div className="relative group">
+                      <Link
+                        href={`/${params.locale}/userBook/${book?.slug}`}
+                        className="group-hover:block hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                       >
-                        <NotebookPen size={16} />
-                      </Button>
-                      <div>
-                        <Popover
-                          classNames={{
-                            content: 'p-1',
-                          }}
-                          placement="bottom-end"
-                          showArrow
-                          offset={5}
-                        >
-                          <PopoverTrigger>
-                            <Button
-                              className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 bg-default-50`}
-                              size="sm"
-                            >
-                              <Settings2 size={16} />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent>
-                            <div className="w-[300px] flex items-center gap-2">
-                              <Select
-                                className="max-w-xs"
-                                label="Select Library"
-                                defaultSelectedKeys={selectedKeys}
-                                value={[selectedKeys]}
-                                size="sm"
-                                onChange={(e) => {
-                                  setSelectedKeys(e.target.value);
-                                }}
-                              >
-                                <SelectItem
-                                  key={'1'}
-                                  startContent={<BookOpen size={14} />}
-                                >
-                                  Okunuyor
-                                </SelectItem>
-                                <SelectItem
-                                  key={'0'}
-                                  startContent={<BookMarked size={14} />}
-                                >
-                                  Okunan
-                                </SelectItem>
-                                <SelectItem
-                                  key={'2'}
-                                  startContent={<BookPlus size={14} />}
-                                >
-                                  İstek Listesi
-                                </SelectItem>
-                              </Select>
-                              <Button
-                                onClick={() => changeBookType(book)}
-                                className="bg-primary text-white disabled:bg-default-500 w-12 h-12 min-w-12 min-h-12 max-w-12 max-h-12 p-1"
-                                disabled={type === selectedKeys}
-                              >
-                                {loadingType ? (
-                                  <div className="animate-spin">⌛</div>
-                                ) : (
-                                  <Save size={16} />
-                                )}
-                              </Button>
-                            </div>
-                          </PopoverContent>
-                        </Popover>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-default-500 text-sm">
-                    {t('bookInfo.author', {
-                      name: book.bookId?.authors
-                        .map((i: any) => i.name)
-                        .join(' & '),
-                    })}
-                  </p>
-                  {type === BookType.Reading && (
-                    <div className="mt-4 space-y-3 text-default-400">
-                      <ProgressBar
-                        value={parseFloat(book.process?.percent) || 0}
-                        total={book.process?.pageCount || 0}
-                        currentValue={book.process?.readCount || 0}
-                        showChip
-                        bookId={book._id}
-                        showCompletedMessage
-                        progressColor="success"
-                        chipColor="success"
-                        isSelf={isSelf}
-                        mount={mount}
+                        <SquareArrowOutUpRight className="" />
+                      </Link>
+                      <img
+                        src={
+                          book?.bookId?.images?.thumbnail ||
+                          '/assets/book-placeholder.png'
+                        }
+                        alt={book?.bookId?.name}
+                        className="w-20 h-28 object-cover rounded-md shadow-md"
                       />
                     </div>
-                  )}
-                  {type === BookType.Read && (
-                    <div className="mt-2 text-sm text-default-400">
-                      <span>
-                        {t('bookInfo.pageCount', {
-                          count: book?.bookId?.pageCount,
+                    <div className="flex-1 relative">
+                      <div className="flex justify-between items-start">
+                        <h3 className="font-semibold text-md">
+                          {book?.bookId?.name}
+                        </h3>
+                        <div className="flex gap-2 items-center">
+                          <Tooltip content="Notlar" showArrow>
+                            <Button
+                              onClick={() => {
+                                if (openBookNotes?._id === book._id) {
+                                  setOpenBookNotes(null);
+                                } else {
+                                  setOpenBookNotes(book);
+                                }
+                              }}
+                              className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 hover:bg-primary hover:text-white ${openBookNotes?._id === book._id ? 'bg-primary text-white' : 'bg-default-50'}`}
+                              size="sm"
+                            >
+                              <NotebookPen size={16} />
+                            </Button>
+                          </Tooltip>
+                          <div>
+                            <Popover
+                              classNames={{
+                                content: 'p-1',
+                              }}
+                              placement="bottom-end"
+                              showArrow
+                              offset={5}
+                            >
+                              <PopoverTrigger>
+                                <Button
+                                  className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 bg-default-50 hover:bg-primary hover:text-white`}
+                                  size="sm"
+                                >
+                                  <Tooltip
+                                    showArrow
+                                    content="Durumu Değiştir"
+                                    offset={15}
+                                  >
+                                    <Settings2 size={16} />
+                                  </Tooltip>
+                                </Button>
+                              </PopoverTrigger>
+
+                              <PopoverContent>
+                                <div className="w-[300px] flex items-center gap-2">
+                                  <Select
+                                    className="max-w-xs"
+                                    label="Select Library"
+                                    defaultSelectedKeys={selectedKeys}
+                                    value={[selectedKeys]}
+                                    size="sm"
+                                    onChange={(e) => {
+                                      setSelectedKeys(e.target.value);
+                                    }}
+                                  >
+                                    <SelectItem
+                                      key={'1'}
+                                      startContent={<BookOpen size={14} />}
+                                    >
+                                      Okunuyor
+                                    </SelectItem>
+                                    <SelectItem
+                                      key={'0'}
+                                      startContent={<BookMarked size={14} />}
+                                    >
+                                      Okunan
+                                    </SelectItem>
+                                    <SelectItem
+                                      key={'2'}
+                                      startContent={<BookPlus size={14} />}
+                                    >
+                                      İstek Listesi
+                                    </SelectItem>
+                                  </Select>
+
+                                  <Button
+                                    onClick={() => changeBookType(book)}
+                                    className="bg-primary text-white disabled:bg-default-500 w-12 h-12 min-w-12 min-h-12 max-w-12 max-h-12 p-1"
+                                    disabled={type === selectedKeys}
+                                  >
+                                    {loadingType ? (
+                                      <div className="animate-spin">⌛</div>
+                                    ) : (
+                                      <Save size={16} />
+                                    )}
+                                  </Button>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
+                          <Tooltip content="Sil" showArrow>
+                            <Button
+                              onClick={() => {
+                                if (deleteOpen?._id === book._id) {
+                                  setDeleteOpen(null);
+                                } else {
+                                  setDeleteOpen(book);
+                                }
+                              }}
+                              className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 bg-default-50 hover:bg-primary hover:text-white`}
+                              size="sm"
+                            >
+                              <Trash2 size={16} />
+                            </Button>
+                          </Tooltip>
+                        </div>
+                      </div>
+
+                      <p className="text-default-500 text-sm">
+                        {t('bookInfo.author', {
+                          name: book.bookId?.authors
+                            .map((i: any) => i.name)
+                            .join(' & '),
                         })}
-                      </span>
-                      <span className="mx-2">•</span>
-                      <span>
-                        {t('bookInfo.publicationYear', {
-                          year: book?.bookId?.publishedDate,
-                        })}
-                      </span>
+                      </p>
+                      {type === BookType.Reading && (
+                        <div className="mt-4 space-y-3 text-default-400">
+                          <ProgressBar
+                            value={parseFloat(book.process?.percent) || 0}
+                            total={book.process?.pageCount || 0}
+                            currentValue={book.process?.readCount || 0}
+                            showChip
+                            bookId={book._id}
+                            showCompletedMessage
+                            progressColor="success"
+                            chipColor="success"
+                            isSelf={isSelf}
+                            mount={mount}
+                          />
+                        </div>
+                      )}
+                      {type === BookType.Read && (
+                        <div className="mt-2 text-sm text-default-400">
+                          <span>
+                            {t('bookInfo.pageCount', {
+                              count: book?.bookId?.pageCount,
+                            })}
+                          </span>
+                          <span className="mx-2">•</span>
+                          <span>
+                            {t('bookInfo.publicationYear', {
+                              year: book?.bookId?.publishedDate,
+                            })}
+                          </span>
+                        </div>
+                      )}
+                      {type === BookType.WishList && (
+                        <div className="mt-2 text-sm text-default-400">
+                          <span>
+                            {t('bookInfo.addedDate', {
+                              date: new Date(
+                                book.createdAt,
+                              ).toLocaleDateString(),
+                            })}
+                          </span>
+                        </div>
+                      )}
                     </div>
+                  </div>
+                  {openBookNotes?._id === book._id && (
+                    <BookNotes
+                      openBookNotes={openBookNotes}
+                      book={book}
+                      profileData={profileData}
+                    />
                   )}
-                  {type === BookType.WishList && (
-                    <div className="mt-2 text-sm text-default-400">
-                      <span>
-                        {t('bookInfo.addedDate', {
-                          date: new Date(book.createdAt).toLocaleDateString(),
-                        })}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              {openBookNotes?._id === book._id && (
-                <BookNotes
-                  openBookNotes={openBookNotes}
-                  book={book}
-                  profileData={profileData}
-                />
-              )}
-            </Fragment>
-          );
-        })}
-        {!loading && hasMore && allData.length >= 10 && (
-          <button onClick={loadMore}>Daha fazla</button>
-        )}
-      </div>
-    </InfiniteScroll>
-  ) : (
-    <EmptyState
-      message={t(
-        `emptyStates.${
-          type === BookType.Reading
-            ? 'reading'
-            : type === BookType.Read
-              ? 'read'
-              : 'wishlist'
-        }`,
+                </Fragment>
+              );
+            })}
+            {!loading && hasMore && allData.length >= 10 && (
+              <button onClick={loadMore}>Daha fazla</button>
+            )}
+          </div>
+        </InfiniteScroll>
+      ) : (
+        <EmptyState
+          message={t(
+            `emptyStates.${
+              type === BookType.Reading
+                ? 'reading'
+                : type === BookType.Read
+                  ? 'read'
+                  : 'wishlist'
+            }`,
+          )}
+        />
       )}
-    />
+      {/* Delete Modal */}
+      <CustomModal
+        isOpen={deleteOpen ? true : false}
+        handleClose={() => setDeleteOpen(false)}
+        handleClick={() => deleteBook(deleteOpen._id)}
+        title={'Silmek istediğinize emin misiniz?'}
+        body={
+          'Bu işlem sonrasında kitabınızı ve bilgilerinizi tekrar geri alamazsınız.'
+        }
+      />
+    </div>
   );
 };
 

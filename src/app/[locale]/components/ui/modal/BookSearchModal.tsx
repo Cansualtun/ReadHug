@@ -46,7 +46,6 @@ const BookSearchModal = ({ isOpen, onClose, mount }: any) => {
     { label: 'Okunmakta', value: '1' },
     { label: 'Okumak İstenilen', value: '2' },
   ];
-
   const fetchSearchResults = async (query: any) => {
     if (query.length < 2) {
       setSearchResults([]);
@@ -79,7 +78,6 @@ const BookSearchModal = ({ isOpen, onClose, mount }: any) => {
       setLoading(false);
     }
   };
-
   // Debounce search function
   const debouncedSearch = useCallback(
     debounce((query) => {
@@ -87,13 +85,11 @@ const BookSearchModal = ({ isOpen, onClose, mount }: any) => {
     }, 500), // 500ms gecikme
     [],
   );
-
   useEffect(() => {
     return () => {
       debouncedSearch.cancel();
     };
   }, [debouncedSearch]);
-
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -104,12 +100,10 @@ const BookSearchModal = ({ isOpen, onClose, mount }: any) => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
   const handleSearch = (value: any) => {
     setSearchQuery(value);
     debouncedSearch(value);
   };
-
   const handleBookSelect = (book: any) => {
     if (!selectedBooks.some((b: any) => b?.name === book?.name)) {
       setSelectedBooks([...selectedBooks, { ...book, type: '0' }]);
@@ -117,7 +111,6 @@ const BookSearchModal = ({ isOpen, onClose, mount }: any) => {
     setSearchQuery('');
     setShowDropdown(false);
   };
-
   const handleStatusChange = (bookName: any, status: any) => {
     const updatedBooks: any = selectedBooks.map((book: any) =>
       book?.name === bookName ? { ...book, type: status } : book,
@@ -130,13 +123,11 @@ const BookSearchModal = ({ isOpen, onClose, mount }: any) => {
     );
     setSelectedBooks(updatedBooks);
   };
-
   const removeBook = (bookName: any) => {
     setSelectedBooks(
       selectedBooks.filter((book: any) => book.name !== bookName),
     );
   };
-
   const handleSave = async () => {
     // onSave(selectedBooks);
     setLoadingData(true);
@@ -185,7 +176,6 @@ const BookSearchModal = ({ isOpen, onClose, mount }: any) => {
       console.log('error', error);
     }
   };
-
   return (
     <Modal
       isOpen={isOpen}
