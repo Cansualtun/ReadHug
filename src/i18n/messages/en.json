@@ -46,6 +46,7 @@
     "loginLink": "Do you have an account? Login"
   },
   "ProfileCard": {
+    "biography": "Biography",
     "stats": {
       "followers": "Followers",
       "following": "Following",

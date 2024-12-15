@@ -124,11 +124,8 @@ export default function Post({
 
   return (
     <div className="relative w-full mt-10 p-2">
-      <div className="absolute -top-8 left-10 z-20">
-        <Card
-          isHoverable
-          className="w-24 h-32 border-0  hover:ring-1 hover:ring-primary/20"
-        >
+      <div className="absolute -top-8 left-4 sm:left-10 z-20">
+        <Card isHoverable className="w-16 sm:w-24 h-24 sm:h-32 border-0 hover:ring-1 hover:ring-primary/20">
           <Link href={`/userBook/${post?.book?.slug}`} className="h-full">
             <Image
               src={
@@ -144,54 +141,51 @@ export default function Post({
           </Link>
         </Card>
       </div>
-      <Card
-        shadow="sm"
-        className="w-full rounded-lg bg-gradient-to-r bg-default-100"
-      >
-        <CardHeader className="flex justify-between items-center px-8 pb-6">
-          <div className="flex flex-col ml-32 space-y-1">
+      <Card shadow="sm" className="w-full rounded-lg bg-gradient-to-r bg-default-100">
+        <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-8 pb-4 sm:pb-6">
+          <div className="flex flex-col ml-20 sm:ml-32 space-y-1">
             <Link
               href={`/userBook/${post?.book?.slug}`}
-              className="text-md font-bold hover:text-primary"
+              className="text-sm sm:text-md font-bold hover:text-primary line-clamp-1"
             >
               {post?.book?.bookId?.name}
             </Link>
-            <p className="text-xs text-default-900">
+            <p className="text-xs text-default-900 line-clamp-1">
               {post?.book?.bookId?.authors[0]?.name}
             </p>
           </div>
           {isProfileCard && (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 mt-2 sm:mt-0">
               <div className="flex flex-col items-end text-right">
                 <Link
                   href={`/${locale}/profile/${post.user.userName}`}
-                  className="text-md font-semibold hover:text-primary cursor-pointer"
+                  className="text-sm sm:text-md font-semibold hover:text-primary cursor-pointer"
                 >
                   @{post?.user?.userName}
                 </Link>
-                <p className="text-xs text-default-900">
-                  {post?.user?.firstName + ' ' + post?.user?.lastName}
+                <p className="text-xs text-default-900 hidden sm:block">
+                  {post?.user?.firstName} {post?.user?.lastName}
                 </p>
               </div>
               <Link href={`/${locale}/profile/${post.user.userName}`}>
                 <Avatar
                   src={post?.user?.image ?? '/assets/avatar.png'}
-                  size="lg"
-                  className="bg-primary border-2 border-default-100 shadow-md cursor-pointer hover:ring-1 hover:ring-primary"
+                  size="sm"
+                  className="w-8 h-8 sm:w-10 sm:h-10 bg-primary border-2 border-default-100 shadow-md cursor-pointer hover:ring-1 hover:ring-primary"
                 />
               </Link>
             </div>
           )}
         </CardHeader>
         <Divider />
-        <CardBody className="px-8 py-6">
+        <CardBody className="px-4 sm:px-8 py-4 sm:py-6">
           <p className="font-light text-sm leading-relaxed text-default-900">
             {post?.content}
           </p>
         </CardBody>
         <Divider />
-        <CardFooter className="flex justify-between items-center px-8 py-4 bg-default-100">
-          <div className="flex gap-5">
+        <CardFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-start sm:items-center px-4 sm:px-8 py-3 sm:py-4 bg-default-100">
+          <div className="flex gap-3 sm:gap-5">
             <Button
               variant="flat"
               size="sm"
@@ -201,8 +195,9 @@ export default function Post({
                 />
               }
               onClick={handleLike}
+              className="min-w-0 px-2 sm:px-3"
             >
-              Like: {likeCount}
+              <span className="text-xs">{likeCount}</span>
             </Button>
             <Button
               variant="flat"
@@ -216,8 +211,9 @@ export default function Post({
                 )
               }
               onClick={toggleComments}
+              className="min-w-0 px-2 sm:px-3"
             >
-              Comment: {post?.commentCount}
+              <span className="text-xs">{post?.commentCount}</span>
             </Button>
           </div>
           <button
@@ -227,28 +223,26 @@ export default function Post({
             {formatDate(post.createdAt, 'dateTime')}
           </button>
         </CardFooter>
-
-        {showComments || isOpenComment ? (
-          <div className="px-8 py-4 bg-default-100 rounded-b-lg">
+        {(showComments || isOpenComment) && (
+          <div className="px-4 sm:px-8 py-4 bg-default-100 rounded-b-lg">
             {userData && (
-              <div className="flex gap-4 mb-6">
-                <div className="flex justify-center items-center">
-                  <Avatar
-                    src={userData?.image ?? '/assets/avatar.png'}
-                    size="sm"
-                    className="bg-primary"
-                  />
-                </div>
+              <div className="flex gap-2 sm:gap-4 mb-4 sm:mb-6">
+                <Avatar
+                  src={userData?.image ?? '/assets/avatar.png'}
+                  size="sm"
+                  className="w-8 h-8 bg-primary"
+                />
                 <div className="flex-1 flex gap-2">
                   <Input
                     type="text"
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     onKeyDown={handleEnterKeyDown}
-                    placeholder="Yorumunuzu yazın..."
+                    placeholder="Write a comment..."
                     variant="bordered"
                     radius="full"
                     className="flex-1"
+                    size="sm"
                     endContent={
                       <Button
                         isIconOnly
@@ -264,62 +258,40 @@ export default function Post({
                 </div>
               </div>
             )}
-
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {comments.map((comment: any) => (
                 <Card key={comment.id} className="w-full bg-content1">
-                  <CardBody className="p-4">
-                    <div className="flex gap-2 items-center">
-                      <Link
-                        href={`/${locale}/profile/${post.user.userName}`}
-                        className="text-sm font-semibold hover:text-primary cursor-pointer"
-                      >
+                  <CardBody className="p-3 sm:p-4">
+                    <div className="flex gap-2 items-start sm:items-center">
+                      <Link href={`/${locale}/profile/${comment.user.userName}`}>
                         <Avatar
                           src={comment?.user?.image ?? '/assets/avatar.png'}
                           size="sm"
-                          className="hover:ring-1 hover:ring-offset-1 hover:ring-primary"
+                          className="w-7 h-7 hover:ring-1 hover:ring-primary"
                         />
                       </Link>
-                      <div className="flex-1">
-                        <div className="flex justify-between items-center">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
                           <Link
-                            href={`/${locale}/profile/${post.user.userName}`}
-                            className="text-sm font-semibold hover:text-primary cursor-pointer"
+                            href={`/${locale}/profile/${comment.user.userName}`}
+                            className="text-sm font-semibold hover:text-primary truncate"
                           >
-                            {post?.user?.userName}
+                            {comment.user.userName}
                           </Link>
                           <p className="text-xs text-default-900">
                             {formatDate(comment?.createdAt, 'dateTime')}
                           </p>
                         </div>
+                        <p className="text-sm text-default-800 mt-2">
+                          {comment?.content}
+                        </p>
                       </div>
-                    </div>
-                    <div className="flex-1 w-full py-4">
-                      <p className="text-sm text-default-800">
-                        {comment?.content}
-                      </p>
-                    </div>
-                    <div className="mt-2 border-t pt-4">
-                      <Button
-                        variant="flat"
-                        size="sm"
-                        startContent={
-                          <Heart
-                            className={`w-2 h-2 text-red-500 ${isLiked && 'fill-red-500'}`}
-                          />
-                        }
-                        onClick={handleLike}
-                      >
-                        Like: {likeCount}
-                      </Button>
                     </div>
                   </CardBody>
                 </Card>
               ))}
             </div>
           </div>
-        ) : (
-          ''
         )}
       </Card>
     </div>

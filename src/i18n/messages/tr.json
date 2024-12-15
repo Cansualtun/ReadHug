@@ -46,6 +46,7 @@
     "loginLink": "Hesabınız var mı? Giriş yapın"
   },
   "ProfileCard": {
+    "biography": "Biyografi",
     "stats": {
       "followers": "Takipçi",
       "following": "Takip",

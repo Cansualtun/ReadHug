@@ -1,6 +1,7 @@
 import BlockedUserMessage from '@/app/[locale]/components/profile/BlockedUser';
 import BookListTabs from '@/app/[locale]/components/profile/BookListTab';
 import ProfileCard from '@/app/[locale]/components/profile/ProfileCard';
+import Footer from '@/app/[locale]/components/ui/footer';
 import ProfileFooter from '@/app/[locale]/components/ui/profileFooter';
 import { getAllBookLists } from '@/app/[locale]/server/book';
 import { UserPostInfo } from '@/app/[locale]/server/post';
@@ -29,6 +30,7 @@ export default async function ProfileSlug({
           <div className="lg:col-span-1">
             <div className="sticky top-4">
               <ProfileCard profileData={profile} />
+              <Footer />
             </div>
           </div>
           <div className="lg:col-span-2">
@@ -48,7 +50,6 @@ export default async function ProfileSlug({
           </div>
         </div>
       </div>
-      <ProfileFooter />
     </>
   );
 }

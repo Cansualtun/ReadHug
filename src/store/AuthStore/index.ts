@@ -32,7 +32,7 @@ export const authApi = baseApi.injectEndpoints({
               }),
             );
             document.cookie = `token=${data.access_token}; path=/; Secure;`;
-            toast.success('Welcome to Books Addict');
+            toast.success('Welcome to Read Hug');
           } else {
             toast.error(data.message || 'Login failed');
           }
@@ -75,7 +75,6 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-          toast.success('Logout success!');
           dispatch(setAuthStore({ logout: true }));
           document.cookie =
             'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';

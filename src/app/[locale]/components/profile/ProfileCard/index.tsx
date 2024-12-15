@@ -125,7 +125,7 @@ const ProfileCard = ({ profileData }: any) => {
           user: data.user,
         }),
       );
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const renderFollowList = () => {
@@ -234,7 +234,7 @@ const ProfileCard = ({ profileData }: any) => {
           'Content-Type': 'application/json',
         },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -272,7 +272,7 @@ const ProfileCard = ({ profileData }: any) => {
                   >
                     <ShieldBan />{' '}
                     {profileData.isBlocked === '0' ||
-                    profileData.isBlocked === '2'
+                      profileData.isBlocked === '2'
                       ? 'Engelle'
                       : 'Engeli Kaldır'}
                   </Button>
@@ -361,7 +361,7 @@ const ProfileCard = ({ profileData }: any) => {
           <div className="mt-3 w-full flex flex-col gap-2 bg-default-200/50 p-4 rounded-md relative">
             <div className="flex flex-row items-center gap-1 w-full mb-1">
               <TextSelect className="w-4 h-4  text-primary" />
-              <p>Biyografi</p>
+              <p className='text-sm text-primary'>{t("biography")}</p>
             </div>
             <p className="text-sm text-start">{userProfileData?.user?.bio}</p>
           </div>
