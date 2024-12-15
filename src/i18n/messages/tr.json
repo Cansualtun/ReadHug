@@ -119,6 +119,10 @@
       "submit": {
         "saving": "Kaydediliyor...",
         "default": "Değişiklikleri Kaydet"
+      },
+      "bio": {
+        "label": "Biyografi",
+        "placeholder": "Hakkınızda bir şeyler yazın..."
       }
     }
   },

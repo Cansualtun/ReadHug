@@ -33,6 +33,7 @@ import {
   Send,
   ShieldAlert,
   ShieldBan,
+  TextSelect,
   UserCheck,
   UserPlus,
   Users,
@@ -335,7 +336,7 @@ const ProfileCard = ({ profileData }: any) => {
               className="flex items-center bg-primary text-white px-2 py-0.5 rounded-md text-sm"
             >
               {loading ? (
-                <div className='flex items-center gap-0.5'>
+                <div className="flex items-center gap-0.5">
                   <div className="animate-spin">⌛</div> Yükleniyor...
                 </div>
               ) : (
@@ -355,6 +356,16 @@ const ProfileCard = ({ profileData }: any) => {
             @{userProfileData?.user?.userName}
           </p>
         </div>
+
+        {userProfileData?.user?.bio && (
+          <div className="mt-3 w-full flex flex-col gap-2 bg-default-200/50 p-4 rounded-md relative">
+            <div className="flex flex-row items-center gap-1 w-full mb-1">
+              <TextSelect className="w-4 h-4  text-primary" />
+              <p>Biyografi</p>
+            </div>
+            <p className="text-sm text-start">{userProfileData?.user?.bio}</p>
+          </div>
+        )}
       </CardHeader>
       {isBlocked == '0' && (
         <CardBody className="px-4 py-2">

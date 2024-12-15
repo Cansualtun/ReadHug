@@ -119,6 +119,10 @@
       "submit": {
         "saving": "Saving...",
         "default": "Save Changes"
+      },
+      "bio": {
+        "label": "Biography",
+        "placeholder": "Write something about yourself..."
       }
     }
   },

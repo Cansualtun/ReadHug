@@ -16,6 +16,7 @@ export interface Data {
   gender: any;
   isActive: boolean;
   __v: number;
+  bio?: string;
 }
 export interface IUserProfileRequest {
   userName: string;
@@ -40,6 +41,7 @@ export interface User {
   gender: number;
   isActive: boolean;
   image: string;
+  bio: string;
 }
 
 export interface Counts {

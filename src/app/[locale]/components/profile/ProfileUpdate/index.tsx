@@ -2,7 +2,6 @@
 
 import { useProfileUpdateMutation } from '@/store/ProfileStore';
 import { useMeMutation } from '@/store/UserStore';
-import { formatDate } from '@/utils/formatDate';
 import {
   Button,
   Card,
@@ -10,12 +9,14 @@ import {
   Input,
   Select,
   SelectItem,
+  Textarea,
 } from '@nextui-org/react';
-import { useFormik } from 'formik';
-import { useEffect } from 'react';
-import { useTranslations } from 'next-intl';
 import { genderOptions } from 'enums/gender';
-import { User, Calendar, AtSign, UserCircle2 } from 'lucide-react';
+import { useFormik } from 'formik';
+import { AtSign, Calendar, TextSelect, User, UserCircle2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 export default function ProfileUpdate() {
   const t = useTranslations('ProfileUpdate');
@@ -29,6 +30,7 @@ export default function ProfileUpdate() {
       userName: '',
       birthDate: '',
       gender: 0,
+      bio: '',
     },
     onSubmit: async (values) => {
       try {
@@ -52,6 +54,7 @@ export default function ProfileUpdate() {
           userName: data.data?.data.userName || '',
           birthDate: data.data?.data.birthDate.split('T')[0] || '',
           gender: data.data?.data.gender || 0,
+          bio: data.data?.data.bio || '',
         });
       }
     };
@@ -94,8 +97,6 @@ export default function ProfileUpdate() {
           value={formik.values.userName}
           placeholder={t('form.userName.placeholder')}
           startContent={<AtSign className="w-4 h-4 text-default-400" />}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
@@ -128,6 +129,26 @@ export default function ProfileUpdate() {
               </SelectItem>
             ))}
           </Select>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-4 relative">
+          <div className="absolute right-0 top-0 bg-default-200 px-2 py-0.5 rounded-tr-lg rounded-bl-lg text-sm">
+            {formik.values.bio.length} / 256
+          </div>
+          <Textarea
+            variant="bordered"
+            label={t('form.bio.label')}
+            placeholder={t('form.bio.placeholder')}
+            startContent={<TextSelect className="w-4 h-4 text-default-400" />}
+            value={formik.values.bio}
+            onValueChange={(e) => {
+              if (e.length <= 256) {
+                formik.setFieldValue('bio', e);
+              } else {
+                toast.error('Biyografiniz 256 karakterden fazla olamaz.');
+              }
+            }}
+            onBlur={formik.handleBlur}
+          />
         </div>
         <div className="flex justify-end">
           <Button
