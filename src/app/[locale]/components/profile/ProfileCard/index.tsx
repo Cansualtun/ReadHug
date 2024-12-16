@@ -43,6 +43,7 @@ import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Skeleton from './Skeleton';
+import Image from 'next/image';
 
 const ProfileCard = ({ profileData }: any) => {
   const dispatch = useDispatch();
@@ -125,7 +126,7 @@ const ProfileCard = ({ profileData }: any) => {
           user: data.user,
         }),
       );
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const renderFollowList = () => {
@@ -234,7 +235,7 @@ const ProfileCard = ({ profileData }: any) => {
           'Content-Type': 'application/json',
         },
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -247,9 +248,18 @@ const ProfileCard = ({ profileData }: any) => {
 
   return (
     <Card shadow="sm" className="bg-default-50 relative">
+      <div className="cover absolute left-0 top-0 w-full h-[80px]">
+        <Image
+          src={'/assets/cover-placeholder.jpg'}
+          width={384}
+          height={250}
+          alt=""
+          className='w-full h-[80px] object-cover border-b border-b-default-500'
+        />
+      </div>
       <CardHeader className="flex flex-col items-center pt-6 pb-2">
         {!isSelf && isLoggedIn && (
-          <div className="absolute right-2 top-4 z-10">
+          <div className="absolute right-2 top-4 z-10 bg-default-50 rounded-full p-1 group">
             <Popover
               classNames={{
                 content: 'p-1',
@@ -260,7 +270,7 @@ const ProfileCard = ({ profileData }: any) => {
             >
               <PopoverTrigger>
                 <div role="button">
-                  <EllipsisVertical size={16} />
+                  <EllipsisVertical size={16} className='group-hover:text-primary' />
                 </div>
               </PopoverTrigger>
               <PopoverContent>
@@ -272,7 +282,7 @@ const ProfileCard = ({ profileData }: any) => {
                   >
                     <ShieldBan />{' '}
                     {profileData.isBlocked === '0' ||
-                      profileData.isBlocked === '2'
+                    profileData.isBlocked === '2'
                       ? 'Engelle'
                       : 'Engeli Kaldır'}
                   </Button>
@@ -361,7 +371,7 @@ const ProfileCard = ({ profileData }: any) => {
           <div className="mt-3 w-full flex flex-col gap-2 bg-default-200/50 p-4 rounded-md relative">
             <div className="flex flex-row items-center gap-1 w-full mb-1">
               <TextSelect className="w-4 h-4  text-primary" />
-              <p className='text-sm text-primary'>{t("biography")}</p>
+              <p className="text-sm text-primary">{t('biography')}</p>
             </div>
             <p className="text-sm text-start">{userProfileData?.user?.bio}</p>
           </div>
