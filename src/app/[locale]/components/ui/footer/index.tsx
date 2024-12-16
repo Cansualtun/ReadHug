@@ -10,15 +10,15 @@ const Footer = () => {
             <div className='flex flex-row gap-10'>
                 <div>
                     <div className="flex flex-col space-y-2">
-                        <Link href="/discord" className="text-default-500 hover:text-primary text-sm">
+                        {/* <Link href="/discord" className="text-default-500 hover:text-primary text-sm">
                             {t('sections.community.items.discord')}
-                        </Link>
-                        <Link href="/twitter" className="text-default-500 hover:text-primary text-sm">
+                        </Link> */}
+                        <Link href="https://x.com/readhug" className="text-default-500 hover:text-primary text-sm">
                             {t('sections.community.items.twitter')}
                         </Link>
-                        <Link href="/github" className="text-default-500 hover:text-primary text-sm">
+                        {/* <Link href="/github" className="text-default-500 hover:text-primary text-sm">
                             {t('sections.community.items.github')}
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
                 <div>
