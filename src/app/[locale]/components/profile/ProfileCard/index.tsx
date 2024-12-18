@@ -315,10 +315,10 @@ const ProfileCard = ({ profileData }: any) => {
             />
           )}
           {isSelf && isLoggedIn && (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:flex w-24 h-24 bg-white/50 justify-center items-center">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden group-hover:flex w-24 h-24 bg-white/50 hover:rounded-full justify-center items-center">
               <label
                 htmlFor="upgradeImage"
-                className="bg-white/80 rounded-full w-10 h-10 flex justify-center items-center cursor-pointer transition-all"
+                className="bg-white/80 hover:rounded-full rounded-full w-10 h-10 flex justify-center items-center cursor-pointer transition-all"
               >
                 <ImagePlus />
               </label>
