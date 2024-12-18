@@ -27,7 +27,7 @@ export default async function ProfileSlug({
       <div className="mb-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
-            <div className="sticky top-4">
+            <div className="sticky top-20">
               <ProfileCard profileData={profile} />
               <Footer />
             </div>

@@ -29,7 +29,6 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   const [openBookModal, setOpenBookModal] = useState(false);
   const { isSelf } = profile;
   const [postData, setPostData] = useState(post);
-  console.log('postData', postData);
 
   const handleTabChange = (key: Selection | string) => {
     if (key == 'post') {
