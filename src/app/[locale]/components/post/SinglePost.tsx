@@ -14,7 +14,7 @@ type Props = {
 };
 
 const SinglePost = ({ post, profile, locale }: Props) => {
-  console.log('post', post);
+  console.log('profile', profile);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
@@ -29,6 +29,7 @@ const SinglePost = ({ post, profile, locale }: Props) => {
             post={post.data}
             isOpenComment={true}
             isProfileCard={false}
+            profileData={profile}
           />
         </div>
       ) : (

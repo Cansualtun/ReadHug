@@ -80,7 +80,9 @@ const Posts = ({ data }: Props) => {
 
   return (
     <div>
-      {selectPosts?.map((item: any) => <PostCard key={item._id} post={item} />)}
+      {selectPosts?.map((item: any) => (
+        <PostCard key={item._id} post={item} profileData={false} />
+      ))}
       {isLoading && (
         <div className="w-full flex justify-center my-4 scale-50">
           <Loading />

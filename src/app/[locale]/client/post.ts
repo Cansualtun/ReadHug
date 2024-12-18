@@ -28,3 +28,17 @@ export async function getClientBookPosts(bookId: string) {
     };
   }
 }
+export async function UserPostInfo(
+  userName: string,
+  options: RequestInit = {},
+) {
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options?.headers,
+  };
+
+  return fetch(`${BASE_URL}/posts/user/${userName}`, {
+    ...options,
+    headers,
+  }).then((res) => res.json());
+}

@@ -62,20 +62,7 @@ export const {
   setPostShareStore,
   clearPostShareStore,
 } = postSlice.actions;
-// export const selectPost = (state: RootState) => {
-//   const mutations = state.baseApi.mutations;
-//   const latestFulfilled: any = Object.values(mutations)
-//     .filter(
-//       (mutation: any) =>
-//         mutation.endpointName === 'posts' && mutation.status === 'fulfilled',
-//     )
-//     .sort(
-//       (a: any, b: any) =>
-//         (b.fulfilledTimeStamp || 0) - (a.fulfilledTimeStamp || 0),
-//     )[0];
 
-//   return latestFulfilled?.data?.data || null;
-// };
 export const selectPost = (state: RootState) => {
   return state.post?.posts || []; // Eğer post undefined ise boş dizi dönsün
 };

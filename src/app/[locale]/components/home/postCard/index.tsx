@@ -1,7 +1,9 @@
 'use client';
 import { useCommentPostMutation } from '@/store/CommentStore';
 import { useLikeCommentMutation } from '@/store/LikeStore';
+import { useMorePostsMutation } from '@/store/PostStore';
 import { selectUser } from '@/store/UserStore/slice';
+import formatBaseUrl from '@/utils/formatBaseUrl';
 import { formatDate } from '@/utils/formatDate';
 import {
   Avatar,
@@ -12,14 +14,20 @@ import {
   CardHeader,
   Divider,
   Input,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 } from '@nextui-org/react';
 import axios from 'axios';
 import {
   ChevronDown,
   ChevronUp,
+  EllipsisVertical,
   Heart,
   MessageCircle,
   Send,
+  ShieldAlert,
+  Trash2,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -32,6 +40,8 @@ export default function Post({
   post,
   isOpenComment,
   isProfileCard = true,
+  profileData,
+  mount,
 }: any) {
   const router = useRouter();
   const { locale } = useParams();
@@ -44,6 +54,9 @@ export default function Post({
   const [limit, setLimit] = useState(10);
   const [likeComment] = useLikeCommentMutation();
   const [commentPost] = useCommentPostMutation();
+  const [profile, setProfile] = useState<any>(profileData);
+  const [posts] = useMorePostsMutation();
+
   const userData = useSelector(selectUser);
 
   const toggleComments = () => {
@@ -81,7 +94,7 @@ export default function Post({
       });
       setNewComment('');
       await handleGetComment();
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleGetComment = async () => {
     try {
@@ -91,7 +104,8 @@ export default function Post({
         ?.split('=')[1];
       let BASE_URL = '';
       if (process.env.NODE_ENV === 'development') {
-        BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
+        BASE_URL =
+          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
       }
       if (process.env.NODE_ENV === 'production') {
         BASE_URL = 'https://bookarchive-production.up.railway.app';
@@ -111,6 +125,23 @@ export default function Post({
       console.log('error', error);
     }
   };
+  const handleDeletePost = async () => {
+    try {
+      const { token, BASE_URL } = formatBaseUrl();
+
+      await axios.delete(`${BASE_URL}/posts/user/delete/${post._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      toast.success('Post silindi.');
+      posts({ page, limit });
+      await mount();
+    } catch (error) {
+      console.error('Post silinemedi:', error);
+    }
+  };
   const handleEnterKeyDown = (e: any) => {
     e.key == 'Enter' && handleComment();
   };
@@ -122,10 +153,19 @@ export default function Post({
     }
   }, [showComments]);
 
+  useEffect(() => {
+    if (profileData) {
+      setProfile(profileData);
+    }
+  }, [profileData]);
+
   return (
     <div className="relative w-full mt-10 p-2">
       <div className="absolute -top-8 left-4 sm:left-10 z-20">
-        <Card isHoverable className="w-16 sm:w-24 h-24 sm:h-32 border-0 hover:ring-1 hover:ring-primary/20">
+        <Card
+          isHoverable
+          className="w-16 sm:w-24 h-24 sm:h-32 border-0 hover:ring-1 hover:ring-primary/20"
+        >
           <Link href={`/userBook/${post?.book?.slug}`} className="h-full">
             <Image
               src={
@@ -141,7 +181,50 @@ export default function Post({
           </Link>
         </Card>
       </div>
-      <Card shadow="sm" className="w-full rounded-lg bg-gradient-to-r bg-default-100">
+
+      <Card
+        shadow="sm"
+        className="w-full rounded-lg bg-gradient-to-r bg-default-100 relative"
+      >
+        {' '}
+        {profile && profile?.isSelf && profile?.isLoggedIn && (
+          <div className="absolute right-1 top-1 bg-default-50 rounded-full p-1 group z-40">
+            <Popover
+              classNames={{
+                content: 'p-1',
+              }}
+              placement="bottom-end"
+              showArrow
+              offset={5}
+            >
+              <PopoverTrigger>
+                <div role="button">
+                  <EllipsisVertical
+                    size={16}
+                    className="group-hover:text-primary"
+                  />
+                </div>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="flex flex-col  w-40">
+                  <Button
+                    variant="light"
+                    onClick={handleDeletePost}
+                    className="flex items-center justify-start hover:bg-default-500"
+                  >
+                    <Trash2 /> Sil
+                  </Button>
+                  <Button
+                    variant="light"
+                    className="flex items-center justify-start hover:bg-default-500"
+                  >
+                    <ShieldAlert /> Bildir
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
         <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-8 pb-4 sm:pb-6">
           <div className="flex flex-col ml-20 sm:ml-32 space-y-1">
             <Link
@@ -263,7 +346,9 @@ export default function Post({
                 <Card key={comment.id} className="w-full bg-content1">
                   <CardBody className="p-3 sm:p-4">
                     <div className="flex gap-2 items-start sm:items-center">
-                      <Link href={`/${locale}/profile/${comment.user.userName}`}>
+                      <Link
+                        href={`/${locale}/profile/${comment.user.userName}`}
+                      >
                         <Avatar
                           src={comment?.user?.image ?? '/assets/avatar.png'}
                           size="sm"

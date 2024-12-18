@@ -2,12 +2,14 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import PostCard from '../../home/postCard';
 import Loading from '../../ui/loading';
+import { UserPostInfo } from '@/app/[locale]/client/post';
 type Props = {
   post: any;
   slug: string;
+  profileData: any;
 };
 
-const RenderPostList = ({ post, slug }: Props) => {
+const RenderPostList = ({ post, slug, profileData }: Props) => {
   const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -73,6 +75,11 @@ const RenderPostList = ({ post, slug }: Props) => {
     if (scrollTop + clientHeight >= scrollHeight - 25) loadMore();
   };
 
+  const handlePostMount = async () => {
+    const { data } = await UserPostInfo(slug);
+    setUserPost(data);
+  };
+
   useEffect(() => {
     if (loading) {
       return;
@@ -86,7 +93,12 @@ const RenderPostList = ({ post, slug }: Props) => {
     <div>
       <div>
         {userPost.map((item: any) => (
-          <PostCard key={item._id} post={item} />
+          <PostCard
+            key={item._id}
+            post={item}
+            profileData={profileData}
+            mount={handlePostMount}
+          />
         ))}
       </div>
       {loading && (

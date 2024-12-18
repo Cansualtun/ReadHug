@@ -43,8 +43,10 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   };
 
   useEffect(() => {
-    setProfile(profileData);
-  }, [profileData]);
+    if (profileData) {
+      setProfile(profileData);
+    }
+  }, [profileData, post]);
 
   return (
     <div className="w-full">
@@ -167,7 +169,11 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
 
           <Card shadow="none" className="bg-transparent shadow-none w-full p-0">
             <CardBody className="p-0">
-              <RenderPostList slug={slug} post={post} />
+              <RenderPostList
+                slug={slug}
+                post={post}
+                profileData={profileData}
+              />
             </CardBody>
           </Card>
         </Tab>

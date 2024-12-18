@@ -8,7 +8,7 @@ export default async function PostPage({ params }: any) {
     ProfilInfo(singlePost.data.user.userName),
   ]);
   const profile = await profileResponse.json();
-  console.log('params', params);
+  console.log('profile', profile);
 
   return (
     <div>
