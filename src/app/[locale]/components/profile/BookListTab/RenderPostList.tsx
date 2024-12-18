@@ -2,14 +2,14 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import PostCard from '../../home/postCard';
 import Loading from '../../ui/loading';
-import { UserPostInfo } from '@/app/[locale]/client/post';
 type Props = {
   post: any;
   slug: string;
   profileData: any;
+  handlePostMount: () => void;
 };
 
-const RenderPostList = ({ post, slug, profileData }: Props) => {
+const RenderPostList = ({ post, slug, profileData,handlePostMount }: Props) => {
   const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -73,11 +73,6 @@ const RenderPostList = ({ post, slug, profileData }: Props) => {
       document.documentElement.clientHeight || window.innerHeight;
 
     if (scrollTop + clientHeight >= scrollHeight - 25) loadMore();
-  };
-
-  const handlePostMount = async () => {
-    const { data } = await UserPostInfo(slug);
-    setUserPost(data);
   };
 
   useEffect(() => {

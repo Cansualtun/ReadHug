@@ -17,6 +17,7 @@ import BookSearchModal from '../../ui/modal/BookSearchModal';
 import BookPostComponent from '../../ui/widget/BookPostComponent';
 import RenderBookList from './RenderBookList';
 import RenderPostList from './RenderPostList';
+import { UserPostInfoClient } from '@/app/[locale]/client/post';
 
 const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   const userData = useSelector(selectUser);
@@ -27,6 +28,8 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   const [selectedTab, setSelectedTab] = useState('1');
   const [openBookModal, setOpenBookModal] = useState(false);
   const { isSelf } = profile;
+  const [postData, setPostData] = useState(post);
+  console.log('postData', postData);
 
   const handleTabChange = (key: Selection | string) => {
     if (key == 'post') {
@@ -41,10 +44,17 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
     const data = await getAllBookLists(slug);
     setServerBooks(data.data);
   };
+  const handlePostMount = async () => {
+    const { data } = await UserPostInfoClient(slug);
+    setPostData({ ...postData, data });
+  };
 
   useEffect(() => {
     if (profileData) {
       setProfile(profileData);
+    }
+    if (post) {
+      setPostData(post);
     }
   }, [profileData, post]);
 
@@ -163,7 +173,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
         >
           {userData && profileData.user._id === userData._id && (
             <div className="sticky top-[70px] z-50 w-full my-2 p-0">
-              <BookPostComponent userData={userData} />
+              <BookPostComponent userData={userData} mount={handlePostMount} />
             </div>
           )}
 
@@ -171,8 +181,9 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
             <CardBody className="p-0">
               <RenderPostList
                 slug={slug}
-                post={post}
+                post={postData}
                 profileData={profileData}
+                handlePostMount={handlePostMount}
               />
             </CardBody>
           </Card>

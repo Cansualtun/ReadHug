@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 
 interface BookPostComponentProps {
   userData: any;
+  mount?: () => void;
 }
 interface Book {
   id: string;
@@ -17,7 +18,10 @@ interface Book {
   authorData: any;
 }
 
-const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
+const BookPostComponent: React.FC<BookPostComponentProps> = ({
+  userData,
+  mount,
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBook, setSelectedBook] = useState<any | null>(null);
   const [content, setContent] = useState('');
@@ -44,6 +48,9 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
     setSelectedBook(null);
     setContent('');
     setIsExpanded(false);
+    if (mount) {
+      await mount();
+    }
   };
 
   useEffect(() => {
@@ -115,13 +122,18 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
       >
         {!isExpanded ? (
           <div className="p-2 cursor-pointer">
-            <div className="flex items-center gap-2" onClick={() => setIsExpanded(true)}>
+            <div
+              className="flex items-center gap-2"
+              onClick={() => setIsExpanded(true)}
+            >
               <Avatar
                 src={userData?.image ?? '/assets/avatar.png'}
                 size="sm"
                 className="w-8 h-8"
               />
-              <span className="text-default-400 text-sm flex-1">Click to share a book...</span>
+              <span className="text-default-400 text-sm flex-1">
+                Click to share a book...
+              </span>
               <BookOpen className="w-4 h-4 text-default-400" />
             </div>
           </div>
@@ -161,14 +173,19 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
                       >
                         <div className="relative w-10 h-14 flex-shrink-0">
                           <Image
-                            src={book?.book?.images?.thumbnail ?? '/assets/book-placeholder.png'}
+                            src={
+                              book?.book?.images?.thumbnail ??
+                              '/assets/book-placeholder.png'
+                            }
                             alt={book?.book?.name}
                             fill
                             className="rounded object-cover"
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium line-clamp-1">{book?.book?.name}</p>
+                          <p className="text-sm font-medium line-clamp-1">
+                            {book?.book?.name}
+                          </p>
                           <p className="text-xs text-default-500 line-clamp-1 hidden sm:block">
                             {book?.authorData[0]?.name}
                           </p>
@@ -191,7 +208,10 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
                   <div className="flex gap-3">
                     <div className="relative w-12 h-16 flex-shrink-0">
                       <Image
-                        src={selectedBook?.book?.images?.thumbnail ?? '/assets/book-placeholder.png'}
+                        src={
+                          selectedBook?.book?.images?.thumbnail ??
+                          '/assets/book-placeholder.png'
+                        }
                         alt={selectedBook?.bookName}
                         fill
                         className="rounded object-cover"
@@ -202,7 +222,9 @@ const BookPostComponent: React.FC<BookPostComponentProps> = ({ userData }) => {
                         {selectedBook?.book?.name}
                       </p>
                       <p className="text-xs text-default-500 line-clamp-1 hidden sm:block">
-                        {selectedBook?.authorData?.map((author: any) => author.name).join(', ')}
+                        {selectedBook?.authorData
+                          ?.map((author: any) => author.name)
+                          .join(', ')}
                       </p>
                     </div>
                   </div>

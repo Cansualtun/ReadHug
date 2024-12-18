@@ -28,7 +28,7 @@ export async function getClientBookPosts(bookId: string) {
     };
   }
 }
-export async function UserPostInfo(
+export async function UserPostInfoClient(
   userName: string,
   options: RequestInit = {},
 ) {
