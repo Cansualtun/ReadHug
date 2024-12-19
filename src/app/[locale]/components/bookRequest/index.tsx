@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import LoginForm from '../auth/LoginForm';
 import Loading from '../ui/loading';
 import RequestSidebar from './RequestSidebar';
+import { createBookRequestClient } from '../../client/request';
 
 const BookRequests: React.FC = () => {
   const me = useSelector(selectUser);
@@ -27,11 +28,13 @@ const BookRequests: React.FC = () => {
       pageCount: '',
       description: '',
     },
-    validationSchema: requstValidationSchema,
+    // validationSchema: requstValidationSchema,
     onSubmit: async (values, { resetForm }) => {
+      console.log("first values", values);
+      
       try {
         setLoading(true);
-        // Submit logic goes here
+        await createBookRequestClient(values);
         setIsSuccess(true);
         resetForm();
       } catch (error) {
