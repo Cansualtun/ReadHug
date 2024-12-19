@@ -47,6 +47,8 @@ export default function Post({
   profileData,
   mount,
 }: any) {
+  console.log('post?.content', post?.content);
+
   const router = useRouter();
   const { locale } = useParams();
   const [showComments, setShowComments] = useState(false);
@@ -167,20 +169,6 @@ export default function Post({
 
   return (
     <div className="relative w-full mt-10 p-2">
-      {openReport && (
-        <div>
-          <Modal
-            isOpen={openReport}
-            onClose={() => {
-              setOpenReport(false);
-            }}
-          >
-            <ModalHeader>Modal Header</ModalHeader>
-            <ModalContent>Modal Content</ModalContent>
-            <ModalFooter>Modal Footer</ModalFooter>
-          </Modal>
-        </div>
-      )}
       <div className="absolute -top-8 left-4 sm:left-10 z-20">
         <Card
           isHoverable
@@ -283,7 +271,10 @@ export default function Post({
         </CardHeader>
         <Divider />
         <CardBody className="px-4 sm:px-8 py-4 sm:py-6">
-          <p className="font-light text-sm leading-relaxed text-default-900">
+          <p
+            className="font-light text-sm leading-relaxed text-default-900"
+            style={{ whiteSpace: 'pre-wrap' }}
+          >
             {post?.content}
           </p>
         </CardBody>
