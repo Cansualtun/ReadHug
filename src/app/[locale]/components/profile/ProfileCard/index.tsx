@@ -39,16 +39,20 @@ import {
   Users,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import ReportModal from './ReportModal';
 import Skeleton from './Skeleton';
-import Image from 'next/image';
 
 const ProfileCard = ({ profileData }: any) => {
   const dispatch = useDispatch();
   const t = useTranslations('ProfileCard');
+  const [openReport, setOpenReport] = useState(false);
   const [profile, setProfile] = useState(profileData);
+  console.log('profile', profile);
+
   const {
     user,
     isSelf,
@@ -254,7 +258,7 @@ const ProfileCard = ({ profileData }: any) => {
           width={384}
           height={250}
           alt=""
-          className='w-full h-[80px] object-cover border-b border-b-default-500'
+          className="w-full h-[80px] object-cover border-b border-b-default-500"
         />
       </div>
       <CardHeader className="flex flex-col items-center pt-6 pb-2">
@@ -270,7 +274,10 @@ const ProfileCard = ({ profileData }: any) => {
             >
               <PopoverTrigger>
                 <div role="button">
-                  <EllipsisVertical size={16} className='group-hover:text-primary' />
+                  <EllipsisVertical
+                    size={16}
+                    className="group-hover:text-primary"
+                  />
                 </div>
               </PopoverTrigger>
               <PopoverContent>
@@ -288,6 +295,7 @@ const ProfileCard = ({ profileData }: any) => {
                   </Button>
                   <Button
                     variant="light"
+                    onClick={() => setOpenReport(true)}
                     className="flex items-center justify-start hover:bg-default-500"
                   >
                     <ShieldAlert /> Bildir
@@ -295,6 +303,13 @@ const ProfileCard = ({ profileData }: any) => {
                 </div>
               </PopoverContent>
             </Popover>
+
+            <ReportModal
+              openReport={openReport}
+              setOpenReport={() => setOpenReport(false)}
+              connection={'profile'}
+              id={profile.user._id}
+            />
           </div>
         )}
 

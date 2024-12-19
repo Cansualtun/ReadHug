@@ -14,6 +14,10 @@ import {
   CardHeader,
   Divider,
   Input,
+  Modal,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -46,6 +50,7 @@ export default function Post({
   const router = useRouter();
   const { locale } = useParams();
   const [showComments, setShowComments] = useState(false);
+  const [openReport, setOpenReport] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
   const [isLiked, setIsLiked] = useState(post.isLiked);
@@ -158,9 +163,24 @@ export default function Post({
       setProfile(profileData);
     }
   }, [profileData]);
+  console.log('openReport', openReport);
 
   return (
     <div className="relative w-full mt-10 p-2">
+      {openReport && (
+        <div>
+          <Modal
+            isOpen={openReport}
+            onClose={() => {
+              setOpenReport(false);
+            }}
+          >
+            <ModalHeader>Modal Header</ModalHeader>
+            <ModalContent>Modal Content</ModalContent>
+            <ModalFooter>Modal Footer</ModalFooter>
+          </Modal>
+        </div>
+      )}
       <div className="absolute -top-8 left-4 sm:left-10 z-20">
         <Card
           isHoverable
@@ -216,6 +236,7 @@ export default function Post({
                   </Button>
                   <Button
                     variant="light"
+                    onClick={() => setOpenReport(true)}
                     className="flex items-center justify-start hover:bg-default-500"
                   >
                     <ShieldAlert /> Bildir
