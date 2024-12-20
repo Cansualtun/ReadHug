@@ -148,7 +148,10 @@ const BookNotes = ({ openBookNotes, book, profileData }: Props) => {
                                 {item.notePage ?? 'Sayfasız'}
                               </span>
                             </span>
-                            <p className="font-medium text-xl leading-relaxed text-default-900 font-hand2 ">
+                            <p
+                              className="font-medium text-xl leading-relaxed text-default-900 font-hand2 "
+                              style={{ whiteSpace: 'pre-wrap' }}
+                            >
                               {item.note}
                             </p>
                           </blockquote>
