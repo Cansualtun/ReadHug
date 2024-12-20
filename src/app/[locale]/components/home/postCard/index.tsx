@@ -194,7 +194,6 @@ export default function Post({
         shadow="sm"
         className="w-full rounded-lg bg-gradient-to-r bg-default-100 relative"
       >
-        {' '}
         {profile && profile?.isSelf && profile?.isLoggedIn && (
           <div className="absolute right-1 top-1 bg-default-50 rounded-full p-1 group z-40">
             <Popover
@@ -279,7 +278,7 @@ export default function Post({
           </p>
         </CardBody>
         <Divider />
-        <CardFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-start sm:items-center px-4 sm:px-8 py-3 sm:py-4 bg-default-100">
+        <CardFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0 justify-between items-start sm:items-center px-4 sm:px-8 py-3 sm:py-4 bg-default-100 rounded-none">
           <div className="flex gap-3 sm:gap-5">
             <Button
               variant="flat"
