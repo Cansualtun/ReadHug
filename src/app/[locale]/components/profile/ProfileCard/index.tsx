@@ -437,7 +437,7 @@ const ProfileCard = ({ profileData }: any) => {
                   ? t('followButton.following')
                   : t('followButton.follow')}
               </Button>
-              <Button
+              {/* <Button
                 color={isFollow ? 'default' : 'primary'}
                 variant={isFollow ? 'bordered' : 'solid'}
                 onPress={handleMessageAction}
@@ -445,7 +445,7 @@ const ProfileCard = ({ profileData }: any) => {
                 className="font-medium ml-1"
               >
                 {t('messageButton.sendMessage')}
-              </Button>
+              </Button> */}
             </div>
           )}
 
