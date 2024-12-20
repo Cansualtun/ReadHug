@@ -65,7 +65,7 @@ const BookNotes = ({ openBookNotes, book, profileData }: Props) => {
               minRows={3}
               required
               classNames={{
-                input: 'text-sm',
+                input: 'text-lg font-hand2',
                 inputWrapper:
                   'bg-default-50 focus:border-default-50 focus:border',
               }}
@@ -117,10 +117,10 @@ const BookNotes = ({ openBookNotes, book, profileData }: Props) => {
                   .map((item: any) => {
                     return (
                       <div
-                        className="p-2 bg-default-50 grid grid-cols-12 gap-4 rounded-lg relative"
+                        className="grid grid-cols-12 gap-2 rounded-lg relative"
                         key={item._id}
                       >
-                        {item.notePage ? (
+                        {/* {item.notePage ? (
                           <div className="px-3 absolute md:static top-3 right-3 flex items-center bg-primary/20 text-primary rounded-md col-span-12 md:col-span-2 max-h-7">
                             <NotepadText
                               size={16}
@@ -132,18 +132,23 @@ const BookNotes = ({ openBookNotes, book, profileData }: Props) => {
                           <div className="px-3 col-span-2 absolute md:static top-3 right-3 text-sm text-gray-400 border border-primary-80  max-h-7 rounded-md flex justify-center items-center">
                             Sayfasız
                           </div>
-                        )}
-                        <div className="md:col-span-10 col-span-12">
-                          <blockquote className="p-4 border-s-4 border-default-300 bg-default-100 rounded-r-lg">
-                            <svg
-                              className="w-4 h-4 text-default-400 dark:text-default-600 mb-2"
-                              aria-hidden="true"
-                              fill="currentColor"
-                              viewBox="0 0 18 14"
-                            >
-                              <path d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z" />
-                            </svg>
-                            <p className="font-medium leading-relaxed text-default-900 ">
+                        )} */}
+                        <div className="md:col-span-12 col-span-12">
+                          <blockquote className="p-4 border-s-4 border-default-300 bg-default-50 rounded-lg">
+                            <span className="flex items-center gap-2 mb-2">
+                              <svg
+                                className="w-4 h-4 text-primary"
+                                aria-hidden="true"
+                                fill="currentColor"
+                                viewBox="0 0 18 14"
+                              >
+                                <path d="M6 0H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3H2a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Zm10 0h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4v1a3 3 0 0 1-3 3h-1a1 1 0 0 0 0 2h1a5.006 5.006 0 0 0 5-5V2a2 2 0 0 0-2-2Z" />
+                              </svg>
+                              <span className="text-primary ">
+                                {item.notePage ?? 'Sayfasız'}
+                              </span>
+                            </span>
+                            <p className="font-medium text-xl leading-relaxed text-default-900 font-hand2 ">
                               {item.note}
                             </p>
                           </blockquote>

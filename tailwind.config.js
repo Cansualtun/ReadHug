@@ -11,6 +11,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Poppins', 'var(--font-sans)'],
+        hand: ['Caveat', 'var(--font-hand)'],
+        hand2: ['Courgette', 'var(--font-hand2)'],
       },
       container: {
         center: true,
