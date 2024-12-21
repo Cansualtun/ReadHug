@@ -14,7 +14,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ProgressBar from '../../ui/progressBar';
 import NonLoginSidebar from './NonLoginSidebar';
@@ -27,14 +27,10 @@ export default function ReadingTracker({ books }: BookProps) {
   const t = useTranslations('ReadingTracker');
   const me = useSelector(selectUser);
   const params = useParams();
-  const currentBook = books
-    .filter((book) => book.type === BookType.Reading.toString())
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    )[0];
+  const [currentBook, setCurrentBook] = useState<any>({});
+
   const [progress, setProgress] = useState(
-    currentBook ? parseInt(currentBook?.process.percent) : 0,
+    currentBook ? parseInt(currentBook?.process?.percent ?? 0) : 0,
   );
   const [openList, setOpenList] = useState<string>('');
   const shelves = [
@@ -66,6 +62,16 @@ export default function ReadingTracker({ books }: BookProps) {
       tab: '2',
     },
   ];
+
+  useEffect(() => {
+    const current = books
+      .filter((book) => book.type === BookType.Reading.toString())
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      )[0];
+    setCurrentBook(current);
+  }, [books, me]);
 
   if (!currentBook && me) {
     return (
@@ -106,7 +112,7 @@ export default function ReadingTracker({ books }: BookProps) {
               />
               <div className="absolute px-2 inset-0 bg-default-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
                 <Link
-                  href={`/${params.locale}/userBook/${currentBook?.bookId.slug}`}
+                  href={`/${params.locale}/userBook/${currentBook?.bookId?.slug}`}
                   className="text-sm bg-default-50/80 text-center rounded-lg px-2 py-1"
                 >
                   {t('currentlyReading.viewDetails')}
@@ -116,11 +122,11 @@ export default function ReadingTracker({ books }: BookProps) {
             <div className="flex-1 space-y-4">
               <div>
                 <h3 className="font-semibold text-lg">
-                  {currentBook?.bookId.name}
+                  {currentBook?.bookId?.name}
                 </h3>
                 <p className="text-default-500">
                   {t('currentlyReading.by')}{' '}
-                  {currentBook?.bookId.authors
+                  {currentBook?.bookId?.authors
                     .map((author: any) => author.name)
                     .join(', ')}
                 </p>
@@ -130,8 +136,8 @@ export default function ReadingTracker({ books }: BookProps) {
           <div className="space-y-2">
             <ProgressBar
               value={progress}
-              total={currentBook?.process.pageCount}
-              currentValue={currentBook?.process.readCount}
+              total={currentBook?.process?.pageCount}
+              currentValue={currentBook?.process?.readCount}
               showChip
               showCompletedMessage
               progressColor="warning"
@@ -199,8 +205,8 @@ export default function ReadingTracker({ books }: BookProps) {
                           <div>
                             <Image
                               src={
-                                i.bookId.images?.smallThumbnail ||
-                                i.bookId.images?.thumbnail ||
+                                i.bookId?.images?.smallThumbnail ||
+                                i.bookId?.images?.thumbnail ||
                                 '/assets/book-placeholder.png'
                               }
                               width={28}

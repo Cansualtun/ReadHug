@@ -47,8 +47,6 @@ export default function Post({
   profileData,
   mount,
 }: any) {
-  console.log('post?.content', post?.content);
-
   const router = useRouter();
   const { locale } = useParams();
   const [showComments, setShowComments] = useState(false);
@@ -165,7 +163,6 @@ export default function Post({
       setProfile(profileData);
     }
   }, [profileData]);
-  console.log('openReport', openReport);
 
   return (
     <div className="relative w-full mt-10 p-2">
