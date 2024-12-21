@@ -186,6 +186,27 @@ export default function Post({
           </Link>
         </Card>
       </div>
+      <div className="absolute -top-10 right-2 z-10 sm:hidden">
+        {isProfileCard && (
+          <div className="flex items-center gap-2 sm:gap-4 mt-2 sm:mt-0">
+            <div className="flex flex-col items-end text-right">
+              <Link
+                href={`/${locale}/profile/${post.user.userName}`}
+                className="text-sm sm:text-md font-semibold hover:text-primary cursor-pointer"
+              >
+                @{post?.user?.userName}
+              </Link>
+            </div>
+            <Link href={`/${locale}/profile/${post.user.userName}`}>
+              <Avatar
+                src={post?.user?.image ?? '/assets/avatar.png'}
+                size="sm"
+                className="w-8 h-8 sm:w-10 sm:h-10 bg-primary border-2 border-default-100 shadow-md cursor-pointer hover:ring-1 hover:ring-primary"
+              />
+            </Link>
+          </div>
+        )}
+      </div>
 
       <Card
         shadow="sm"
@@ -243,7 +264,7 @@ export default function Post({
             </p>
           </div>
           {isProfileCard && (
-            <div className="flex items-center gap-2 sm:gap-4 mt-2 sm:mt-0">
+            <div className="hidden sm:flex items-center gap-2 sm:gap-4 mt-2 sm:mt-0">
               <div className="flex flex-col items-end text-right">
                 <Link
                   href={`/${locale}/profile/${post.user.userName}`}
