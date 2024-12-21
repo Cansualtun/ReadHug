@@ -30,7 +30,6 @@ import {
   EllipsisVertical,
   ImagePlus,
   Save,
-  Send,
   ShieldAlert,
   ShieldBan,
   TextSelect,
@@ -45,13 +44,15 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ReportModal from './ReportModal';
 import Skeleton from './Skeleton';
+import formatBaseUrl from '@/utils/formatBaseUrl';
+import BanModal from './BanModal';
 
 const ProfileCard = ({ profileData }: any) => {
   const dispatch = useDispatch();
   const t = useTranslations('ProfileCard');
   const [openReport, setOpenReport] = useState(false);
+  const [openBan, setOpenBan] = useState(false);
   const [profile, setProfile] = useState(profileData);
-  console.log('profile', profile);
 
   const {
     user,
@@ -96,21 +97,9 @@ const ProfileCard = ({ profileData }: any) => {
       setIsFollow(!isFollow);
     }
   };
-
+  const { token, BASE_URL } = formatBaseUrl();
   const handleMessageAction = async () => {
-    const token = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('token='))
-      ?.split('=')[1];
     try {
-      let BASE_URL = '';
-      if (process.env.NODE_ENV === 'development') {
-        BASE_URL =
-          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
-      }
-      if (process.env.NODE_ENV === 'production') {
-        BASE_URL = 'https://bookarchive-production.up.railway.app';
-      }
       const { data } = await axios.post(
         `${BASE_URL}/message/create/row`,
         {
@@ -183,10 +172,6 @@ const ProfileCard = ({ profileData }: any) => {
     );
   };
   const avatarUpgrade = async () => {
-    const token = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('token='))
-      ?.split('=')[1];
     try {
       if (!upgradeImage) {
         console.error('No image selected for upload');
@@ -195,14 +180,7 @@ const ProfileCard = ({ profileData }: any) => {
       setLoading(true);
       const formData = new FormData();
       formData.append('image', upgradeImage[0] as any);
-      let BASE_URL = '';
-      if (process.env.NODE_ENV === 'development') {
-        BASE_URL =
-          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
-      }
-      if (process.env.NODE_ENV === 'production') {
-        BASE_URL = 'https://bookarchive-production.up.railway.app';
-      }
+
       const { data } = await axios.patch(
         `${BASE_URL}/user/uploadProfileImage`,
         formData,
@@ -217,29 +195,6 @@ const ProfileCard = ({ profileData }: any) => {
     } catch (error) {
       setLoading(false);
     }
-  };
-
-  const blockerService = async () => {
-    const token = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('token='))
-      ?.split('=')[1];
-    try {
-      let BASE_URL = '';
-      if (process.env.NODE_ENV === 'development') {
-        BASE_URL =
-          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
-      }
-      if (process.env.NODE_ENV === 'production') {
-        BASE_URL = 'https://bookarchive-production.up.railway.app';
-      }
-      await axios.get(`${BASE_URL}/user/blocker/${profileData.user.userName}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-    } catch (error) {}
   };
 
   useEffect(() => {
@@ -284,7 +239,7 @@ const ProfileCard = ({ profileData }: any) => {
                 <div className="flex flex-col  w-40">
                   <Button
                     variant="light"
-                    onClick={blockerService}
+                    onClick={() => setOpenBan(true)}
                     className="flex items-center justify-start hover:bg-default-500"
                   >
                     <ShieldBan />{' '}
@@ -309,6 +264,12 @@ const ProfileCard = ({ profileData }: any) => {
               setOpenReport={() => setOpenReport(false)}
               connection={'profile'}
               id={profile.user._id}
+            />
+            <BanModal
+              open={openBan}
+              setOpen={() => setOpenBan(false)}
+              userName={profileData.user.userName}
+              isBlocked={profileData?.isBlocked}
             />
           </div>
         )}

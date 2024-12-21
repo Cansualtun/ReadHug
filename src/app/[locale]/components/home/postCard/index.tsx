@@ -169,7 +169,7 @@ export default function Post({
       <div className="absolute -top-8 left-4 sm:left-10 z-20">
         <Card
           isHoverable
-          className="w-16 sm:w-24 h-24 sm:h-32 border-0 hover:ring-1 hover:ring-primary/20"
+          className="w-16 h-24 sm:w-20 sm:h-28 border-0 hover:ring-1 hover:ring-primary/20"
         >
           <Link href={`/userBook/${post?.book?.slug}`} className="h-full">
             <Image
@@ -231,7 +231,7 @@ export default function Post({
           </div>
         )}
         <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-8 pb-4 sm:pb-6">
-          <div className="flex flex-col ml-20 sm:ml-32 space-y-1">
+          <div className="flex flex-col ml-16 sm:ml-24 space-y-1">
             <Link
               href={`/userBook/${post?.book?.slug}`}
               className="text-sm sm:text-md font-bold hover:text-primary line-clamp-1"
