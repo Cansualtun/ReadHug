@@ -20,7 +20,7 @@ export default async function Home() {
 
   return (
     <section>
-      <div className="container mx-auto px-4">
+      <div className="md:container mx-auto md:px-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           <div className="order-1 lg:order-1 lg:col-span-4">
             <div className="sticky top-[55px]">

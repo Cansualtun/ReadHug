@@ -12,7 +12,7 @@ interface LanguageDropdownProps {
 
 const LanguageDropdown: React.FC<LanguageDropdownProps> = ({ currentLocale, onChangeLanguage }) => {
     return (
-        <Dropdown placement="bottom-end">
+        <Dropdown placement="bottom-end" >
             <DropdownTrigger>
                 <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-default-100 hover:bg-default-200 cursor-pointer">
                     <Languages className="w-4 h-4 text-primary/80" />

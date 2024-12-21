@@ -3,9 +3,11 @@ import { useLogoutMutation } from '@/store/AuthStore';
 import { useMeMutation } from '@/store/UserStore';
 import {
   Avatar,
+  Divider,
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  DropdownSection,
   DropdownTrigger,
   Navbar,
   NavbarContent,
@@ -160,24 +162,27 @@ export default function Header() {
               />
             </div>
           )}
+          <div className="">
+            <LanguageDropdown
+              currentLocale={locale}
+              onChangeLanguage={changeLanguage}
+            />
+          </div>
+          <div className=" md:block hidden">
+            <Switch
+              defaultSelected
+              size="sm"
+              color="default"
+              isSelected={theme === 'dark'}
+              onValueChange={(isSelected) =>
+                setTheme(isSelected ? 'dark' : 'light')
+              }
+              startContent={<Sun className="w-3.5 h-3.5 text-warning-400" />}
+              endContent={<Moon className="w-3.5 h-3.5 text-default-500" />}
+              aria-label="Toggle theme"
+            />
+          </div>
 
-          <LanguageDropdown
-            currentLocale={locale}
-            onChangeLanguage={changeLanguage}
-          />
-          <Switch
-            defaultSelected
-            size="sm"
-            color="default"
-            isSelected={theme === 'dark'}
-            onValueChange={(isSelected) =>
-              setTheme(isSelected ? 'dark' : 'light')
-            }
-            startContent={<Sun className="w-3.5 h-3.5 text-warning-400" />}
-            endContent={<Moon className="w-3.5 h-3.5 text-default-500" />}
-            className=""
-            aria-label="Toggle theme"
-          />
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Avatar
@@ -192,29 +197,65 @@ export default function Header() {
             </DropdownTrigger>
             {userData.userName ? (
               <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownItem
-                  key="profile"
-                  onClick={goToProfile}
-                  startContent={<User className="w-4 h-4" />}
-                >
-                  {t('profile.profile')}
-                </DropdownItem>
-                <DropdownItem
-                  key="/settings"
-                  href="/settings"
-                  startContent={<Settings className="w-4 h-4" />}
-                >
-                  {t('profile.settings')}
-                </DropdownItem>
-                <DropdownItem
-                  key="logout"
-                  color="danger"
-                  href="/login"
-                  onClick={() => logouts()}
-                  startContent={<LogOut className="w-4 h-4" />}
-                >
-                  {t('profile.logout')}
-                </DropdownItem>
+                <DropdownSection showDivider>
+                  <DropdownItem
+                    key="profile"
+                    onClick={goToProfile}
+                    startContent={<User className="w-4 h-4" />}
+                  >
+                    {t('profile.profile')}
+                  </DropdownItem>
+                  <DropdownItem
+                    key="/settings"
+                    href="/settings"
+                    startContent={<Settings className="w-4 h-4" />}
+                  >
+                    {t('profile.settings')}
+                  </DropdownItem>
+                  <DropdownItem
+                    key="logout"
+                    color="danger"
+                    href="/login"
+                    onClick={() => logouts()}
+                    startContent={<LogOut className="w-4 h-4" />}
+                  >
+                    {t('profile.logout')}
+                  </DropdownItem>
+                </DropdownSection>
+                <DropdownSection>
+                  <DropdownItem
+                    endContent={
+                      <Switch
+                        defaultSelected
+                        size="sm"
+                        color="default"
+                        isSelected={theme === 'dark'}
+                        onValueChange={(isSelected) =>
+                          setTheme(isSelected ? 'dark' : 'light')
+                        }
+                        startContent={
+                          <Sun className="w-3.5 h-3.5 text-warning-400" />
+                        }
+                        endContent={
+                          <Moon className="w-3.5 h-3.5 text-default-500" />
+                        }
+                        aria-label="Toggle theme"
+                      />
+                    }
+                  >
+                    Mode
+                  </DropdownItem>
+                  <DropdownItem
+                    endContent={
+                      <LanguageDropdown
+                        currentLocale={locale}
+                        onChangeLanguage={changeLanguage}
+                      />
+                    }
+                  >
+                    Language
+                  </DropdownItem>
+                </DropdownSection>
               </DropdownMenu>
             ) : (
               <DropdownMenu aria-label="Profile Actions" variant="flat">
