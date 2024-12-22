@@ -1,11 +1,10 @@
 'use client';
 import { Card, CardHeader } from '@nextui-org/card';
+import { AlertCircle } from 'lucide-react';
+import Link from 'next/link';
 import PostCard from '../home/postCard';
 import ProfileCard from '../profile/ProfileCard';
 import Skeleton from '../profile/ProfileCard/Skeleton';
-import { AlertCircle } from 'lucide-react';
-import { Button } from '@nextui-org/button';
-import Link from 'next/link';
 
 type Props = {
   post: any;
@@ -14,7 +13,6 @@ type Props = {
 };
 
 const SinglePost = ({ post, profile, locale }: Props) => {
-  console.log('profile', profile);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">

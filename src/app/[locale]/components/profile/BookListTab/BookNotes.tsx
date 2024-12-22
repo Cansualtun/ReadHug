@@ -1,11 +1,11 @@
+'use client';
 import {
   clientCreateBookNotes,
   getClientBookNotes,
 } from '@/app/[locale]/client/book';
 import { Button } from '@nextui-org/button';
 import { Input, Textarea } from '@nextui-org/input';
-import { NotepadText } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 type Props = {
@@ -20,12 +20,9 @@ const BookNotes = ({ openBookNotes, book, profileData }: Props) => {
   const [page, setPage] = useState('');
   const [profile, setProfile] = useState(profileData);
   const { isSelf, isLoggedIn } = profile;
-  useEffect(() => {
-    setProfile(profileData);
-  }, [profileData]);
+
   const getNotes = async (bookId: string) => {
     const { data } = await getClientBookNotes(bookId);
-    console.log('getNotes', data);
     setNotes(data);
   };
   const createBookNote = async () => {
@@ -46,7 +43,9 @@ const BookNotes = ({ openBookNotes, book, profileData }: Props) => {
     setNote('');
     setPage('');
   };
-
+  useEffect(() => {
+    setProfile(profileData);
+  }, [profileData]);
   useEffect(() => {
     if (openBookNotes?._id) {
       getNotes(openBookNotes?._id);

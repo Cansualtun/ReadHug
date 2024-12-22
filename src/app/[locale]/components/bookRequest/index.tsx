@@ -30,7 +30,6 @@ const BookRequests: React.FC = () => {
     },
     // validationSchema: requstValidationSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log("first values", values);
       
       try {
         setLoading(true);

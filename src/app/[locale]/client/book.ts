@@ -35,7 +35,6 @@ export async function getClientBookNotes(bookId: string) {
   }
 }
 export async function clientCreateBookNotes(body: any) {
-  console.log('body', body);
 
   const token = document.cookie
     .split('; ')

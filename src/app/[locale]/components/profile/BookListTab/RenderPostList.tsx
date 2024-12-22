@@ -42,7 +42,6 @@ const RenderPostList = ({ post, slug, profileData,handlePostMount }: Props) => {
         },
       );
       const newData = response.data;
-      console.log('newData', newData);
       if (!newData.data || newData.data.length === 0) {
         setHasMore(false);
         return;

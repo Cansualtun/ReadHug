@@ -6,7 +6,6 @@ import { getRecommendedBooks } from '@/app/[locale]/client/book';
 
 const NonLoginSidebar = () => {
   const [recommendedBooks, setRecommendedBooks] = useState<any>([]);
-  console.log('recommendedBooks', recommendedBooks);
 
   useEffect(() => {
     const fetchRecommendedBooks = async () => {

@@ -24,7 +24,6 @@ export default function UserBookDetailCard({
 }: UserBookDetailCardProps) {
   const [selectedTab, setSelectedTab] = useState('1');
   const [posts, setPosts] = useState<any>([]);
-  console.log('posts', posts);
 
   const handleTabChange = (key: Selection | string) => {
     setSelectedTab(key as any);
@@ -165,11 +164,13 @@ export default function UserBookDetailCard({
                     </div>
                   }
                 >
-                  <BookNotes
-                    openBookNotes={book}
-                    book={book}
-                    profileData={profileData}
-                  />
+                  <div>
+                    <BookNotes
+                      openBookNotes={book}
+                      book={book}
+                      profileData={profileData}
+                    />
+                  </div>
                 </Tab>
                 <Tab
                   key="2"

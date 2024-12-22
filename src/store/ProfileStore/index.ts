@@ -51,7 +51,6 @@ export const profileApi = baseApi.injectEndpoints({
       },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
-        console.log('queryFulfilled', data);
         try {
           dispatch(setProfileStore({ key: 'posts', data }));
           toast.success('Profile data successfully');

@@ -14,7 +14,6 @@ export default async function PersonalBooksSlug({
       ProfilInfo(result.data.userId.userName),
     ]);
     const profile = await profileResponse.json();
-    console.log('profile', profile);
 
     if (!result.status) {
       return (
