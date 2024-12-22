@@ -1,9 +1,9 @@
 import {
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
 } from '@nextui-org/react';
 import React, { useEffect, useRef } from 'react';
 
@@ -38,39 +38,39 @@ const CustomModal = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  return (
-    isOpen && (
-      <div
-        className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-default-500/20 "
-        style={{ zIndex: 9999 }}
-      >
-        <div className="fadeindown" style={{}} ref={modalRef}>
-          <Card className="bg-default-100 w-3/4 h-3/4">
-            {title && (
-              <CardHeader className="border-b border-b-default-200">
-                {title}
-              </CardHeader>
-            )}
+  return isOpen ? (
+    <div
+      className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-default-500/20 "
+      style={{ zIndex: 9999 }}
+    >
+      <div className="fadeindown" style={{}} ref={modalRef}>
+        <Card className="bg-default-100 w-3/4 h-3/4">
+          {title && (
+            <CardHeader className="border-b border-b-default-200">
+              {title}
+            </CardHeader>
+          )}
 
-            <CardBody className="flex-1 h-full self-stretch text-center text-default-900 flex justify-center items-center">
-              {body}
-            </CardBody>
-            <CardFooter className="border-t border-t-default-200 flex justify-center items-center gap-2">
-              <Button size="sm" onClick={handleClose}>
-                {deniedText}
-              </Button>
-              <Button
-                size="sm"
-                onClick={handleClick}
-                className="bg-danger/20 text-danger"
-              >
-                {confirmText}
-              </Button>
-            </CardFooter>
-          </Card>
-        </div>
+          <CardBody className="flex-1 h-full self-stretch text-center text-default-900 flex justify-center items-center">
+            {body}
+          </CardBody>
+          <CardFooter className="border-t border-t-default-200 flex justify-center items-center gap-2">
+            <Button size="sm" onClick={handleClose}>
+              {deniedText}
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleClick}
+              className="bg-danger/20 text-danger"
+            >
+              {confirmText}
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
-    )
+    </div>
+  ) : (
+    <div></div>
   );
 };
 

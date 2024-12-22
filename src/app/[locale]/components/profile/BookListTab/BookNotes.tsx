@@ -172,7 +172,7 @@ const BookNotes = ({ openBookNotes, book, profileData }: Props) => {
       </div>
     );
   } else {
-    return '';
+    return <div></div>;
   }
 };
 
