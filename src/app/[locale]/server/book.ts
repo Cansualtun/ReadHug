@@ -81,18 +81,9 @@ export async function getLibraryLists(userName: string, type: 0 | 1 | 2) {
 }
 
 export async function getPersonalBooks(slug: string) {
-  const cookieStore = cookies();
-  const token = cookieStore.get('token')?.value;
-
-  if (!token) {
-    console.log('Token bulunamadı');
-    throw new Error('Token not found');
-  }
-
   try {
     const response = await fetch(`${BASE_URL}/book/user/single/${slug}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       next: { revalidate: 0 },
