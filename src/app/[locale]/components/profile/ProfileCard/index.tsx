@@ -66,14 +66,14 @@ const ProfileCard = ({ profileData }: any) => {
   const [unfollowUser] = useUnfollowUserMutation();
   const [upgradeImage, setUpgradeImage] = useState<null | FileList>(null);
   const { data: userProfileData, refetch: refetchUserProfile } =
-    useUserProfileQuery(user.userName);
+    useUserProfileQuery(user?.userName);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modalType, setModalType] = useState<'followers' | 'following'>(
     'followers',
   );
   const { data: followListData, isLoading: isFollowListLoading } =
-    useGetFollowListQuery(user.userName, {
+    useGetFollowListQuery(user?.userName, {
       skip: !isModalOpen,
     });
 
@@ -85,10 +85,10 @@ const ProfileCard = ({ profileData }: any) => {
   const handleFollowAction = async () => {
     try {
       if (isFollow) {
-        await unfollowUser({ targetUserName: user.userName });
+        await unfollowUser({ targetUserName: user?.userName });
         setIsFollow(false);
       } else {
-        await followUser({ targetUserName: user.userName });
+        await followUser({ targetUserName: user?.userName });
         setIsFollow(true);
       }
       await refetchUserProfile();
@@ -143,24 +143,24 @@ const ProfileCard = ({ profileData }: any) => {
             modalType === 'followers' ? item.follower : item.following;
 
           return (
-            <Link href={`/profile/${userData.userName}`}>
+            <Link href={`/profile/${userData?.userName}`}>
               <span
                 key={item._id}
                 className="flex items-center justify-between p-2 hover:bg-default-100 rounded-lg"
               >
                 <span className="flex items-center gap-3">
                   <Avatar
-                    src={userData.image || '/assets/avatar.png'}
+                    src={userData?.image || '/assets/avatar.png'}
                     size="sm"
-                    name={`${userData.firstName} ${userData.lastName}`}
+                    name={`${userData?.firstName} ${userData?.lastName}`}
                     className="ring-1 ring-offset-1 ring-primary shadow"
                   />
                   <div>
                     <p className="font-medium">
-                      {userData.firstName} {userData.lastName}
+                      {userData?.firstName} {userData?.lastName}
                     </p>
                     <p className="text-small text-default-500">
-                      @{userData.userName}
+                      @{userData?.userName}
                     </p>
                   </div>
                 </span>
@@ -268,7 +268,7 @@ const ProfileCard = ({ profileData }: any) => {
             <BanModal
               open={openBan}
               setOpen={() => setOpenBan(false)}
-              userName={profileData.user.userName}
+              userName={profileData?.user?.userName}
               isBlocked={profileData?.isBlocked}
             />
           </div>
