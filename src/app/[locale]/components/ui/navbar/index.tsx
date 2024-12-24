@@ -16,6 +16,7 @@ import {
 import {
   LogIn,
   LogOut,
+  Menu,
   Milestone,
   Moon,
   Settings,
@@ -185,15 +186,21 @@ export default function Header() {
 
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform ring-primary/80 min-h-8 min-w-8"
-                color="secondary"
-                name="Jason Hughes"
-                size="sm"
-                src={userData?.image ?? '/assets/avatar.png'}
-              />
+              {userData?.userName ? (
+                <Avatar
+                  isBordered
+                  as="button"
+                  className="transition-transform ring-primary/80 min-h-8 min-w-8"
+                  color="secondary"
+                  name="Jason Hughes"
+                  size="sm"
+                  src={userData?.image ?? '/assets/avatar.png'}
+                />
+              ) : (
+                <div role="button" className="flex text-default-500">
+                  <Menu className="w-6 h-6" />
+                </div>
+              )}
             </DropdownTrigger>
             {userData.userName ? (
               <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -245,7 +252,7 @@ export default function Header() {
                   >
                     Mode
                   </DropdownItem>
-                  <DropdownItem
+                  {/* <DropdownItem
                     endContent={
                       <LanguageDropdown
                         currentLocale={locale}
@@ -254,25 +261,61 @@ export default function Header() {
                     }
                   >
                     Language
-                  </DropdownItem>
+                  </DropdownItem> */}
                 </DropdownSection>
               </DropdownMenu>
             ) : (
               <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownItem
-                  key="login"
-                  href="/login"
-                  startContent={<LogIn className="w-4 h-4" />}
-                >
-                  {t('profile.login')}
-                </DropdownItem>
-                <DropdownItem
-                  key="/register"
-                  href="/register"
-                  startContent={<Milestone className="w-4 h-4" />}
-                >
-                  {t('profile.register')}
-                </DropdownItem>
+                <DropdownSection showDivider>
+                  <DropdownItem
+                    key="login"
+                    href="/login"
+                    startContent={<LogIn className="w-4 h-4" />}
+                  >
+                    {t('profile.login')}
+                  </DropdownItem>
+                  <DropdownItem
+                    key="/register"
+                    href="/register"
+                    startContent={<Milestone className="w-4 h-4" />}
+                  >
+                    {t('profile.register')}
+                  </DropdownItem>
+                </DropdownSection>
+                <DropdownSection>
+                  <DropdownItem
+                    endContent={
+                      <Switch
+                        defaultSelected
+                        size="sm"
+                        color="default"
+                        isSelected={theme === 'dark'}
+                        onValueChange={(isSelected) =>
+                          setTheme(isSelected ? 'dark' : 'light')
+                        }
+                        startContent={
+                          <Sun className="w-3.5 h-3.5 text-warning-400" />
+                        }
+                        endContent={
+                          <Moon className="w-3.5 h-3.5 text-default-500" />
+                        }
+                        aria-label="Toggle theme"
+                      />
+                    }
+                  >
+                    Mode
+                  </DropdownItem>
+                  {/* <DropdownItem
+                    endContent={
+                      <LanguageDropdown
+                        currentLocale={locale}
+                        onChangeLanguage={changeLanguage}
+                      />
+                    }
+                  >
+                    Language
+                  </DropdownItem> */}
+                </DropdownSection>
               </DropdownMenu>
             )}
           </Dropdown>
