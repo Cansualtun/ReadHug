@@ -151,7 +151,7 @@
       "by": "yazar:",
       "bookCompleted": "Kitap tamamlandı!",
       "updateProgress": "İlerlemeyi Güncelle",
-      "noBook": ""
+      "noBook": "Okunanlar listesinde kitap bulunmuyor"
     },
     "library": {
       "title": "Kitaplık",

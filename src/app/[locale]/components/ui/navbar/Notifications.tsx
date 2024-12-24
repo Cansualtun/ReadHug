@@ -17,6 +17,7 @@ import { NotificationState } from '@/store/MessageStore/type';
 import { selectNotification } from '@/store/NotificationStore/slice';
 import { useParams, useRouter } from 'next/navigation';
 import { formatDate } from '@/utils/formatDate';
+import Image from 'next/image';
 
 type Props = { open: boolean; setOpen: any };
 let BASE_URL = '';
@@ -82,7 +83,7 @@ const Notifications = ({ open, setOpen }: Props) => {
         onlyCount: false,
       } as any);
       setLoading(false);
-    } catch (error) { }
+    } catch (error) {}
   };
   const getNotificationCount = async () => {
     try {
@@ -91,13 +92,16 @@ const Notifications = ({ open, setOpen }: Props) => {
         onlyCount: true,
       } as any);
       setNotificationCount(data?.totalNotificationCount ?? 0);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const routeNotification = (item: any) => {
     switch (item.connection) {
       case 'post':
         router.push(`/${locale}/post/${item.connectionId}`);
+        break;
+      case 'profile':
+        router.push(`/${locale}/profile/${item.connectionId}`);
         break;
 
       default:
@@ -155,14 +159,30 @@ const Notifications = ({ open, setOpen }: Props) => {
                 className={`flex items-start space-x-4 p-4 py-2 mb-2 rounded-lg transition-colors cursor-pointer ${!item.isRead ? 'bg-green-600/20 hover:bg-green-600/50' : ' hover:bg-default-100'}`}
               >
                 <div className="flex justify-center items-center self-stretch">
-                  {item.type === 'like' && <ThumbsUp />}
-                  {item.type === 'comment' && <MessageSquareText />}
-                  {item.type === 'follow' && <UserCheck />}
-                  {item.type === 'announcement' && <Megaphone />}
-                  {item.type === 'message' && <MessageCircleMore />}
+                  {item.image ? (
+                    <div>
+                      <Image
+                        className="rounded-full"
+                        src={item?.image || '/assets/avatar.png'}
+                        width={44}
+                        height={44}
+                        alt={item?.user?.userName}
+                      />
+                    </div>
+                  ) : item.type === 'follow' ? (
+                    <UserCheck />
+                  ) : item.type === 'like' ? (
+                    <ThumbsUp />
+                  ) : item.type === 'comment' ? (
+                    <MessageSquareText />
+                  ) : item.type === 'announcement' ? (
+                    <Megaphone />
+                  ) : (
+                    item.type === 'message' && <MessageCircleMore />
+                  )}
                 </div>
                 <div className="flex flex-col flex-1">
-                  <p className="ml-2 text-sm">{item.content}</p>
+                  <p className="text-sm">{item.content}</p>
                   <p className="text-[10px] italic self-end">
                     {formatDate(item.createdAt, 'dateTime')}
                   </p>

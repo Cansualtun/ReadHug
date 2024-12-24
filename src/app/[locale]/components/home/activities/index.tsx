@@ -83,6 +83,83 @@ export default function ReadingTracker({ books }: BookProps) {
             </p>
           </CardBody>
         </Card>
+        <Card className="bg-default-100">
+          <CardHeader className="border-b">
+            <h2 className="text-lg font-semibold flex items-center gap-2">
+              <Library className="h-5 w-5" />
+              {t('library.title')}
+            </h2>
+          </CardHeader>
+          <CardBody className="p-4">
+            <div className="">
+              {shelves.map((item) => (
+                <div
+                  key={item.key}
+                  className="flex flex-col items-start justify-between p-3 py-1 rounded-lg hover:bg-default-100 transition-colors cursor-pointer"
+                >
+                  <div className="w-full flex items-start justify-between rounded-lg hover:bg-default-100 transition-colors cursor-pointer">
+                    <div
+                      className="flex items-center gap-2"
+                      onClick={() => {
+                        if (item.key === openList) {
+                          setOpenList('');
+                        } else {
+                          setOpenList(item.key);
+                        }
+                      }}
+                    >
+                      <item.icon
+                        className={`h-4 w-4 ${item.key == openList ? 'text-primary' : 'text-default-500'}`}
+                      />
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </div>
+                    {item.list.length > 0 ? (
+                      <Link
+                        href={`/${params.locale}/profile/${me.userName}?tab=${item.tab}`}
+                        className={`p-2 min-w-11 flex justify-center items-center rounded-t-md hover:text-primary ${item.key === openList && 'bg-default-200/20 text-primary'}`}
+                      >
+                        <SquareArrowOutUpRight size={16} />
+                      </Link>
+                    ) : (
+                      <div
+                        className={`p-2 min-w-11 flex justify-center items-center rounded-t-md ${item.key === openList && 'bg-default-200/20 text-primary'}`}
+                      >
+                        {item.count}
+                      </div>
+                    )}
+                  </div>
+
+                  <div
+                    className={`p-4 bg-default-200/20 border-l-3 border-l-primary w-full ${item.key === openList ? 'animate-appearance-in block' : 'hidden animate-appearance-in delay-1000'}`}
+                  >
+                    <div className="marker:text-primary list-outside list-disc ml-2 text-sm space-y-2  w-full">
+                      {item.list.slice(0, 3).map((i, index) => {
+                        return (
+                          <div key={i._id} className="flex items-center gap-2">
+                            <div>
+                              <Image
+                                src={
+                                  i.bookId?.images?.smallThumbnail ||
+                                  i.bookId?.images?.thumbnail ||
+                                  '/assets/book-placeholder.png'
+                                }
+                                width={28}
+                                height={36}
+                                className="min-w-7 min-h-9"
+                                alt={i.bookName}
+                              />
+                            </div>
+                            <p key={index}>{i.bookName}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardBody>
+        </Card>
       </div>
     );
   }

@@ -14,10 +14,6 @@ import {
   CardHeader,
   Divider,
   Input,
-  Modal,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -103,19 +99,7 @@ export default function Post({
   };
   const handleGetComment = async () => {
     try {
-      const token = document.cookie
-        .split('; ')
-        .find((row) => row.startsWith('token='))
-        ?.split('=')[1];
-      let BASE_URL = '';
-      if (process.env.NODE_ENV === 'development') {
-        BASE_URL =
-          process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
-      }
-      if (process.env.NODE_ENV === 'production') {
-        BASE_URL = 'https://bookarchive-production.up.railway.app';
-      }
-
+      const { token, BASE_URL } = formatBaseUrl();
       const { data } = await axios.get(
         `${BASE_URL}/comment/posts/${post._id}?page=${page}&limit=${limit}&sort=desc`,
         {
@@ -316,11 +300,12 @@ export default function Post({
               size="sm"
               startContent={<MessageCircle className="w-4 h-4 text-blue-500" />}
               endContent={
-                showComments || isOpenComment ? (
+                isProfileCard &&
+                (showComments || isOpenComment ? (
                   <ChevronUp className="w-4 h-4" />
                 ) : (
                   <ChevronDown className="w-4 h-4" />
-                )
+                ))
               }
               onClick={toggleComments}
               className="min-w-0 px-2 sm:px-3"
