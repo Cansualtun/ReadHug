@@ -6,6 +6,8 @@ import { ImagePlus, KeyRound, Save, User2 } from 'lucide-react';
 import { ChangeEvent, useEffect, useState } from 'react';
 import ChangePassword from '../../profile/ChangePassword';
 import ProfileUpdate from '../../profile/ProfileUpdate';
+import Loading from '../loading';
+import { useRouter } from 'next/navigation';
 
 const SidebarItems = [
   {
@@ -35,15 +37,24 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 export default function Sidebar() {
+  const router = useRouter();
   const [tab, setTab] = useState<any>('profile');
   const [upgradeImage, setUpgradeImage] = useState<null | FileList>(null);
   const [meData, setMeData] = useState<any>({});
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [me] = useMeMutation();
 
   const meHandler = async () => {
+    setIsLoggedIn(false);
     const { data }: any = await me();
-    setMeData(data.data as any);
+    if (data) {
+      setMeData(data.data as any);
+      setIsLoggedIn(true);
+    } else {
+      router.push('/');
+      setIsLoggedIn(false);
+    }
   };
 
   const avatarUpgrade = async () => {
@@ -78,7 +89,7 @@ export default function Sidebar() {
     meHandler();
   }, []);
 
-  return (
+  return isLoggedIn ? (
     <div className="w-full mx-auto grid grid-cols-12 gap-2">
       <div className="col-span-12 md:col-span-8">
         <Tabs
@@ -191,6 +202,10 @@ export default function Sidebar() {
           </div>
         )}
       </div>
+    </div>
+  ) : (
+    <div className="w-full h-full flex flex-col justify-center items-center">
+      <Loading height={40} width={150} />
     </div>
   );
 }
