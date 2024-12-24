@@ -27,7 +27,9 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   const [additionalBooks, setAdditionalBooks] = useState<any[]>([]);
   const [selectedTab, setSelectedTab] = useState('1');
   const [openBookModal, setOpenBookModal] = useState(false);
-  const { isSelf } = profile;
+  const { isSelf, isLoggedIn } = profile;
+  console.log('isLoggedIn', isLoggedIn);
+
   const [postData, setPostData] = useState(post);
 
   const handleTabChange = (key: Selection | string) => {
@@ -97,6 +99,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                 selectedTab={selectedTab}
                 slug={slug}
                 isSelf={isSelf}
+                isLoggedIn={isLoggedIn}
                 profileData={profileData}
               />
             </CardBody>
@@ -126,6 +129,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                 selectedTab={selectedTab}
                 slug={slug}
                 isSelf={isSelf}
+                isLoggedIn={isLoggedIn}
                 profileData={profileData}
               />
             </CardBody>
@@ -155,6 +159,7 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
                 selectedTab={selectedTab}
                 slug={slug}
                 isSelf={isSelf}
+                isLoggedIn={isLoggedIn}
                 profileData={profileData}
               />
             </CardBody>

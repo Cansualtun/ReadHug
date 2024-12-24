@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
   Select,
   SelectItem,
-  Tooltip
+  Tooltip,
 } from '@nextui-org/react';
 import axios from 'axios';
 import { BookType } from 'enums/bookType';
@@ -23,7 +23,7 @@ import {
   Save,
   Settings2,
   SquareArrowOutUpRight,
-  Trash2
+  Trash2,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -40,6 +40,7 @@ type Props = {
   selectedTab: any;
   slug: string;
   isSelf: boolean;
+  isLoggedIn: boolean;
   profileData: any;
   additionalBooks: any;
   setAdditionalBooks: any;
@@ -57,6 +58,7 @@ const RenderBookList = ({
   additionalBooks,
   setAdditionalBooks,
   serverBooks,
+  isLoggedIn,
   mount,
 }: Props) => {
   const dispatch = useDispatch();
@@ -216,92 +218,98 @@ const RenderBookList = ({
                               <NotebookPen size={16} />
                             </Button>
                           </Tooltip>
-                          <div>
-                            <Popover
-                              classNames={{
-                                content: 'p-1',
-                              }}
-                              placement="bottom-end"
-                              showArrow
-                              offset={5}
-                            >
-                              <PopoverTrigger>
+                          {isLoggedIn && isSelf && (
+                            <>
+                              <div>
+                                <Popover
+                                  classNames={{
+                                    content: 'p-1',
+                                  }}
+                                  placement="bottom-end"
+                                  showArrow
+                                  offset={5}
+                                >
+                                  <PopoverTrigger>
+                                    <Button
+                                      className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 bg-default-50 hover:bg-primary hover:text-white`}
+                                      size="sm"
+                                    >
+                                      <Tooltip
+                                        showArrow
+                                        content="Durumu Değiştir"
+                                        offset={15}
+                                      >
+                                        <Settings2 size={16} />
+                                      </Tooltip>
+                                    </Button>
+                                  </PopoverTrigger>
+
+                                  <PopoverContent>
+                                    <div className="w-[300px] flex items-center gap-2">
+                                      <Select
+                                        className="max-w-xs"
+                                        label="Select Library"
+                                        defaultSelectedKeys={selectedKeys}
+                                        value={[selectedKeys]}
+                                        size="sm"
+                                        onChange={(e) => {
+                                          setSelectedKeys(e.target.value);
+                                        }}
+                                      >
+                                        <SelectItem
+                                          key={'1'}
+                                          startContent={<BookOpen size={14} />}
+                                        >
+                                          Okunuyor
+                                        </SelectItem>
+                                        <SelectItem
+                                          key={'0'}
+                                          startContent={
+                                            <BookMarked size={14} />
+                                          }
+                                        >
+                                          Okunan
+                                        </SelectItem>
+                                        <SelectItem
+                                          key={'2'}
+                                          startContent={<BookPlus size={14} />}
+                                        >
+                                          İstek Listesi
+                                        </SelectItem>
+                                      </Select>
+
+                                      <Button
+                                        onClick={() => changeBookType(book)}
+                                        className="bg-primary text-white disabled:bg-default-500 w-12 h-12 min-w-12 min-h-12 max-w-12 max-h-12 p-1"
+                                        disabled={type === selectedKeys}
+                                      >
+                                        {loadingType ? (
+                                          <div className="animate-spin">⌛</div>
+                                        ) : (
+                                          <Save size={16} />
+                                        )}
+                                      </Button>
+                                    </div>
+                                  </PopoverContent>
+                                </Popover>
+                              </div>
+                              <Tooltip content="Sil" showArrow>
                                 <Button
+                                  onClick={() => {
+                                    if (deleteOpen?._id === book._id) {
+                                      setDeleteOpen(null);
+                                    } else {
+                                      setDeleteOpen(book);
+                                    }
+                                  }}
                                   className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 bg-default-50 hover:bg-primary hover:text-white`}
                                   size="sm"
                                 >
-                                  <Tooltip
-                                    showArrow
-                                    content="Durumu Değiştir"
-                                    offset={15}
-                                  >
-                                    <Settings2 size={16} />
-                                  </Tooltip>
+                                  <Trash2 size={16} />
                                 </Button>
-                              </PopoverTrigger>
-
-                              <PopoverContent>
-                                <div className="w-[300px] flex items-center gap-2">
-                                  <Select
-                                    className="max-w-xs"
-                                    label="Select Library"
-                                    defaultSelectedKeys={selectedKeys}
-                                    value={[selectedKeys]}
-                                    size="sm"
-                                    onChange={(e) => {
-                                      setSelectedKeys(e.target.value);
-                                    }}
-                                  >
-                                    <SelectItem
-                                      key={'1'}
-                                      startContent={<BookOpen size={14} />}
-                                    >
-                                      Okunuyor
-                                    </SelectItem>
-                                    <SelectItem
-                                      key={'0'}
-                                      startContent={<BookMarked size={14} />}
-                                    >
-                                      Okunan
-                                    </SelectItem>
-                                    <SelectItem
-                                      key={'2'}
-                                      startContent={<BookPlus size={14} />}
-                                    >
-                                      İstek Listesi
-                                    </SelectItem>
-                                  </Select>
-
-                                  <Button
-                                    onClick={() => changeBookType(book)}
-                                    className="bg-primary text-white disabled:bg-default-500 w-12 h-12 min-w-12 min-h-12 max-w-12 max-h-12 p-1"
-                                    disabled={type === selectedKeys}
-                                  >
-                                    {loadingType ? (
-                                      <div className="animate-spin">⌛</div>
-                                    ) : (
-                                      <Save size={16} />
-                                    )}
-                                  </Button>
-                                </div>
-                              </PopoverContent>
-                            </Popover>
-                          </div>
-                          <Tooltip content="Sil" showArrow>
-                            <Button
-                              onClick={() => {
-                                if (deleteOpen?._id === book._id) {
-                                  setDeleteOpen(null);
-                                } else {
-                                  setDeleteOpen(book);
-                                }
-                              }}
-                              className={`max-w-8 max-h-8 h-8 w-8 min-w-8 min-h-8 p-0 bg-default-50 hover:bg-primary hover:text-white`}
-                              size="sm"
-                            >
-                              <Trash2 size={16} />
-                            </Button>
-                          </Tooltip>
+                              </Tooltip>
+                            </>
+                          )}
                         </div>
                       </div>
 
