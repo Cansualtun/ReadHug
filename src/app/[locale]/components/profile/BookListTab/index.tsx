@@ -28,7 +28,6 @@ const BookListTabs = ({ bookLists, slug, post, profileData }: any) => {
   const [selectedTab, setSelectedTab] = useState('1');
   const [openBookModal, setOpenBookModal] = useState(false);
   const { isSelf, isLoggedIn } = profile;
-  console.log('isLoggedIn', isLoggedIn);
 
   const [postData, setPostData] = useState(post);
 
