@@ -178,3 +178,14 @@ export async function getRecommendedBooks() {
     data: data.data || [],
   };
 }
+export async function getRecommendedAuthors() {
+  const requests = [fetch(`${BASE_URL}/book/recommendedAuthors`)];
+
+  const responses = await Promise.all(requests);
+  const [data] = await Promise.all(responses.map((res) => res.json()));
+
+  return {
+    status: true,
+    data: data.data || [],
+  };
+}

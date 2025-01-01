@@ -2,16 +2,25 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardBody } from '@nextui-org/react';
 import { Book, User, Pen } from 'lucide-react';
-import { getRecommendedBooks } from '@/app/[locale]/client/book';
+import {
+  getRecommendedAuthors,
+  getRecommendedBooks,
+} from '@/app/[locale]/client/book';
 
 const NonLoginSidebar = () => {
   const [recommendedBooks, setRecommendedBooks] = useState<any>([]);
+  const [recommendedAuthors, setRecommendedAuthors] = useState<any>([]);
 
   useEffect(() => {
     const fetchRecommendedBooks = async () => {
       await getRecommendedBooks().then((res) => {
         if (res.status) {
           setRecommendedBooks(res.data);
+        }
+      });
+      await getRecommendedAuthors().then((res) => {
+        if (res.status) {
+          setRecommendedAuthors(res.data);
         }
       });
     };
@@ -57,16 +66,16 @@ const NonLoginSidebar = () => {
           <h2 className="font-semibold">Önerilen Yazarlar</h2>
         </CardHeader>
         <CardBody className="space-y-3">
-          {recommendedAuthors.map((author) => (
+          {recommendedAuthors.map((author: any) => (
             <div
               key={author.id}
               className="flex items-center space-x-3 px-2 hover:bg-default-100 rounded"
             >
-              <img
+              {/* <img
                 src={author.imageUrl}
                 alt={author.name}
                 className="w-9 h-9 rounded-full object-cover"
-              />
+              /> */}
               <div>
                 <p className="font-medium">{author.name}</p>
                 <p className="text-sm text-gray-600">{author.genre}</p>
@@ -127,27 +136,6 @@ const recommendedBooks = [
     title: 'Simyacı',
     author: 'Paulo Coelho',
     imageUrl: '/assets/book-placeholder.png',
-  },
-];
-
-const recommendedAuthors = [
-  {
-    id: 1,
-    name: 'Sabahattin Ali',
-    genre: 'Roman',
-    imageUrl: '/assets/avatar.png',
-  },
-  {
-    id: 2,
-    name: 'Orhan Pamuk',
-    genre: 'Roman',
-    imageUrl: '/assets/avatar.png',
-  },
-  {
-    id: 3,
-    name: 'Oğuz Atay',
-    genre: 'Modern Edebiyat',
-    imageUrl: '/assets/avatar.png',
   },
 ];
 
