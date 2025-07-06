@@ -14,7 +14,8 @@
       "ariaLabel": "şifre görünürlüğünü değiştir"
     },
     "submitButton": "Giriş Yap",
-    "createAccount": "Hesap Oluştur"
+    "createAccount": "Hesap Oluştur",
+    "forgotPassword": "Şifremi Unuttum!"
   },
   "RegisterForm": {
     "title": "Kayıt Ol",
@@ -44,6 +45,16 @@
     },
     "submitButton": "Kayıt Ol",
     "loginLink": "Hesabınız var mı? Giriş yapın"
+  },
+  "ForgotForm": {
+    "title": "Şifremi Unuttum",
+    "subtitle": "Mail adresinize şifre sıfırlama bağlantısı göndererek şifrenizi sıfırlayabilirsiniz.",
+    "email": {
+      "label": "E-posta",
+      "placeholder": "E-posta adresinizi girin"
+    },
+    "submitButton": "Şifreyi Sıfırla",
+    "loginLink": "Giriş yapın"
   },
   "ProfileCard": {
     "biography": "Biyografi",
@@ -162,7 +173,7 @@
       }
     }
   },
-  "header": {
+  "Header": {
     "navigation": {
       "authors": "Yazarlar",
       "community": "Topluluk",

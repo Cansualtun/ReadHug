@@ -142,7 +142,7 @@ const Notifications = ({ open, setOpen }: Props) => {
             dataLength={notificationData?.data?.length}
             next={loadMore}
             hasMore={hasMore}
-            className="mb-2"
+            className="mb-2 divide-y-1"
             loader={
               <div className="w-full flex justify-center items-center h-12">
                 <Loading className="py-2" width={120} height={40} />
@@ -156,19 +156,17 @@ const Notifications = ({ open, setOpen }: Props) => {
               <div
                 onClick={() => routeNotification(item)}
                 key={item._id}
-                className={`flex items-start space-x-4 p-4 py-2 mb-2 rounded-lg transition-colors cursor-pointer ${!item.isRead ? 'bg-green-600/20 hover:bg-green-600/50' : ' hover:bg-default-100'}`}
+                className={`flex items-start space-x-4 p-4 py-2 mb-2 rounded-lg transition-colors cursor-pointer ${!item.isRead ? 'bg-green-600/20 hover:bg-green-600/50' : ' hover:bg-default-200'}`}
               >
-                <div className="flex justify-center items-center self-stretch">
+                <div className="flex justify-center items-start self-stretch">
                   {item.image ? (
-                    <div>
-                      <Image
-                        className="rounded-full"
-                        src={item?.image || '/assets/avatar.png'}
-                        width={44}
-                        height={44}
-                        alt={item?.user?.userName}
-                      />
-                    </div>
+                    <Image
+                      className="rounded-full w-11 h-11"
+                      src={item?.image || '/assets/avatar.png'}
+                      width={300}
+                      height={300}
+                      alt={item?.user?.userName}
+                    />
                   ) : item.type === 'follow' ? (
                     <UserCheck />
                   ) : item.type === 'like' ? (

@@ -1,11 +1,12 @@
+import axios from 'axios';
 import { cookies } from 'next/headers';
 
-let BASE_URL = '';
+let BASE_URL = 'http://localhost:4000';
 
 if (process.env.NODE_ENV === 'development') {
   BASE_URL =
     process.env.NEXT_PUBLIC_API_BASE_URL ||
-    'https://bookarchive-production.up.railway.app';
+    'http://localhost:4000';
 }
 if (process.env.NODE_ENV === 'production') {
   BASE_URL = 'https://bookarchive-production.up.railway.app';
@@ -79,15 +80,10 @@ export async function getLibraryLists(userName: string, type: 0 | 1 | 2) {
     data: data.data || [],
   };
 }
-
 export async function getPersonalBooks(slug: string) {
   try {
-    const response = await fetch(`${BASE_URL}/book/user/single/${slug}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      next: { revalidate: 0 },
-    });
+    const response = await fetch(`${BASE_URL}/book/user/single/${slug}`);
+
     if (!response.ok) {
       throw new Error('Kitap getirilemedi');
     }
@@ -97,10 +93,26 @@ export async function getPersonalBooks(slug: string) {
       data: data.data,
     };
   } catch (error) {
-    console.error('Kitap getirilirken hata oluştu:', error);
+    console.error('Kitap getirilirken hata oluştu2:', error);
     return {
       status: false,
       error: 'Kitap getirilirken bir hata oluştu',
+    };
+  }
+}
+export async function getAllPersonalBooks() {
+  try {
+    const { data } = await axios.get(`${BASE_URL}/book/users/booklist`);
+    return {
+      status: true,
+      data: data.data ?? [],
+    };
+  } catch (error) {
+    console.error('Kitap getirilirken hata oluştu1:', error);
+    return {
+      status: false,
+      error: 'Kitap getirilirken bir hata oluştu',
+      data: [],
     };
   }
 }

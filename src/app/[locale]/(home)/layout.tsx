@@ -42,6 +42,7 @@ export default async function RootLayout({
     <html lang={locale}>
       <NextIntlClientProvider messages={messages}>
         <body
+          suppressHydrationWarning={true}
           className={clsx(
             'min-h-screen font-sans antialiased',
             fontSans.variable,

@@ -14,7 +14,8 @@
       "ariaLabel": "toggle password visibility"
     },
     "submitButton": "Login",
-    "createAccount": "Create Account"
+    "createAccount": "Create Account",
+    "forgotPassword": "Forgot My Password!"
   },
   "RegisterForm": {
     "title": "Register",
@@ -44,6 +45,16 @@
     },
     "submitButton": "Register",
     "loginLink": "Do you have an account? Login"
+  },
+  "ForgotForm": {
+    "title": "Forgot Password",
+    "subtitle": "Mail adresinize şifre sıfırlama bağlantısı göndererek şifrenizi sıfırlayabilirsiniz.",
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email"
+    },
+    "submitButton": "Reset Password",
+    "loginLink": "Login"
   },
   "ProfileCard": {
     "biography": "Biography",
@@ -162,7 +173,7 @@
       }
     }
   },
-  "header": {
+  "Header": {
     "navigation": {
       "authors": "Authors",
       "community": "Community",

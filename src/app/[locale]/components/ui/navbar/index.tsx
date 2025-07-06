@@ -41,7 +41,7 @@ const { useRouter: useRouterIntl, usePathname: usePathnameIntl } =
   });
 
 export default function Header() {
-  const t = useTranslations('header');
+  const t = useTranslations('Header');
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [logout] = useLogoutMutation();
   const [me] = useMeMutation();
@@ -180,7 +180,6 @@ export default function Header() {
               }
               startContent={<Sun className="w-3.5 h-3.5 text-warning-400" />}
               endContent={<Moon className="w-3.5 h-3.5 text-default-500" />}
-              aria-label="Toggle theme"
             />
           </div>
 

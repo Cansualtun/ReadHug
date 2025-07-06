@@ -14,6 +14,13 @@ const nextConfig = {
       'storage.googleapis.com',
     ],
   },
+  experimental: {
+    // turbopack: false, // Turbopack kapatıldı
+  },
+  // i18n: {
+  //   locales: ['tr', 'en'], // Kullanılan diller
+  //   defaultLocale: 'tr',
+  // },
 };
 
 export default withNextIntl(nextConfig);

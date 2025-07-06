@@ -115,9 +115,12 @@ const LoginForm = () => {
         </form>
       </CardBody>
       <Divider />
-      <CardFooter>
+      <CardFooter className='flex justify-between items-center'>
         <Link href="/register" className="text-sm">
           {t('createAccount')}
+        </Link>
+        <Link href="/forgot-password" className="text-sm">
+          {t('forgotPassword')}
         </Link>
       </CardFooter>
     </Card>
